@@ -1,0 +1,262 @@
+/* Databases & SQL study site, styled after the UCL web design system */
+:root {
+  --bg: #FFFFFF;
+  --card: #FFFFFF;
+  --line: #E6E6E6;
+  --line-brand: #EAD6FF;
+  --sand: #F2F2F2;
+  --ink: #1A1A1A;
+  --text: #1A1A1A;
+  --muted: #666666;
+  --brand: #9A3BFF;        /* UCL bright purple */
+  --brand-text: #7B2FCC;   /* purple for small text on white */
+  --brand-hover: #6C29B2;
+  --brand-mid: #BA82FF;
+  --brand-pale: #EEDEFF;
+  --brand-wash: #F7F0FF;
+  --dark: #361A54;         /* UCL dark purple */
+  --dark-2: #522880;
+  --cyan: #30D6FF;         /* UCL heritage blue, used for eyebrows on dark */
+  --orange: #B34E06;
+  --orange-l: #FFF2EB;
+  --sans: 'DM Sans', Arial, sans-serif;
+  --head: 'DM Sans', Arial, sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+  --top: 56px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--top) + 16px); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 17px; line-height: 1.6; }
+a { color: var(--brand-text); font-weight: 600; text-underline-offset: 3px; }
+a:hover { color: var(--brand-hover); }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--brand-text); }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 8px; z-index: 100; background: #fff; padding: 8px 12px; }
+
+/* masthead: white bar with the site name */
+.masthead { background: #fff; border-bottom: 1px solid var(--line); }
+.mast-in { max-width: 1440px; margin: 0 auto; padding: 0 24px; height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.brand { display: flex; align-items: center; gap: 14px; color: var(--dark); text-decoration: none; }
+.brand:hover { color: var(--dark); }
+.brand-mark { display: inline-grid; place-items: center; width: 48px; height: 48px; background: var(--dark); color: var(--brand-mid); font-weight: 700; font-size: 19px; letter-spacing: -.02em; flex-shrink: 0; box-shadow: inset 6px 0 0 var(--brand); padding-left: 6px; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-text b { font-size: 22px; font-weight: 700; letter-spacing: -.01em; color: var(--dark); }
+.brand-text span { font-size: 14px; font-weight: 500; color: var(--muted); }
+.mast-tag { margin: 0; font-size: 15px; font-weight: 600; color: var(--brand-text); }
+
+/* part navigation: sticky dark purple bar */
+.topbar { position: sticky; top: 0; z-index: 50; background: var(--dark); }
+.topbar-in { max-width: 1440px; margin: 0 auto; padding: 0 24px; height: var(--top); display: flex; align-items: stretch; }
+.parts { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+.parts::-webkit-scrollbar { display: none; }
+.parts a { display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; padding: 0 18px; font-size: 16px; font-weight: 500; white-space: nowrap; border-bottom: 4px solid transparent; border-top: 4px solid transparent; }
+.parts a:hover { background: var(--dark-2); color: #fff; }
+.parts a[aria-current=page] { border-bottom-color: var(--brand-mid); font-weight: 600; }
+.pn { display: inline-grid; place-items: center; width: 22px; height: 22px; background: var(--brand); color: #fff; font-size: 12px; font-weight: 700; }
+.parts a[aria-current=page] .pn { background: var(--brand-mid); color: var(--dark); }
+
+@media (max-width: 600px) {
+  .mast-in { padding: 0 16px; height: 68px; }
+  .brand-mark { width: 40px; height: 40px; font-size: 16px; }
+  .brand-text b { font-size: 18px; }
+  .brand-text span, .mast-tag, .pn { display: none; }
+  .topbar-in { padding: 0 6px; }
+  .parts a { padding: 0 11px; font-size: 15px; }
+}
+
+/* layout */
+.layout { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
+.layout.has-toc { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 48px; }
+main { min-width: 0; width: 100%; max-width: 1100px; padding-bottom: 48px; }
+.layout:not(.has-toc) main { margin: 0 auto; max-width: 1240px; }
+@media (max-width: 600px) { .layout { padding: 0 16px; } }
+
+/* sidebar contents, like UCL's "In this section" menu */
+.toc { position: sticky; top: var(--top); align-self: start; max-height: calc(100vh - var(--top)); overflow: auto; padding: 32px 4px 32px 0; scrollbar-width: thin; }
+.toc-title { font-size: 20px; font-weight: 600; color: var(--ink); margin: 0 0 12px; padding-bottom: 12px; border-bottom: 2px solid var(--dark); }
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { border-bottom: 1px solid var(--line); }
+.toc li a { display: flex; gap: 10px; padding: 10px 12px; color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 400; line-height: 1.35; border-left: 4px solid transparent; }
+.toc li a:hover { background: var(--brand-wash); color: var(--ink); }
+.toc li a.active { border-left-color: var(--brand); background: var(--brand-wash); font-weight: 600; }
+.toc .n, .toc-mobile .n { flex: 0 0 24px; color: var(--muted); font-variant-numeric: tabular-nums; font-weight: 600; }
+.toc li.lab .n { color: var(--orange); }
+.toggle-all { margin: 20px 0 0; font: inherit; font-size: 15px; font-weight: 500; color: var(--brand-text); background: #fff; border: 2px solid var(--brand); padding: 10px 16px; cursor: pointer; }
+.toggle-all:hover { background: var(--brand); color: #fff; }
+.toc-mobile { display: none; margin: 0 0 8px; background: #fff; border: 1px solid var(--line-brand); }
+.toc-mobile summary { cursor: pointer; padding: 14px 16px; font-weight: 600; color: var(--ink); }
+.toc-mobile ol { list-style: none; margin: 0; padding: 0 8px 12px; }
+.toc-mobile a { display: flex; gap: 8px; padding: 7px 8px; color: var(--ink); text-decoration: none; font-weight: 400; font-size: 15px; line-height: 1.35; }
+@media (max-width: 1180px) {
+  .layout.has-toc { display: block; }
+  .toc { display: none; }
+  .toc-mobile { display: block; }
+  main { margin: 0 auto; }
+}
+
+/* part header: dark purple panel with the bright purple bar on its left, as on the UCL homepage */
+.part-hero { position: relative; overflow: hidden; background: var(--dark); color: #fff; border-left: 40px solid var(--brand); padding: 56px 56px 40px; margin: 32px 0 32px; }
+.part-hero > * { position: relative; }
+.part-hero .hero-num { position: absolute; right: 32px; top: 8px; margin: 0; font-weight: 700; font-size: 200px; line-height: 1; letter-spacing: -.04em; color: var(--dark-2); }
+.eyebrow { font-size: 15px; font-weight: 600; color: var(--cyan); margin: 0 0 12px; }
+.part-hero h1 { font-size: clamp(34px, 4.6vw, 56px); line-height: 1.1; letter-spacing: -.01em; margin: 0 0 16px; font-weight: 600; color: var(--brand-mid); max-width: 18ch; }
+.part-hero .lead { font-size: 20px; line-height: 1.5; color: #fff; max-width: 48ch; margin: 0 0 12px; }
+.part-hero .range { font-size: 15px; color: #DDBDFF; margin: 0; }
+.part-hero .range a, .part-hero .about a { color: #fff; }
+.part-hero .about { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--dark-2); max-width: 75ch; font-size: 16px; color: #F2F2F2; }
+.part-hero .about p { margin: 0 0 10px; }
+@media (max-width: 700px) {
+  .part-hero { padding: 36px 22px 28px; border-left-width: 16px; margin: 20px -16px 24px; }
+  .part-hero .hero-num { font-size: 120px; right: 12px; }
+}
+
+/* topics */
+.topic { padding: 40px 0 48px; border-top: 1px solid var(--line); }
+.toc-mobile + .topic { border-top: 0; }
+.topic-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.topic-meta .num { font-weight: 700; font-size: 14px; color: #fff; text-decoration: none; background: var(--dark); padding: 3px 12px; }
+.topic-meta .num:hover { background: var(--brand); color: #fff; }
+.badge.lab { display: inline-block; background: var(--orange-l); color: var(--orange); font-weight: 700; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; line-height: 1.4; }
+.fit { width: 100%; overflow-x: auto; overflow-y: hidden; }
+
+/* the slide content, drawn at 1664px wide and zoomed to fit */
+.canvas { width: 1664px; display: flex; flex-direction: column; font-size: 28px; line-height: 1.4; color: var(--text); font-family: var(--sans); transform-origin: 0 0; }
+.canvas div { display: flex; flex-direction: column; min-width: 0; }
+.canvas p, .canvas h1, .canvas h2, .canvas h3, .canvas ul, .canvas ol, .canvas table { margin: 0; }
+.canvas h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+.canvas h2 { font-size: 64px; font-weight: 600; line-height: 1.15; letter-spacing: -.01em; }
+.canvas h3 { font-size: 44px; font-weight: 600; line-height: 1.2; }
+.canvas ul, .canvas ol { padding-left: 1.3em; }
+.canvas li + li { margin-top: .2em; }
+.canvas li::marker { color: var(--brand); }
+.canvas table { border-collapse: collapse; }
+.canvas th, .canvas td { padding: .35em .6em; border: 1px solid rgba(54, 26, 84, .14); text-align: left; vertical-align: top; }
+.canvas th { font-weight: 600; }
+.canvas hr { border: 0; margin: 0; align-self: stretch; }
+.canvas a { color: var(--brand-text); text-decoration: underline; text-underline-offset: .15em; }
+.canvas .nw { overflow-x: auto; max-width: 100%; }
+.canvas svg.free { max-width: 100%; }
+.canvas .tablewrap { overflow-x: auto; max-width: 100%; }
+.canvas.narrow .row { flex-wrap: wrap; }
+.canvas.narrow .row > .grow { flex: 1 1 160px !important; }
+.canvas.narrow .row > div.grow { flex: 1 1 300px !important; }
+.canvas.narrow .fw { width: auto !important; max-width: 100%; }
+.canvas.narrow .row > .fw { flex: 1 1 100% !important; }
+.canvas.narrow .grid { grid-template-columns: 1fr !important; }
+.canvas.narrow .host { flex-shrink: 0; }
+.canvas.narrow p:not(.nw), .canvas.narrow h3 { overflow-wrap: anywhere; }
+
+/* more detail: UCL accordion */
+details.more { margin-top: 24px; background: #fff; border: 1px solid var(--line-brand); }
+details.more summary { cursor: pointer; list-style: none; padding: 16px 20px; font-size: 18px; font-weight: 600; color: var(--ink); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+details.more summary::-webkit-details-marker { display: none; }
+details.more summary::after { content: ''; width: 10px; height: 10px; border-right: 2px solid var(--brand); border-bottom: 2px solid var(--brand); transform: rotate(45deg); margin: -4px 6px 0 0; transition: transform .15s; flex-shrink: 0; }
+details.more[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+details.more summary:hover { background: var(--brand-wash); }
+details.more[open] { border-color: var(--brand); }
+.more-body { padding: 4px 24px 16px; max-width: 80ch; }
+.more-body p { margin: 0 0 12px; }
+@media (max-width: 700px) { .more-body { padding: 2px 18px 12px; } }
+
+/* pager */
+.pager { display: flex; justify-content: space-between; gap: 16px; margin-top: 48px; }
+.pager a { flex: 1; max-width: 340px; display: flex; flex-direction: column; padding: 18px 22px; border: 1px solid var(--line-brand); background: #fff; text-decoration: none; color: var(--ink); font-size: 20px; font-weight: 600; }
+.pager a:hover { border-color: var(--brand); background: var(--brand-wash); color: var(--ink); }
+.pager a span { font-size: 14px; color: var(--brand-text); font-weight: 600; }
+.pager .prev span::before { content: '‹ '; }
+.pager .next span::after { content: ' ›'; }
+.pager .next { text-align: right; margin-left: auto; }
+
+/* footer: dark purple, like ucl.ac.uk */
+.sitefoot { background: var(--dark); color: #fff; margin-top: 48px; }
+.foot-in { max-width: 1440px; margin: 0 auto; padding: 48px 24px 32px; display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 32px; }
+.foot-h { margin: 0 0 14px; font-size: 15px; font-weight: 600; color: var(--cyan); }
+.sitefoot ul { list-style: none; margin: 0; padding: 0; }
+.sitefoot li { margin: 0 0 10px; }
+.sitefoot a { color: #FAFAFA; font-weight: 400; text-decoration: none; }
+.sitefoot a:hover { color: #fff; text-decoration: underline; }
+.foot-about { justify-self: end; max-width: 420px; }
+.foot-about p { margin: 0 0 12px; font-size: 15px; color: #F2F2F2; }
+.foot-brand { display: flex; align-items: center; gap: 12px; font-size: 20px !important; font-weight: 700; color: #fff !important; }
+.foot-brand .brand-mark { width: 40px; height: 40px; font-size: 16px; background: #fff; color: var(--dark); box-shadow: inset 5px 0 0 var(--brand); }
+.foot-base { max-width: 1440px; margin: 0 auto; padding: 18px 24px 28px; border-top: 1px solid var(--dark-2); display: flex; justify-content: space-between; gap: 16px; font-size: 14px; color: #DDBDFF; }
+.foot-base p { margin: 0; }
+@media (max-width: 760px) {
+  .foot-in { grid-template-columns: 1fr 1fr; padding: 40px 16px 24px; }
+  .foot-about { grid-column: 1 / -1; justify-self: start; }
+  .foot-base { padding: 16px; flex-direction: column; }
+}
+
+/* home */
+.home-hero { display: grid; grid-template-columns: 40px minmax(0, 1fr); margin: 32px 0 0; }
+.home-hero::before { content: ''; background: var(--brand); }
+.home-hero-in { background: var(--dark); color: #fff; padding: 64px 56px 56px; display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 48px; align-items: center; }
+.home-hero .eyebrow { color: var(--cyan); }
+.home-hero h1 { font-size: clamp(40px, 5.6vw, 72px); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 20px; font-weight: 600; color: var(--brand-mid); }
+.home-hero .lead { font-size: 20px; line-height: 1.5; color: #fff; max-width: 52ch; margin: 0 0 32px; }
+.hero-art { width: 100%; height: auto; }
+.hh-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 18px; border: 2px solid #fff; color: #fff; text-decoration: none; font-weight: 500; font-size: 17px; line-height: 1.2; }
+.btn::after { content: ''; width: 7px; height: 7px; border-right: 2px solid currentColor; border-top: 2px solid currentColor; transform: rotate(45deg); }
+.btn:hover { background: #fff; color: var(--dark); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); color: #fff; }
+@media (max-width: 760px) {
+  .home-hero { grid-template-columns: 16px minmax(0, 1fr); margin: 20px -16px 0; }
+  .home-hero-in { grid-template-columns: 1fr; padding: 40px 22px 36px; }
+  .hero-art { display: none; }
+}
+.home-sec { padding: 56px 0 8px; }
+.home-sec h2 { font-size: clamp(28px, 3.2vw, 36px); color: var(--ink); margin: 0 0 8px; font-weight: 600; letter-spacing: -.01em; }
+.home-sec .sub { margin: 0 0 28px; color: var(--text); max-width: 70ch; }
+
+/* part cards: UCL quick-link cards */
+.part-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+.part-card { position: relative; background: #fff; border: 1px solid var(--line-brand); padding: 24px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; }
+.part-card:hover { border-color: var(--brand); }
+.part-card.rev { background: var(--brand-wash); }
+.part-card::after { content: '→'; position: absolute; top: 0; right: 0; width: 40px; height: 40px; display: grid; place-items: center; background: var(--dark); color: var(--brand-mid); font-size: 20px; pointer-events: none; }
+.part-link { display: flex; align-items: baseline; gap: 12px; text-decoration: none; color: var(--ink); padding-right: 32px; }
+.part-link:hover { color: var(--ink); }
+.part-link:hover .pc-name { text-decoration: underline; text-decoration-color: var(--brand); text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.pc-num { font-size: 40px; font-weight: 700; color: var(--brand); line-height: 1; }
+.pc-name { font-size: 26px; font-weight: 600; }
+.pc-desc { margin: 0; font-size: 17px; color: var(--text); }
+.pc-range { margin: 0; font-size: 14px; color: var(--muted); }
+.pc-range b { color: var(--orange); font-weight: 600; }
+.pc-topics { margin-top: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+.pc-topics summary { cursor: pointer; font-size: 15px; font-weight: 600; color: var(--brand-text); }
+.pc-topics ol { list-style: none; margin: 8px 0 0; padding: 0; }
+.pc-topics a { display: flex; gap: 8px; padding: 4px 0; font-size: 14.5px; font-weight: 400; line-height: 1.35; color: var(--text); text-decoration: none; }
+.pc-topics a:hover { color: var(--brand-text); text-decoration: underline; }
+.pc-topics .n { flex: 0 0 24px; color: var(--muted); font-weight: 600; }
+
+/* "how to use" band: UCL's dark purple highlight row */
+.how-band { background: var(--dark); color: #fff; margin: 64px 0 0; padding: 48px 48px 40px; }
+.how-band h2 { color: #fff; }
+.how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; padding-top: 16px; }
+.how { border-top: 1px solid var(--dark-2); padding-top: 18px; }
+.how .eyebrow { margin: 0 0 6px; }
+.how h3 { font-size: 21px; color: #fff; margin: 0 0 8px; font-weight: 600; line-height: 1.25; }
+.how p { margin: 0 0 10px; font-size: 16px; color: #F2F2F2; }
+.how a { color: #fff; }
+.demo.syn { font-family: var(--mono); font-size: 14px; background: var(--brand-wash); border-left: 6px solid var(--brand); padding: 8px 12px; overflow-x: auto; white-space: nowrap; color: var(--ink) !important; }
+.demo .k { color: var(--brand-text); font-weight: 700; }
+.demo i { color: var(--orange); }
+.demo .o { color: #666; }
+@media (max-width: 700px) { .how-band { padding: 36px 22px 28px; margin: 48px -16px 0; } }
+
+/* call to action strip */
+.cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; border-left: 8px solid var(--brand); background: var(--brand-wash); padding: 28px 32px; margin-top: 48px; }
+.cta h2 { margin: 0 0 4px; font-size: 26px; font-weight: 600; color: var(--ink); }
+.cta p { margin: 0; }
+.cta .btn { border-color: var(--brand); color: var(--brand-text); }
+.cta .btn:hover { background: var(--brand); color: #fff; }
+
+@media print {
+  .masthead, .topbar, .toc, .toc-mobile, .pager, .toggle-all, .sitefoot { display: none !important; }
+  .layout.has-toc { display: block; }
+  details.more { break-inside: avoid; }
+  .topic { break-inside: avoid; }
+}

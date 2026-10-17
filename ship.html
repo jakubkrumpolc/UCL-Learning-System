@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ship · Databases & SQL</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–2: SQL syntax, ER diagrams, normalisation and a small web app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-ship">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–2 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html" aria-current="page"><span class="pn">4</span>Ship</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#app-erd"><span class="n">59</span><span class="t">A tiny auction site: from brief to diagram</span></a></li><li><a href="#app-schema"><span class="n">60</span><span class="t">Create the tables</span></a></li><li><a href="#app-queries"><span class="n">61</span><span class="t">One query behind each page</span></a></li><li><a href="#app-code"><span class="n">62</span><span class="t">The code that runs a query</span></a></li><li><a href="#injection"><span class="n">63</span><span class="t">Never glue user input into SQL</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">04</p>
+<p class="eyebrow">Part 4 · Ship</p>
+<h1>How do I use it in an app?</h1>
+<p class="lead">One tiny auction site, end to end: the diagram, the tables, the query behind each page, and the code that runs it safely.</p>
+<p class="range">Sections 58–63</p>
+<div class="about"><p>Part 4 is not from the lectures; it ties Parts 2 and 3 together with a small, realistic example, because the module’s coursework asks you to build a database-backed web application (an auction site is a common brief). It follows the same steps as any real project: requirements and an ER diagram, CREATE TABLE statements, the queries each page needs, a few lines of server code, and the one security rule you must never break.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#app-erd"><span class="n">59</span> A tiny auction site: from brief to diagram</a></li><li><a href="#app-schema"><span class="n">60</span> Create the tables</a></li><li><a href="#app-queries"><span class="n">61</span> One query behind each page</a></li><li><a href="#app-code"><span class="n">62</span> The code that runs a query</a></li><li><a href="#injection"><span class="n">63</span> Never glue user input into SQL</a></li></ol></details><section class="topic" id="app-erd" aria-labelledby="app-erd-h">
+<div class="topic-meta"><a class="num" href="#app-erd" title="Link to this section">59</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Ship · Step 1</p>
+<h2 id="app-erd-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">A tiny auction site: from brief to diagram</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">The brief</h3>
+<p style="font-size:26px;line-height:1.4"><b style="color:#7B2FCC">Members</b> sign up with an email and a display name.</p>
+<p style="font-size:26px;line-height:1.4">A member <b style="color:#B34E06">sells</b> <b style="color:#7B2FCC">items</b>, each with a start price and an end time.</p>
+<p style="font-size:26px;line-height:1.4">Members <b style="color:#B34E06">bid on</b> items; we keep each bid’s amount and time.</p>
+<p style="font-size:26px;line-height:1.4">The home page lists live items with their top bid.</p>
+</div>
+<div class="host" data-w="960" style="position:relative;width:960px;height:432px">
+<svg aria-label="ER diagram: Member Sells Item (1..1 to 0..*), and Member Bids on Item (0..* to 0..*) with a dashed link to a box holding amount and placedAt" height="432" style="position:absolute;left:0;top:0" viewbox="0 0 960 432" width="960"><line stroke="#361A54" stroke-width="3" x1="300" x2="660" y1="190" y2="190"></line><line stroke="#361A54" stroke-width="3" x1="300" x2="660" y1="260" y2="260"></line><line stroke="#361A54" stroke-dasharray="8 6" stroke-width="3" x1="480" x2="480" y1="260" y2="330"></line><rect fill="#FFFFFF" height="138" stroke="#361A54" stroke-width="2" width="298" x="1" y="151"></rect><rect fill="#EEDEFF" height="36" stroke="#361A54" stroke-width="2" width="298" x="1" y="151"></rect><rect fill="#FFFFFF" height="170" stroke="#361A54" stroke-width="2" width="298" x="661" y="151"></rect><rect fill="#EEDEFF" height="36" stroke="#361A54" stroke-width="2" width="298" x="661" y="151"></rect><rect fill="#FFFFFF" height="98" stroke="#361A54" stroke-width="2" width="198" x="381" y="331"></rect></svg>
+<p style="position:absolute;left:14px;top:153px;width:280px;height:128px;line-height:32px;font-size:24px"><b style="color:#1A1A1A">Member</b><br/>memberId {PK}<br/>email {CK}<br/>displayName</p>
+<p style="position:absolute;left:674px;top:153px;width:280px;height:160px;line-height:32px;font-size:24px"><b style="color:#1A1A1A">Item</b><br/>itemId {PK}<br/>title<br/>startPrice<br/>endsAt</p>
+<p style="position:absolute;left:380px;top:152px;width:200px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">Sells ▸</p>
+<p style="position:absolute;left:380px;top:222px;width:200px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">Bids on ▸</p>
+<p style="position:absolute;left:308px;top:194px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">1..1</p>
+<p style="position:absolute;left:592px;top:194px;width:60px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:308px;top:264px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:592px;top:264px;width:60px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:380px;top:344px;width:200px;height:68px;line-height:34px;text-align:center;font-size:24px">amount<br/>placedAt</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> every app starts here. Nouns → boxes, verbs → lines, facts about a bid → on the line.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Apply the recipe from Part 3 to a four-sentence brief. Nouns with their own details: Member and Item. Verbs: a member sells an item, and members bid on items. Multiplicities: each item has exactly one seller and a member may sell none or many, so Member 1..1 Sells 0..* Item; a member can bid on many items and an item can receive many bids, so Bids on is 0..* to 0..* (many-to-many).</p><p>The amount and the time belong to a bid, not to the member or the item alone, so they are attributes of the Bids on relationship, drawn in a box on a dashed line. email is marked {CK}: it is unique, so it could identify a member, but we choose a short numeric memberId as the primary key because emails can change. One subtlety that matters on the next section: a member can bid on the same item several times (raising their own bid).</p><p>A linking table keyed only by (memberId, itemId) would allow just one bid per pair, so the Bid table will get its own key, bidId. Some designers draw Bid as a third entity for exactly this reason; both diagrams lead to the same tables. The “top bid” on the home page is not stored anywhere: it is derived with MAX(amount) in a query, which avoids keeping a copy that could get out of date (an update anomaly).</p></div></details>
+</section>
+<section class="topic" id="app-schema" aria-labelledby="app-schema-h">
+<div class="topic-meta"><a class="num" href="#app-schema" title="Link to this section">60</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Ship · Step 2</p>
+<h2 id="app-schema-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Create the tables</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:20px 20px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">CREATE TABLE</span> Member (<br/>  memberId <span style="color:#D0A3FF">INT AUTO_INCREMENT PRIMARY KEY</span>,<br/>  email <span style="color:#D0A3FF">VARCHAR</span>(<span style="color:#FFAE80">100</span>) <span style="color:#D0A3FF">NOT NULL UNIQUE</span>,<br/>  displayName <span style="color:#D0A3FF">VARCHAR</span>(<span style="color:#FFAE80">50</span>) <span style="color:#D0A3FF">NOT NULL</span>);<br/><br/><span style="color:#D0A3FF">CREATE TABLE</span> Item (<br/>  itemId <span style="color:#D0A3FF">INT AUTO_INCREMENT PRIMARY KEY</span>,<br/>  sellerId <span style="color:#D0A3FF">INT NOT NULL</span>,<br/>  title <span style="color:#D0A3FF">VARCHAR</span>(<span style="color:#FFAE80">100</span>) <span style="color:#D0A3FF">NOT NULL</span>,<br/>  startPrice <span style="color:#D0A3FF">DECIMAL</span>(<span style="color:#FFAE80">8</span>,<span style="color:#FFAE80">2</span>) <span style="color:#D0A3FF">NOT NULL</span>,<br/>  endsAt <span style="color:#D0A3FF">DATETIME NOT NULL</span>,<br/>  <span style="color:#D0A3FF">FOREIGN KEY</span> (sellerId)<br/>    <span style="color:#D0A3FF">REFERENCES</span> Member(memberId));</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="background:#361A54;border-radius:0;padding:20px 20px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">CREATE TABLE</span> Bid (<br/>  bidId <span style="color:#D0A3FF">INT AUTO_INCREMENT PRIMARY KEY</span>,<br/>  itemId <span style="color:#D0A3FF">INT NOT NULL</span>,<br/>  bidderId <span style="color:#D0A3FF">INT NOT NULL</span>,<br/>  amount <span style="color:#D0A3FF">DECIMAL</span>(<span style="color:#FFAE80">8</span>,<span style="color:#FFAE80">2</span>) <span style="color:#D0A3FF">NOT NULL</span>,<br/>  placedAt <span style="color:#D0A3FF">DATETIME DEFAULT CURRENT_TIMESTAMP</span>,<br/>  <span style="color:#D0A3FF">FOREIGN KEY</span> (itemId) <span style="color:#D0A3FF">REFERENCES</span> Item(itemId)<br/>    <span style="color:#D0A3FF">ON DELETE CASCADE</span>,<br/>  <span style="color:#D0A3FF">FOREIGN KEY</span> (bidderId)<br/>    <span style="color:#D0A3FF">REFERENCES</span> Member(memberId));</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:16px 22px;display:flex;flex-direction:column;gap:6px">
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">AUTO_INCREMENT</b>: MySQL picks the next id for you.</p>
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">bidId</b>: one member can bid on an item many times.</p>
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">CASCADE</b>: delete an item and its bids go too.</p>
+</div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> money → DECIMAL · ids → AUTO_INCREMENT · diagram lines → FOREIGN KEYs.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is the physical design: the diagram from the previous section written as MySQL, using the types and constraints from Part 2 and the translation rules from Part 3. Create the tables in this order, parents first, because a FOREIGN KEY can only reference a table that already exists (and drop them in the reverse order).</p><p>Member: memberId is an INT with AUTO_INCREMENT, so when you INSERT a member without an id MySQL assigns 1, 2, 3… for you (in code you can read the new id back, e.g. PDO’s lastInsertId()). email is NOT NULL UNIQUE because it was a candidate key: the database itself refuses a second account with the same email. Item: Sells is 1:*, so the FK sellerId sits on the many side (Item).</p><p>Money uses DECIMAL(8,2): exact, up to 999999.99; never FLOAT, which stores binary approximations, so 0.1 + 0.2 isn’t exactly 0.3. endsAt is a DATETIME so you can compare it with NOW(). Bid: Bids on is *:*, so it becomes its own table with an FK to each side. It gets its own bidId rather than the composite key (itemId, bidderId), because a member may bid on the same item several times. placedAt defaults to the current time, so the app doesn’t need to send it.</p><p>ON DELETE CASCADE on itemId means deleting an item removes its bids automatically (section <a href="speak.html#fk-actions">19</a>); bidderId uses the default (RESTRICT), so you can’t delete a member who has bids. All of this needs the InnoDB engine, which is MySQL’s default. You can paste the whole script into phpMyAdmin’s SQL tab and press Go.</p></div></details>
+</section>
+<section class="topic" id="app-queries" aria-labelledby="app-queries-h">
+<div class="topic-meta"><a class="num" href="#app-queries" title="Link to this section">61</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Ship · Step 3</p>
+<h2 id="app-queries-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">One query behind each page</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<div class="row" style="display:flex;gap:24px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><p class="grow" style="flex:1;font-size:26px;font-weight:700;color:#1A1A1A">Sign-up page</p><p class="grow" style="font-size:24px;font-weight:700;color:#7B2FCC">INSERT</p></div>
+<div style="background:#361A54;border-radius:0;padding:16px 20px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">INSERT INTO</span> Member (email, displayName)<br/><span style="color:#D0A3FF">VALUES</span> (<span style="color:#FFAE80">'ann@example.com'</span>, <span style="color:#FFAE80">'Ann'</span>);</p></div>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><p class="grow" style="flex:1;font-size:26px;font-weight:700;color:#1A1A1A">“Place bid” button</p><p class="grow" style="font-size:24px;font-weight:700;color:#7B2FCC">INSERT</p></div>
+<div style="background:#361A54;border-radius:0;padding:16px 20px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">INSERT INTO</span> Bid (itemId, bidderId, amount)<br/><span style="color:#D0A3FF">VALUES</span> (<span style="color:#FFAE80">7</span>, <span style="color:#FFAE80">2</span>, <span style="color:#FFAE80">25.00</span>);</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;gap:24px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><p class="grow" style="flex:1;font-size:26px;font-weight:700;color:#1A1A1A">Home page: live items</p><p class="grow" style="font-size:24px;font-weight:700;color:#7B2FCC">LEFT JOIN + MAX</p></div>
+<div style="background:#361A54;border-radius:0;padding:16px 20px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> i.itemId, i.title, <span style="color:#D0A3FF">MAX</span>(b.amount) <span style="color:#D0A3FF">AS</span> topBid<br/><span style="color:#D0A3FF">FROM</span> Item i <span style="color:#D0A3FF">LEFT JOIN</span> Bid b <span style="color:#D0A3FF">ON</span> b.itemId = i.itemId<br/><span style="color:#D0A3FF">WHERE</span> i.endsAt &gt; <span style="color:#D0A3FF">NOW</span>()<br/><span style="color:#D0A3FF">GROUP BY</span> i.itemId, i.title<br/><span style="color:#D0A3FF">ORDER BY</span> i.endsAt;</p></div>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><p class="grow" style="flex:1;font-size:26px;font-weight:700;color:#1A1A1A">“My bids” page</p><p class="grow" style="font-size:24px;font-weight:700;color:#7B2FCC">JOIN + ORDER BY</p></div>
+<div style="background:#361A54;border-radius:0;padding:16px 20px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> i.title, b.amount, b.placedAt<br/><span style="color:#D0A3FF">FROM</span> Bid b <span style="color:#D0A3FF">JOIN</span> Item i <span style="color:#D0A3FF">ON</span> i.itemId = b.itemId<br/><span style="color:#D0A3FF">WHERE</span> b.bidderId = <span style="color:#FFAE80">2</span><br/><span style="color:#D0A3FF">ORDER BY</span> b.placedAt <span style="color:#D0A3FF">DESC</span>;</p></div>
+</div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> each page is a question for the database. Write and test its SQL first, then build the page.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A practical way to build a database-backed site: list the pages, write down the question each page asks, and get its SQL working in phpMyAdmin before writing any app code. Sign-up: INSERT a member; memberId is filled in by AUTO_INCREMENT, and the UNIQUE constraint on email rejects a duplicate account. Place bid: INSERT a bid; placedAt defaults to now.</p><p>In a real app you would also check the bid is higher than the current top bid and that the auction hasn’t ended, either with a query first (SELECT MAX(amount) FROM Bid WHERE itemId = 7) or inside a transaction (section <a href="speak.html#more-tools">35</a>) so two people bidding at the same moment can’t both win. Home page: a LEFT JOIN (section <a href="speak.html#outer-joins">30</a>) keeps items that have no bids yet; for those, MAX(b.amount) is NULL, which the page can show as “no bids, starts at £…”. The top bid is derived with MAX rather than stored, so it can never go stale.</p><p>WHERE i.endsAt &gt; NOW() keeps only live auctions, and GROUP BY makes one row per item. My bids: an inner JOIN (section <a href="speak.html#joins">29</a>) from the member’s bids to the items they were on, newest first. The literal values here (7, 2, 'Ann') stand in for what the page sends: the logged-in member’s id, the item they clicked and the amount they typed. In real code these must be passed as placeholders, never pasted into the SQL text (section <a href="#injection">63</a>).</p></div></details>
+</section>
+<section class="topic" id="app-code" aria-labelledby="app-code-h">
+<div class="topic-meta"><a class="num" href="#app-code" title="Link to this section">62</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Ship · Step 4</p>
+<h2 id="app-code-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The code that runs a query</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="fw" style="width:520px;display:flex;flex-direction:column;gap:14px">
+<div class="row" style="display:flex;gap:16px;align-items:center;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:16px 20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg><p class="grow" style="flex:1;font-size:26px;line-height:1.35"><b>1.</b> Browser asks for /browse.php</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:center;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:16px 20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><p class="grow" style="flex:1;font-size:26px;line-height:1.35"><b>2.</b> PHP on the server sends SQL</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:center;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:16px 20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg><p class="grow" style="flex:1;font-size:26px;line-height:1.35"><b>3.</b> MySQL returns rows</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:center;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:16px 20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg><p class="grow" style="flex:1;font-size:26px;line-height:1.35"><b>4.</b> PHP turns rows into HTML</p></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">Python works the same way: mysql.connector, cursor.execute(), fetchall().</p>
+</div>
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:20px 28px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">&lt;?php // browse.php</span><br/>$pdo = <span style="color:#D0A3FF">new</span> PDO(<span style="color:#FFAE80">"mysql:host=localhost;dbname=auction"</span>,<br/>               <span style="color:#FFAE80">"app"</span>, <span style="color:#FFAE80">"secret"</span>);<br/>$rows = $pdo-&gt;query(<span style="color:#FFAE80">"SELECT title, startPrice FROM Item</span><br/><span style="color:#FFAE80">                     WHERE endsAt &gt; NOW()"</span>)-&gt;fetchAll();<br/><span style="color:#B3B3B3">?&gt;</span><br/>&lt;ul&gt;<br/><span style="color:#B3B3B3">&lt;?php</span> <span style="color:#D0A3FF">foreach</span> ($rows <span style="color:#D0A3FF">as</span> $r): <span style="color:#B3B3B3">?&gt;</span><br/>  &lt;li&gt;<span style="color:#B3B3B3">&lt;?=</span> htmlspecialchars($r[<span style="color:#FFAE80">"title"</span>]) <span style="color:#B3B3B3">?&gt;</span>&lt;/li&gt;<br/><span style="color:#B3B3B3">&lt;?php</span> <span style="color:#D0A3FF">endforeach</span>; <span style="color:#B3B3B3">?&gt;</span><br/>&lt;/ul&gt;</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> connect, query, fetch, show. Every database-backed page is those four verbs.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is the three-tier architecture from section <a href="store.html#web-tiers">9</a> in action: the browser (client) never talks to MySQL; it asks the web server for a page, and server-side code queries the database and builds the HTML. MySQL with phpMyAdmin usually comes as part of a local stack such as XAMPP or MAMP (Apache web server + MySQL + PHP), so PHP is a natural fit; use whatever language your coursework template uses.</p><p>The PHP above uses PDO (PHP Data Objects), PHP’s standard database interface. new PDO(…) opens a connection: the DSN string names the server and database, followed by a username and password (keep real passwords out of code you share or commit, e.g. in a separate config file). query() sends the SQL and fetchAll() returns the result rows as arrays, so $r["title"] is one row’s title.</p><p>The page then loops over the rows and prints one list item per item. htmlspecialchars() escapes characters like &lt; and &gt; so a seller can’t put HTML or JavaScript into a title and have it run in other people’s browsers (cross-site scripting). This query has no user input in it, so query() is fine here; as soon as a value comes from the user (a search box, an item id in the URL, a form), use prepare() with placeholders instead, as the next section shows.</p><p>In Python the same four steps are: mysql.connector.connect(host=…, user=…, password=…, database=…), cur = db.cursor(), cur.execute(sql), rows = cur.fetchall(); frameworks such as Flask add the URL routing and HTML templates.</p></div></details>
+</section>
+<section class="topic" id="injection" aria-labelledby="injection-h">
+<div class="topic-meta"><a class="num" href="#injection" title="Link to this section">63</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Ship · Security</p>
+<h2 id="injection-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Never glue user input into SQL</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:2px solid #B34E06;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><h3 class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">Unsafe: string glue</h3></div>
+<div style="background:#361A54;border-radius:0;padding:16px 20px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap">$name = $_GET[<span style="color:#FFAE80">"name"</span>];<br/>$sql = <span style="color:#FFAE80">"SELECT * FROM Member</span><br/><span style="color:#FFAE80">        WHERE displayName = '</span>$name<span style="color:#FFAE80">'"</span>;<br/>$rows = $pdo-&gt;query($sql)-&gt;fetchAll();</p></div>
+<p style="font-size:24px;line-height:1.4">Someone types the name <b style="font-family:'JetBrains Mono', 'Courier New', monospace;color:#B34E06">x' OR '1'='1</b> and the database runs:</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#1A1A1A;background:#FFF2EB;border-radius:0;padding:10px 16px">… WHERE displayName = 'x' OR '1'='1'</p>
+<p style="font-size:26px;line-height:1.4">'1'='1' is always true, so every member comes back.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:2px solid #7B2FCC;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><h3 class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">Safe: placeholders</h3></div>
+<div style="background:#361A54;border-radius:0;padding:16px 20px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap">$stmt = $pdo-&gt;prepare(<span style="color:#FFAE80">"SELECT * FROM Member</span><br/><span style="color:#FFAE80">                       WHERE displayName = </span><span style="color:#D0A3FF">?</span><span style="color:#FFAE80">"</span>);<br/>$stmt-&gt;execute([$_GET[<span style="color:#FFAE80">"name"</span>]]);<br/>$rows = $stmt-&gt;fetchAll();</p></div>
+<p style="font-size:26px;line-height:1.4">The <b>?</b> is a placeholder. The value travels separately, so it can never become SQL.</p>
+<p style="font-size:26px;line-height:1.4">The same input now just matches nobody.</p>
+<p style="font-size:24px;line-height:1.4;color:#666666">Python: cur.execute("… = %s", (name,))</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> placeholders, always. User input is data, never SQL.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>SQL injection is one of the most common and damaging web security bugs, and it is entirely avoidable. It happens when an app builds a SQL statement by pasting user input into the SQL text. The quote character in the input closes the string early, and whatever follows is run as SQL. With x' OR '1'='1, the WHERE clause becomes a condition that is true for every row, so a search or login check returns all members.</p><p>Worse inputs can read other tables (with UNION SELECT) or, where several statements are allowed, change or delete data: the famous xkcd cartoon “Exploits of a Mom” names a child Robert'); DROP TABLE Students;-- (“little Bobby Tables”). The fix is a prepared statement with placeholders. prepare() sends the SQL with a ? where each value goes; execute() sends the values separately, and the database treats them purely as data, so a quote inside a name is just a character.</p><p>PDO also supports named placeholders (:name with execute(["name" =&gt; $x])). Python’s mysql.connector uses %s placeholders with the values passed as a tuple: cur.execute("SELECT * FROM Member WHERE displayName = %s", (name,)); note this is not Python’s % string formatting, because the values are passed as a second argument.</p><p>Rules of thumb: use placeholders for every value that comes from outside (forms, URLs, cookies), even numbers; placeholders can’t stand in for table or column names, so pick those from a fixed list in your code; and escape output with htmlspecialchars() (previous section), which guards against a different attack, cross-site scripting. The database user your app connects as should also have only the privileges it needs (GRANT, section <a href="speak.html#more-tools">35</a>).</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="shape.html"><span>Previous</span>Shape</a><a class="next" href="revision.html"><span>Next</span>Revision</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your “Databases &amp; SQL: Weeks 1–2” slide deck (COMP0178). Section numbers match the slide numbers.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–2</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

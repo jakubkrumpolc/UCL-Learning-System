@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shape · Databases & SQL</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–2: SQL syntax, ER diagrams, normalisation and a small web app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-shape">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–2 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html" aria-current="page"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#design-process"><span class="n">41</span><span class="t">From idea to tables in four steps</span></a></li><li><a href="#er-notation"><span class="n">42</span><span class="t">Reading an ER diagram (UML style)</span></a></li><li><a href="#multiplicity"><span class="n">43</span><span class="t">Multiplicity: how many can be linked?</span></a></li><li><a href="#rel-types"><span class="n">44</span><span class="t">Three kinds of two-entity relationship</span></a></li><li><a href="#complex-rel"><span class="n">45</span><span class="t">Three trickier shapes</span></a></li><li><a href="#eer"><span class="n">46</span><span class="t">Inheritance: one parent, special children</span></a></li><li><a href="#draw-erd"><span class="n">47</span><span class="t">How to draw your own ER diagram</span></a></li><li class="lab"><a href="#lab-chat-erd"><span class="n">48</span><span class="t">Lab 2: the chatroom ER diagram</span></a></li><li><a href="#er-rules"><span class="n">49</span><span class="t">Turning a diagram into tables: 3 core rules</span></a></li><li><a href="#er-special"><span class="n">50</span><span class="t">The special cases</span></a></li><li class="lab"><a href="#lab-class-schema"><span class="n">51</span><span class="t">Lab 2: translate the Class diagram</span></a></li><li><a href="#anomalies"><span class="n">52</span><span class="t">Why tidy tables? Anomalies</span></a></li><li><a href="#fds"><span class="n">53</span><span class="t">Functional dependencies: what decides what</span></a></li><li class="lab"><a href="#lab-fds"><span class="n">54</span><span class="t">Lab 2: what decides what in LibraryRental?</span></a></li><li><a href="#normal-forms"><span class="n">55</span><span class="t">The normal-form staircase</span></a></li><li><a href="#normalize-example"><span class="n">56</span><span class="t">Worked example: ViewingLog to 3NF</span></a></li><li class="lab"><a href="#lab-anomalies"><span class="n">57</span><span class="t">Lab 2: one anomaly per normal form</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">03</p>
+<p class="eyebrow">Part 3 · Shape</p>
+<h1>How do I design it?</h1>
+<p class="lead">Draw the data as a diagram, turn the diagram into tables, then tidy the tables so each fact is stored once.</p>
+<p class="range">Sections 40–57 · Lab 2 (design): <a href="#lab-chat-erd">48</a>, <a href="#lab-class-schema">51</a>, <a href="#lab-fds">54</a>, <a href="#lab-anomalies">57</a></p>
+<div class="about"><p>Part 3 covers the Week 2 lecture, Database Design: conceptual design with entity–relationship (ER) diagrams in UML notation, enhanced ER (inheritance), translating a diagram into relational tables, and normalisation (1NF, 2NF, 3NF and BCNF). This is the part you need for the coursework’s ER diagram submission at the end of Week 3.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#design-process"><span class="n">41</span> From idea to tables in four steps</a></li><li><a href="#er-notation"><span class="n">42</span> Reading an ER diagram (UML style)</a></li><li><a href="#multiplicity"><span class="n">43</span> Multiplicity: how many can be linked?</a></li><li><a href="#rel-types"><span class="n">44</span> Three kinds of two-entity relationship</a></li><li><a href="#complex-rel"><span class="n">45</span> Three trickier shapes</a></li><li><a href="#eer"><span class="n">46</span> Inheritance: one parent, special children</a></li><li><a href="#draw-erd"><span class="n">47</span> How to draw your own ER diagram</a></li><li><a href="#lab-chat-erd"><span class="n">48</span> Lab 2: the chatroom ER diagram</a></li><li><a href="#er-rules"><span class="n">49</span> Turning a diagram into tables: 3 core rules</a></li><li><a href="#er-special"><span class="n">50</span> The special cases</a></li><li><a href="#lab-class-schema"><span class="n">51</span> Lab 2: translate the Class diagram</a></li><li><a href="#anomalies"><span class="n">52</span> Why tidy tables? Anomalies</a></li><li><a href="#fds"><span class="n">53</span> Functional dependencies: what decides what</a></li><li><a href="#lab-fds"><span class="n">54</span> Lab 2: what decides what in LibraryRental?</a></li><li><a href="#normal-forms"><span class="n">55</span> The normal-form staircase</a></li><li><a href="#normalize-example"><span class="n">56</span> Worked example: ViewingLog to 3NF</a></li><li><a href="#lab-anomalies"><span class="n">57</span> Lab 2: one anomaly per normal form</a></li></ol></details><section class="topic" id="design-process" aria-labelledby="design-process-h">
+<div class="topic-meta"><a class="num" href="#design-process" title="Link to this section">41</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape</p>
+<h2 id="design-process-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">From idea to tables in four steps</h2>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:16px;flex-direction:row">
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">1</p>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Requirements</h3>
+<p style="font-size:26px;line-height:1.4">What data, who uses it, what must the app do?</p>
+</div>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">2</p>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Conceptual design</h3>
+<p style="font-size:26px;line-height:1.4">ER diagram: things, links, properties. No tech limits yet.</p>
+</div>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">3</p>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Logical design</h3>
+<p style="font-size:26px;line-height:1.4">Turn the diagram into tables and keys; normalise.</p>
+</div>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:10px">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">4</p>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Physical design</h3>
+<p style="font-size:26px;line-height:1.4">CREATE TABLE in MySQL: types, indexes.</p>
+</div>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#EEDEFF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Top-down</h3>
+<p style="font-size:26px;line-height:1.4">Draw the ER diagram, then translate it into tables (sections <a href="#er-rules">49</a>–<a href="#er-special">50</a>).</p>
+</div>
+<div class="grow" style="flex:1;background:#EEDEFF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Bottom-up</h3>
+<p style="font-size:26px;line-height:1.4">Start from one big table of everything, then normalise it (sections <a href="#anomalies">52</a>–<a href="#lab-anomalies">57</a>).</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:2px solid #B34E06;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"></path><path d="M22 10v6"></path><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"></path></svg><h3 class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Coursework</h3></div>
+<p style="font-size:26px;line-height:1.4">50% of the module: your own SQL database. ER diagram due end of Week 3.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> draw it, table it, tidy it.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Before designing anything you gather requirements: what data will be used, who will use the system, and which features it needs. For the coursework, the brief already does most of this for you. Design then has two main steps. Conceptual design uses ER modelling and diagrams; it is “blue-sky thinking” where the only limits come from the data itself, not from any technology.</p><p>Logical design adds the constraints of the chosen kind of database; for a relational database that means deciding every table, and it is still independent of any particular DBMS product. There are two strategies for logical design: top-down (translate the ER diagram into tables using fixed rules) and bottom-up (start from one big table holding all the interesting data, and normalise it). In practice you do both: translate first, then check the result with normalisation.</p><p>The final step, physical design, is writing the actual MySQL: data types, CREATE TABLE statements, indexes. From the Week 1 lecture: coursework is worth 50%, groups and peer-marking criteria are finalised by the end of Week 2, and the ER diagram for your project is due at the end of Week 3.</p></div></details>
+</section>
+<section class="topic" id="er-notation" aria-labelledby="er-notation-h">
+<div class="topic-meta"><a class="num" href="#er-notation" title="Link to this section">42</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · ER diagrams</p>
+<h2 id="er-notation-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Reading an ER diagram (UML style)</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="fw" style="width:1040px;display:flex;flex-direction:column;gap:24px">
+<div class="row" style="display:flex;align-items:center;flex-direction:row">
+<div class="fw" style="width:330px;background:#FFFFFF;border:2px solid #361A54;display:flex;flex-direction:column">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#1A1A1A;background:#EEDEFF;text-align:center;padding:10px;border-bottom:2px solid #361A54">Staff</p>
+<p style="font-size:26px;line-height:1.4;padding:12px 18px">staffNo {PK}<br/>name<br/>    fName<br/>    lName<br/>position<br/>salary<br/>/monthlySal</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:8px">
+<div class="row" style="display:flex;align-items:center;justify-content:center;gap:10px;flex-direction:row"><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:32px;height:18px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#361A54" points="100,35 38,35 38,0 0,50 38,100 38,65 100,65"></polygon></svg><p class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;color:#1A1A1A">Has</p></div>
+<hr style="border-top:3px solid #361A54"/>
+<div class="row" style="display:flex;justify-content:space-between;padding:0 12px;flex-direction:row"><p class="grow" style="font-size:26px;font-weight:600;color:#B34E06">1..*</p><p class="grow" style="font-size:26px;font-weight:600;color:#B34E06">1..1</p></div>
+</div>
+<div class="fw" style="width:330px;background:#FFFFFF;border:2px solid #361A54;display:flex;flex-direction:column">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#1A1A1A;background:#EEDEFF;text-align:center;padding:10px;border-bottom:2px solid #361A54">Branch</p>
+<p style="font-size:26px;line-height:1.4;padding:12px 18px">branchNo {PK}<br/>address<br/>    street<br/>    city<br/>    postcode<br/>telNo [1..3]</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.4;color:#1A1A1A">Read it: “A Branch <b>has</b> 1 or more Staff; each Staff member belongs to exactly 1 Branch.”</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:28px 32px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">Key to the symbols</h3>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">{PK}</p><p class="grow" style="flex:1;font-size:26px">primary key</p></div>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">{PPK}</p><p class="grow" style="flex:1;font-size:26px">part of a composite PK</p></div>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">{CK}</p><p class="grow" style="flex:1;font-size:26px">candidate key</p></div>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">indent</p><p class="grow" style="flex:1;font-size:26px">parts of a composite attribute</p></div>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">[1..3]</p><p class="grow" style="flex:1;font-size:26px">multi-valued: 1 to 3 values</p></div>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">/name</p><p class="grow" style="flex:1;font-size:26px">derived: calculated, not stored</p></div>
+<div class="row" style="display:flex;gap:16px;flex-direction:row"><p style="width:150px;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">◂ Has</p><p class="grow" style="flex:1;font-size:26px">read the name this way</p></div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> boxes = things (entities) · lines = how they relate · text inside = their properties.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The conceptual model is a picture of all parts of the database: what the data is and how pieces relate. The entity–relationship (ER) model describes everything as one of three things. An entity is a thing (not necessarily physical: a Viewing or a Lease is an entity too). A relationship is a connection between two or more entities. An attribute is a property describing an entity or a relationship. This module draws ER diagrams in UML (Unified Modeling Language) style.</p><p>Entities are rectangles with UpperCamelCase names; attributes are listed underneath in lowerCamelCase. Relationships are lines between entities with an UpperCamelCase name and a small arrow showing which way to read it: Staff ◂Has Branch reads “Branch has Staff”. Attribute types: a candidate key uniquely identifies an instance ({CK}); the primary key is the candidate chosen as THE identifier ({PK}, or simply listed first); a composite key is made of several attributes, each marked {PPK}.</p><p>A composite attribute is made of smaller pieces (address = street, city, postcode), drawn indented. A multi-valued attribute holds a list of values of the same type, with its allowed count, e.g. telNo [1..3]. A derived attribute can be calculated from others, marked with a slash (/monthlySal = salary / 12), and doesn’t need to be stored. The numbers at the ends of the line are multiplicities (next section).</p></div></details>
+</section>
+<section class="topic" id="multiplicity" aria-labelledby="multiplicity-h">
+<div class="topic-meta"><a class="num" href="#multiplicity" title="Link to this section">43</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · ER diagrams</p>
+<h2 id="multiplicity-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Multiplicity: how many can be linked?</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="fw" style="width:1000px;display:flex;flex-direction:column;gap:24px">
+<div class="row" style="display:flex;align-items:center;flex-direction:row">
+<p style="width:220px;font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#1A1A1A;background:#EEDEFF;border:2px solid #361A54;text-align:center;padding:18px">Staff</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:8px">
+<div class="row" style="display:flex;align-items:center;justify-content:center;gap:10px;flex-direction:row"><p class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;color:#1A1A1A">Manages</p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:32px;height:18px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#361A54" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg></div>
+<hr style="border-top:3px solid #361A54"/>
+<div class="row" style="display:flex;justify-content:space-between;padding:0 12px;flex-direction:row"><p class="grow" style="font-size:30px;font-weight:700;color:#B34E06">1..1</p><p class="grow" style="font-size:30px;font-weight:700;color:#B34E06">0..*</p></div>
+</div>
+<p style="width:240px;font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#1A1A1A;background:#EEDEFF;border:2px solid #361A54;text-align:center;padding:18px">Property</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:22px 28px;display:flex;flex-direction:column;gap:6px">
+<p style="font-size:26px;font-weight:600;color:#7B2FCC">Fix ONE Staff member → read the Property end</p>
+<p style="font-size:28px;line-height:1.4;color:#1A1A1A">0..* : manages <b>zero or more</b> properties.</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:22px 28px;display:flex;flex-direction:column;gap:6px">
+<p style="font-size:26px;font-weight:600;color:#7B2FCC">Fix ONE Property → read the Staff end</p>
+<p style="font-size:28px;line-height:1.4;color:#1A1A1A">1..1 : managed by <b>exactly one</b> staff member.</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div class="tablewrap"><table class="fw" style="width:616px;font-size:26px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:42%;color:#FFFFFF;text-align:left">Write</th><th style="width:58%;color:#FFFFFF;text-align:left">Means</th></tr>
+<tr style="background:#FFFFFF"><td style="color:#B34E06">0..1</td><td>zero or one</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#B34E06">1..1  or  1</td><td>exactly one</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#B34E06">0..*  or  *</td><td>any number</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#B34E06">1..*</td><td>at least one</td></tr>
+</table></div>
+<div style="background:#EEDEFF;border-radius:0;padding:22px 28px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Lower bound = participation:</b> 0 optional, 1+ mandatory.</p>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Upper bound = cardinality:</b> 1 or many (*).</p>
+</div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the number sits next to the thing being counted.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Structural constraints are properties of entities and relationships that must always be true. The main one shown on an ER diagram is multiplicity: how many occurrences of one entity may be related to a single occurrence of the other. It is written as a range min..max at each end of the relationship line. The lecture’s rule: given a single, fixed entity at the FAR end, the range at the NEAR end says how many near entities can be related to it.</p><p>So 0..* next to Property means one Staff member manages zero or more Properties; 1..1 next to Staff means one Property is managed by exactly one Staff member. Shorthand: 1..1 can be written 1, and 0..* can be written *; * means no upper bound. Multiplicity has two parts. The upper bound is the cardinality (one or many). The lower bound is the participation: 0 means optional participation (a staff member doesn’t have to manage anything), 1 or more means mandatory participation (every property must have a manager).</p><p>A good way to find the numbers: for each relationship, ask the two questions on the left out loud, using your own requirements. The annotated lecture adds an example of “1:3”: one staff member associated with up to 3 branches would be written 0..3 or 1..3 at the Branch end.</p></div></details>
+</section>
+<section class="topic" id="rel-types" aria-labelledby="rel-types-h">
+<div class="topic-meta"><a class="num" href="#rel-types" title="Link to this section">44</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:28px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · ER diagrams</p>
+<h2 id="rel-types-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Three kinds of two-entity relationship</h2>
+</div>
+<p style="font-size:28px;line-height:1.4">A <b>semantic net</b> draws example rows as dots and links, which makes multiplicities easy to check.</p>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">1 : 1 · one-to-one</h3>
+<div class="host" data-w="440" style="position:relative;width:440px;height:200px;align-self:center">
+<svg aria-label="Semantic net: SG5 links to B003, SL21 links to B005, SG37 links to nothing" height="200" style="position:absolute;left:0;top:0" viewbox="0 0 440 200" width="440"><ellipse cx="150" cy="100" fill="#EEDEFF" rx="26" ry="96"></ellipse><ellipse cx="300" cy="100" fill="#EEDEFF" rx="26" ry="96"></ellipse><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="30" y2="30"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="100" y2="100"></line><circle cx="150" cy="30" fill="#361A54" r="9"></circle><circle cx="150" cy="100" fill="#361A54" r="9"></circle><circle cx="150" cy="170" fill="#361A54" r="9"></circle><circle cx="300" cy="30" fill="#361A54" r="9"></circle><circle cx="300" cy="100" fill="#361A54" r="9"></circle></svg>
+<p style="position:absolute;left:0;top:13px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">SG5</p>
+<p style="position:absolute;left:0;top:83px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">SL21</p>
+<p style="position:absolute;left:0;top:153px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">SG37</p>
+<p style="position:absolute;left:332px;top:13px;width:108px;height:34px;line-height:34px;font-size:24px">B003</p>
+<p style="position:absolute;left:332px;top:83px;width:108px;height:34px;line-height:34px;font-size:24px">B005</p>
+</div>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B34E06">Staff 1..1 — 0..1 Branch</p>
+<p style="font-size:26px;line-height:1.4">Each branch has one manager; a staff member manages at most one branch.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">1 : * · one-to-many</h3>
+<div class="host" data-w="440" style="position:relative;width:440px;height:200px;align-self:center">
+<svg aria-label="Semantic net: SG14 links to PG4 and PG21, SG37 links to PG36, SA9 links to nothing" height="200" style="position:absolute;left:0;top:0" viewbox="0 0 440 200" width="440"><ellipse cx="150" cy="100" fill="#EEDEFF" rx="26" ry="96"></ellipse><ellipse cx="300" cy="100" fill="#EEDEFF" rx="26" ry="96"></ellipse><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="30" y2="30"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="30" y2="100"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="100" y2="170"></line><circle cx="150" cy="30" fill="#361A54" r="9"></circle><circle cx="150" cy="100" fill="#361A54" r="9"></circle><circle cx="150" cy="170" fill="#361A54" r="9"></circle><circle cx="300" cy="30" fill="#361A54" r="9"></circle><circle cx="300" cy="100" fill="#361A54" r="9"></circle><circle cx="300" cy="170" fill="#361A54" r="9"></circle></svg>
+<p style="position:absolute;left:0;top:13px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">SG14</p>
+<p style="position:absolute;left:0;top:83px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">SG37</p>
+<p style="position:absolute;left:0;top:153px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">SA9</p>
+<p style="position:absolute;left:332px;top:13px;width:108px;height:34px;line-height:34px;font-size:24px">PG4</p>
+<p style="position:absolute;left:332px;top:83px;width:108px;height:34px;line-height:34px;font-size:24px">PG21</p>
+<p style="position:absolute;left:332px;top:153px;width:108px;height:34px;line-height:34px;font-size:24px">PG36</p>
+</div>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B34E06">Staff 1..1 — 0..* Property</p>
+<p style="font-size:26px;line-height:1.4">One staff member manages many properties; each property has one manager.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">* : * · many-to-many</h3>
+<div class="host" data-w="440" style="position:relative;width:440px;height:200px;align-self:center">
+<svg aria-label="Semantic net: Herald links to PG4 and PG36, Metro links to PG36 and PA14, Times links to PG4" height="200" style="position:absolute;left:0;top:0" viewbox="0 0 440 200" width="440"><ellipse cx="150" cy="100" fill="#EEDEFF" rx="26" ry="96"></ellipse><ellipse cx="300" cy="100" fill="#EEDEFF" rx="26" ry="96"></ellipse><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="30" y2="30"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="30" y2="100"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="100" y2="100"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="100" y2="170"></line><line stroke="#9A3BFF" stroke-width="3" x1="159" x2="291" y1="170" y2="30"></line><circle cx="150" cy="30" fill="#361A54" r="9"></circle><circle cx="150" cy="100" fill="#361A54" r="9"></circle><circle cx="150" cy="170" fill="#361A54" r="9"></circle><circle cx="300" cy="30" fill="#361A54" r="9"></circle><circle cx="300" cy="100" fill="#361A54" r="9"></circle><circle cx="300" cy="170" fill="#361A54" r="9"></circle></svg>
+<p style="position:absolute;left:0;top:13px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">Herald</p>
+<p style="position:absolute;left:0;top:83px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">Metro</p>
+<p style="position:absolute;left:0;top:153px;width:118px;height:34px;line-height:34px;text-align:right;font-size:24px">Times</p>
+<p style="position:absolute;left:332px;top:13px;width:108px;height:34px;line-height:34px;font-size:24px">PG4</p>
+<p style="position:absolute;left:332px;top:83px;width:108px;height:34px;line-height:34px;font-size:24px">PG36</p>
+<p style="position:absolute;left:332px;top:153px;width:108px;height:34px;line-height:34px;font-size:24px">PA14</p>
+</div>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B34E06">Newspaper 0..* — 1..* Property</p>
+<p style="font-size:26px;line-height:1.4">A newspaper advertises many properties; a property can appear in many papers.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> 1:1 = pairs · 1:* = parent with children · *:* = a web (it will need its own table).</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>For relationships between two entities (binary relationships, degree 2), the possible multiplicities fall into three types, judged only by the upper bounds (cardinalities), not by participation. One-to-one (1:1): each entity on either side is associated with at most one entity on the other side, like a branch and its manager. One-to-many (1:*): one “subject” entity can be linked to many “object” entities, but each object has at most one subject, like a staff member and the properties they manage.</p><p>Many-to-many (*:*): entities on both sides can be linked to many on the other, like newspapers and the properties they advertise. A semantic net is NOT the same as a UML/ER diagram: the ER diagram shows generic entities and relationships, while a semantic net draws a few sample instances (dots) and their links (lines). Use one when you are unsure of a multiplicity: draw some realistic example data and see whether any dot needs more than one line.</p><p>In the first net, SG37 has no line, which shows that participation on the Staff side is optional (0..1). In the second, SG14 has two lines, so one staff member can manage many properties. In the third, both sides have dots with several lines. Each type is turned into tables differently (section <a href="#er-rules">49</a>): 1:* adds a foreign key; *:* needs a new table.</p></div></details>
+</section>
+<section class="topic" id="complex-rel" aria-labelledby="complex-rel-h">
+<div class="topic-meta"><a class="num" href="#complex-rel" title="Link to this section">45</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · ER diagrams</p>
+<h2 id="complex-rel-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Three trickier shapes</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Ternary: three at once</h3>
+<div class="host" data-w="480" style="position:relative;width:480px;height:220px;align-self:center">
+<svg aria-label="Staff, Branch and Client boxes all joined to one Registers diamond" height="220" style="position:absolute;left:0;top:0" viewbox="0 0 480 220" width="480"><line stroke="#361A54" stroke-width="3" x1="120" x2="160" y1="66" y2="66"></line><line stroke="#361A54" stroke-width="3" x1="320" x2="360" y1="66" y2="66"></line><line stroke="#361A54" stroke-width="3" x1="240" x2="240" y1="122" y2="156"></line><rect fill="#EEDEFF" height="60" stroke="#361A54" stroke-width="2" width="118" x="1" y="36"></rect><rect fill="#EEDEFF" height="60" stroke="#361A54" stroke-width="2" width="118" x="361" y="36"></rect><rect fill="#EEDEFF" height="60" stroke="#361A54" stroke-width="2" width="118" x="181" y="156"></rect><polygon fill="#FFFFFF" points="160,66 240,10 320,66 240,122" stroke="#361A54" stroke-width="2"></polygon></svg>
+<p style="position:absolute;left:0;top:49px;width:120px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#1A1A1A">Staff</p>
+<p style="position:absolute;left:360px;top:49px;width:120px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#1A1A1A">Branch</p>
+<p style="position:absolute;left:180px;top:169px;width:120px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#1A1A1A">Client</p>
+<p style="position:absolute;left:160px;top:49px;width:160px;height:34px;line-height:34px;text-align:center;font-size:24px;color:#1A1A1A">Registers</p>
+<p style="position:absolute;left:124px;top:28px;width:30px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#B34E06">1</p>
+<p style="position:absolute;left:326px;top:28px;width:30px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#B34E06">1</p>
+<p style="position:absolute;left:248px;top:122px;width:30px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#B34E06">*</p>
+</div>
+<p style="font-size:26px;line-height:1.4">A diamond joins all three: “a staff member registers any number of clients at one branch.”</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Recursive: a loop</h3>
+<div class="host" data-w="480" style="position:relative;width:480px;height:230px;align-self:center">
+<svg aria-label="A Supervises line leaves the Staff box and loops back into it, with role names supervisor and supervisee" height="230" style="position:absolute;left:0;top:0" viewbox="0 0 480 230" width="480"><path d="M320 150 H440 V30 H235 V130" fill="none" stroke="#361A54" stroke-width="3"></path><rect fill="#EEDEFF" height="60" stroke="#361A54" stroke-width="2" width="168" x="151" y="130"></rect></svg>
+<p style="position:absolute;left:150px;top:143px;width:170px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#1A1A1A">Staff</p>
+<p style="position:absolute;left:250px;top:62px;width:180px;height:34px;line-height:34px;text-align:center;font-size:24px;color:#1A1A1A">Supervises</p>
+<p style="position:absolute;left:80px;top:44px;width:145px;height:34px;line-height:34px;text-align:right;font-size:24px;font-style:italic;color:#7B2FCC">supervisor</p>
+<p style="position:absolute;left:80px;top:80px;width:145px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..1</p>
+<p style="position:absolute;left:326px;top:154px;width:110px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:326px;top:190px;width:154px;height:34px;line-height:34px;font-size:24px;font-style:italic;color:#7B2FCC">supervisee</p>
+</div>
+<p style="font-size:26px;line-height:1.4"><b>Role names</b> say which end is which: one supervisor, many supervisees.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Attributes on a link</h3>
+<div class="host" data-w="480" style="position:relative;width:480px;height:230px;align-self:center">
+<svg aria-label="Client Views Property, with a dashed line from the relationship to a box listing viewDate and comment" height="230" style="position:absolute;left:0;top:0" viewbox="0 0 480 230" width="480"><line stroke="#361A54" stroke-width="3" x1="140" x2="340" y1="60" y2="60"></line><line stroke="#361A54" stroke-dasharray="8 6" stroke-width="3" x1="240" x2="240" y1="60" y2="124"></line><rect fill="#EEDEFF" height="60" stroke="#361A54" stroke-width="2" width="138" x="1" y="30"></rect><rect fill="#EEDEFF" height="60" stroke="#361A54" stroke-width="2" width="138" x="341" y="30"></rect><rect fill="#FFFFFF" height="96" stroke="#361A54" stroke-width="2" width="180" x="150" y="124"></rect></svg>
+<p style="position:absolute;left:0;top:43px;width:140px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#1A1A1A">Client</p>
+<p style="position:absolute;left:340px;top:43px;width:140px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:700;color:#1A1A1A">Property</p>
+<p style="position:absolute;left:170px;top:16px;width:140px;height:34px;line-height:34px;text-align:center;font-size:24px;color:#1A1A1A">Views ▸</p>
+<p style="position:absolute;left:146px;top:64px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:274px;top:64px;width:60px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:150px;top:136px;width:180px;height:34px;line-height:34px;text-align:center;font-size:24px">viewDate</p>
+<p style="position:absolute;left:150px;top:172px;width:180px;height:34px;line-height:34px;text-align:center;font-size:24px">comment</p>
+</div>
+<p style="font-size:26px;line-height:1.4">The date belongs to the <b>viewing</b>, not to the client or the property, so it hangs off the line.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> diamond for 3 or more · role names on loops · dashed box for facts about the link.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The degree of a relationship is how many entities take part in it. Most are binary (degree 2); degree 3 is ternary and degree 4 is quaternary. For degree 3 or more, put the relationship name in a diamond and connect it to every entity involved. You can no longer use a reading arrow, so add a sentence underneath: “Staff registers a client at a branch”. The lecture’s quaternary example: “A solicitor arranges a bid on behalf of a buyer, supported by a financial institution”</p><p>(Solicitor, Buyer, FinancialInstitution, Bid around an Arranges diamond); if any one of the four is missing, it is not a valid instance of the relationship. Reading multiplicities on a ternary: fix one instance of each of the OTHER entities, then the number at the near end says how many are allowed. Staff 1, Branch 1, Client *: for one staff member at one branch, any number of clients; for one client at one branch, exactly one staff member registered them.</p><p>Role names are labels at the ends of a line that say what part each entity plays. They are essential for recursive relationships (an entity related to itself, like Staff Supervises Staff, where one end is the supervisor and the other the supervisee) and helpful when two entities share several relationships (Staff Manages Branch and Staff WorksAt Branch). Relationship attributes describe the link itself rather than either entity: when a client viewed a property, and their comment.</p><p>They are drawn as a box joined to the relationship line by a dashed line. Later they become columns of the table that represents the relationship (Viewing).</p></div></details>
+</section>
+<section class="topic" id="eer" aria-labelledby="eer-h">
+<div class="topic-meta"><a class="num" href="#eer" title="Link to this section">46</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Enhanced ER</p>
+<h2 id="eer-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Inheritance: one parent, special children</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:center;flex-direction:row">
+<div class="host" data-w="800" style="position:relative;width:800px;height:314px">
+<svg aria-label="Staff superclass with a hollow arrowhead; lines connect it to three subclasses: Manager, SalesPersonnel and Secretary" height="314" style="position:absolute;left:0;top:0" viewbox="0 0 800 314" width="800"><line stroke="#361A54" stroke-width="3" x1="400" x2="400" y1="164" y2="190"></line><line stroke="#361A54" stroke-width="3" x1="115" x2="685" y1="190" y2="190"></line><line stroke="#361A54" stroke-width="3" x1="115" x2="115" y1="190" y2="216"></line><line stroke="#361A54" stroke-width="3" x1="400" x2="400" y1="190" y2="216"></line><line stroke="#361A54" stroke-width="3" x1="685" x2="685" y1="190" y2="216"></line><rect fill="#FFFFFF" height="138" stroke="#361A54" stroke-width="2" width="248" x="276" y="1"></rect><rect fill="#EEDEFF" height="43" stroke="#361A54" stroke-width="2" width="248" x="276" y="1"></rect><polygon fill="#FFFFFF" points="400,140 386,164 414,164" stroke="#361A54" stroke-width="2"></polygon><rect fill="#FFFFFF" height="96" stroke="#361A54" stroke-width="2" width="228" x="1" y="216"></rect><rect fill="#FFF2EB" height="42" stroke="#361A54" stroke-width="2" width="228" x="1" y="216"></rect><rect fill="#FFFFFF" height="96" stroke="#361A54" stroke-width="2" width="228" x="286" y="216"></rect><rect fill="#FFF2EB" height="42" stroke="#361A54" stroke-width="2" width="228" x="286" y="216"></rect><rect fill="#FFFFFF" height="96" stroke="#361A54" stroke-width="2" width="228" x="571" y="216"></rect><rect fill="#FFF2EB" height="42" stroke="#361A54" stroke-width="2" width="228" x="571" y="216"></rect></svg>
+<p style="position:absolute;left:275px;top:5px;width:250px;height:34px;line-height:34px;text-align:center;font-family:'DM Sans', Arial, sans-serif;font-size:28px;font-weight:700;color:#1A1A1A">Staff</p>
+<p style="position:absolute;left:295px;top:48px;width:220px;height:87px;line-height:29px;font-size:24px">staffNo {PK}<br/>name<br/>salary</p>
+<p style="position:absolute;left:424px;top:150px;width:260px;height:34px;line-height:34px;font-size:26px;font-weight:700;color:#B34E06">{Optional, And}</p>
+<p style="position:absolute;left:0;top:220px;width:230px;height:34px;line-height:34px;text-align:center;font-family:'DM Sans', Arial, sans-serif;font-size:26px;font-weight:700;color:#1A1A1A">Manager</p>
+<p style="position:absolute;left:0;top:266px;width:230px;height:34px;line-height:34px;text-align:center;font-size:24px">bonus</p>
+<p style="position:absolute;left:285px;top:220px;width:230px;height:34px;line-height:34px;text-align:center;font-family:'DM Sans', Arial, sans-serif;font-size:26px;font-weight:700;color:#1A1A1A">SalesPersonnel</p>
+<p style="position:absolute;left:285px;top:266px;width:230px;height:34px;line-height:34px;text-align:center;font-size:24px">salesArea</p>
+<p style="position:absolute;left:570px;top:220px;width:230px;height:34px;line-height:34px;text-align:center;font-family:'DM Sans', Arial, sans-serif;font-size:26px;font-weight:700;color:#1A1A1A">Secretary</p>
+<p style="position:absolute;left:570px;top:266px;width:230px;height:34px;line-height:34px;text-align:center;font-size:24px">typingSpeed</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;color:#1A1A1A">Mandatory or Optional?</p>
+<p style="font-size:26px;line-height:1.35">Must every Staff member be in a subclass?</p>
+<p style="font-size:26px;line-height:1.35;color:#7B2FCC"><b>Mandatory</b> = yes · <b>Optional</b> = no</p>
+</div>
+<hr style="border-top:1px solid #EAD6FF"/>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;color:#1A1A1A">And or Or?</p>
+<p style="font-size:26px;line-height:1.35">Can one Staff member be in two subclasses?</p>
+<p style="font-size:26px;line-height:1.35;color:#7B2FCC"><b>And</b> = yes · <b>Or</b> = at most one</p>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7B2FCC">Turning it into tables: pick by the label</p>
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 22px;display:flex;flex-direction:column;gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">{Mandatory, And}</p>
+<p style="font-size:24px;line-height:1.35">One table holding everything, with yes/no flags.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 22px;display:flex;flex-direction:column;gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">{Mandatory, Or}</p>
+<p style="font-size:24px;line-height:1.35">One table per subclass, Staff columns copied in.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 22px;display:flex;flex-direction:column;gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">{Optional, And}</p>
+<p style="font-size:24px;line-height:1.35">Staff table + one shared subclass table with flags.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 22px;display:flex;flex-direction:column;gap:6px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">{Optional, Or}</p>
+<p style="font-size:24px;line-height:1.35">Staff table + one table per subclass (FK → Staff).</p>
+</div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Mandatory/Optional = must they join? · And/Or = can they join more than one?</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Enhanced ER (EER) modelling adds object-oriented ideas to ER diagrams. Inheritance: a child class (subclass) automatically receives all of its parent’s (superclass’s) attributes and relationships, and adds its own. Specialisation is the top-down way of finding subclasses: look for differences between kinds of a thing and split it. Generalisation is the bottom-up way: notice what several entities have in common and pull it out into a parent.</p><p>Example from the lecture: all staff have a number, a name and a salary; managers also have a bonus, sales staff a sales area (and a car allowance), secretaries a typing speed. In UML, draw a line from each subclass to the superclass with a hollow arrowhead pointing at the parent, and write the constraints in curly brackets on the line. There are two constraints. Participation: must every superclass member also belong to at least one subclass (Mandatory) or not (Optional)?</p><p>Disjointness: may a member belong to more than one subclass (And, called nondisjoint) or to at most one (Or, disjoint)? So the four combinations mean: Mandatory Or = exactly one subclass; Optional Or = zero or one; Mandatory And = at least one; Optional And = any number. Here {Optional, And} means a plain assistant is just Staff, and one person could in principle be both a Manager and a Secretary.</p><p>The four cards at the bottom are the lecture’s recommended table designs for each label; you will use them in logical design. Flags are yes/no columns such as isManager. With one big table, columns that don’t apply to a row are simply left NULL.</p></div></details>
+</section>
+<section class="topic" id="draw-erd" aria-labelledby="draw-erd-h">
+<div class="topic-meta"><a class="num" href="#draw-erd" title="Link to this section">47</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Practice</p>
+<h2 id="draw-erd-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">How to draw your own ER diagram</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="fw" style="width:900px;display:flex;flex-direction:column;gap:14px">
+<div class="row" style="display:flex;gap:20px;align-items:flex-start;flex-direction:row">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">1</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:2px"><p style="font-size:28px;font-weight:700;color:#1A1A1A">Nouns → entities</p><p style="font-size:26px;line-height:1.35">Branch, Staff, Property, Client become boxes.</p></div>
+</div>
+<div class="row" style="display:flex;gap:20px;align-items:flex-start;flex-direction:row">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">2</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:2px"><p style="font-size:28px;font-weight:700;color:#1A1A1A">Verbs → relationships</p><p style="font-size:26px;line-height:1.35">“has”, “manages”, “views” become named lines.</p></div>
+</div>
+<div class="row" style="display:flex;gap:20px;align-items:flex-start;flex-direction:row">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">3</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:2px"><p style="font-size:28px;font-weight:700;color:#1A1A1A">Attributes and a primary key</p><p style="font-size:26px;line-height:1.35">List what you store about each; mark the {PK}.</p></div>
+</div>
+<div class="row" style="display:flex;gap:20px;align-items:flex-start;flex-direction:row">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">4</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:2px"><p style="font-size:28px;font-weight:700;color:#1A1A1A">Multiplicities at both ends</p><p style="font-size:26px;line-height:1.35">Ask both ways: one A links to how many B?</p></div>
+</div>
+<div class="row" style="display:flex;gap:20px;align-items:flex-start;flex-direction:row">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">5</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:2px"><p style="font-size:28px;font-weight:700;color:#1A1A1A">Facts about a link go on the link</p><p style="font-size:26px;line-height:1.35">viewDate belongs to Views, not to Client.</p></div>
+</div>
+<div class="row" style="display:flex;gap:20px;align-items:flex-start;flex-direction:row">
+<p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center">6</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:2px"><p style="font-size:28px;font-weight:700;color:#1A1A1A">Check with example data</p><p style="font-size:26px;line-height:1.35">Sketch a semantic net; fix any number that breaks.</p></div>
+</div>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">Try it on a brief</h3>
+<p style="font-size:26px;line-height:1.45;font-style:italic">“Each <b style="color:#7B2FCC">branch</b> <b style="color:#B34E06">has</b> several <b style="color:#7B2FCC">staff</b>. A staff member <b style="color:#B34E06">manages</b> <b style="color:#7B2FCC">properties</b>. <b style="color:#7B2FCC">Clients</b> <b style="color:#B34E06">view</b> properties, and we record the date.”</p>
+<hr style="border-top:1px solid #EAD6FF"/>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.6;color:#1A1A1A">Branch 1..1 —Has— 1..* Staff<br/>Staff 1..1 —Manages— 0..* Property<br/>Client 0..* —Views— 0..* Property<br/>        └ viewDate</p>
+<hr style="border-top:1px solid #EAD6FF"/>
+<div class="row" style="display:flex;gap:14px;align-items:center;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:32px;height:32px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg><p class="grow" style="font-size:24px;line-height:1.35">Draw it in draw.io (free), Lucidchart or MySQL Workbench, or on paper first.</p></div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> nouns → boxes · verbs → lines · questions → numbers.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is a practical recipe for the coursework ER diagram (and any lab that asks you to model a scenario); it is not a lecture slide but applies the lecture’s notation. 1) Read the brief and underline the nouns: things you need to store several of, each with its own details, are entities.</p><p>Watch for nouns that are really just attributes (a “date” or a “price” describes something else). 2) Circle the verbs that connect two nouns: they become relationships, named in UpperCamelCase with a reading arrow. 3) For each entity, list the attributes you need and choose a primary key. If nothing natural is unique, invent an ID (staffNo, clientNo).</p><p>Mark composite, multi-valued and derived attributes with the notation from section <a href="#er-notation">42</a>. 4) For every relationship ask the two multiplicity questions: “for one A, how many B: at least? at most?” and the same the other way round. 5) If a piece of data only makes sense when two things are linked (when a client viewed a property, their comment), it is a relationship attribute; draw it in a dashed-line box. 6) Check by inventing a few realistic rows and drawing a semantic net: if a dot needs more lines than your multiplicity allows, the number is wrong.</p><p>Tools: draw.io (diagrams.net) is free in the browser and has UML class shapes; Lucidchart is similar; MySQL Workbench can also draw a diagram from tables you have already created (Database → Reverse Engineer), which is a good way to check your SQL matches your design.</p></div></details>
+</section>
+<section class="topic is-lab" id="lab-chat-erd" aria-labelledby="lab-chat-erd-h">
+<div class="topic-meta"><a class="num" href="#lab-chat-erd" title="Link to this section">48</a><span class="badge lab">Lab</span></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B34E06">Part 3 · Lab 2 · Conceptual design</p>
+<h2 id="lab-chat-erd-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Lab 2: the chatroom ER diagram</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="host" data-w="1080" style="position:relative;width:1080px;height:532px">
+<svg aria-label="ER diagram: User BelongsTo Space with a role attribute; Space Contains Channel; User Joins Channel with a muted attribute; User Posts Message; Channel Holds Message" height="532" style="position:absolute;left:0;top:0" viewbox="0 0 1080 532" width="1080"><path d="M115 190 V54 H425" fill="none" stroke="#361A54" stroke-width="3"></path><path d="M655 54 H965 V170" fill="none" stroke="#361A54" stroke-width="3"></path><path d="M230 244 H850" fill="none" stroke="#361A54" stroke-width="3"></path><path d="M115 298 V460 H425" fill="none" stroke="#361A54" stroke-width="3"></path><path d="M965 374 V460 H655" fill="none" stroke="#361A54" stroke-width="3"></path><path d="M300 54 V96" fill="none" stroke="#361A54" stroke-dasharray="8 6" stroke-width="3"></path><path d="M540 244 V290" fill="none" stroke="#361A54" stroke-dasharray="8 6" stroke-width="3"></path><rect fill="#FFFFFF" height="106" stroke="#361A54" stroke-width="2" width="228" x="426" y="1"></rect><rect fill="#EEDEFF" height="36" stroke="#361A54" stroke-width="2" width="228" x="426" y="1"></rect><rect fill="#FFFFFF" height="106" stroke="#361A54" stroke-width="2" width="228" x="1" y="191"></rect><rect fill="#EEDEFF" height="36" stroke="#361A54" stroke-width="2" width="228" x="1" y="191"></rect><rect fill="#FFFFFF" height="202" stroke="#361A54" stroke-width="2" width="228" x="851" y="171"></rect><rect fill="#EEDEFF" height="36" stroke="#361A54" stroke-width="2" width="228" x="851" y="171"></rect><rect fill="#FFFFFF" height="138" stroke="#361A54" stroke-width="2" width="228" x="426" y="391"></rect><rect fill="#EEDEFF" height="36" stroke="#361A54" stroke-width="2" width="228" x="426" y="391"></rect><rect fill="#FFFFFF" height="48" stroke="#361A54" stroke-width="2" width="118" x="241" y="97"></rect><rect fill="#FFFFFF" height="48" stroke="#361A54" stroke-width="2" width="138" x="471" y="291"></rect></svg>
+<p style="position:absolute;left:439px;top:3px;width:210px;height:96px;line-height:32px;font-size:24px"><b style="color:#1A1A1A">Space</b><br/>spaceId {PK}<br/>name</p>
+<p style="position:absolute;left:14px;top:193px;width:210px;height:96px;line-height:32px;font-size:24px"><b style="color:#1A1A1A">User</b><br/>userId {PK}<br/>displayName</p>
+<p style="position:absolute;left:864px;top:173px;width:210px;height:192px;line-height:32px;font-size:24px"><b style="color:#1A1A1A">Channel</b><br/>channelId {PK}<br/>name<br/>position<br/>viewRole<br/>postRole</p>
+<p style="position:absolute;left:439px;top:393px;width:210px;height:128px;line-height:32px;font-size:24px"><b style="color:#1A1A1A">Message</b><br/>messageId {PK}<br/>sentAt<br/>body</p>
+<p style="position:absolute;left:130px;top:16px;width:280px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">BelongsTo ▸</p>
+<p style="position:absolute;left:680px;top:16px;width:260px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">Contains ▸</p>
+<p style="position:absolute;left:440px;top:206px;width:200px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">Joins ▸</p>
+<p style="position:absolute;left:140px;top:464px;width:260px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">Posts ▸</p>
+<p style="position:absolute;left:680px;top:464px;width:260px;height:34px;line-height:34px;text-align:center;font-size:24px;font-weight:600;color:#1A1A1A">◂ Holds</p>
+<p style="position:absolute;left:124px;top:150px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">1..*</p>
+<p style="position:absolute;left:360px;top:58px;width:60px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:662px;top:58px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">1..1</p>
+<p style="position:absolute;left:975px;top:130px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">1..*</p>
+<p style="position:absolute;left:238px;top:248px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:784px;top:248px;width:60px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:124px;top:306px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">1..1</p>
+<p style="position:absolute;left:360px;top:422px;width:60px;height:34px;line-height:34px;text-align:right;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:975px;top:382px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">1..1</p>
+<p style="position:absolute;left:662px;top:422px;width:60px;height:34px;line-height:34px;font-size:24px;font-weight:700;color:#B34E06">0..*</p>
+<p style="position:absolute;left:240px;top:104px;width:120px;height:34px;line-height:34px;text-align:center;font-size:24px">role</p>
+<p style="position:absolute;left:470px;top:298px;width:140px;height:34px;line-height:34px;text-align:center;font-size:24px">muted</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">Design choices</h3>
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">role</b> on BelongsTo: member, moderator or admin. The creator is the admin.</p>
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">position</b> keeps a space’s channels in order.</p>
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">muted</b> is per user per channel, so it sits on Joins.</p>
+<p style="font-size:24px;line-height:1.35"><b style="color:#7B2FCC">viewRole, postRole</b>: lowest role allowed. Announcements: post = moderator.</p>
+<p style="font-size:24px;line-height:1.35;color:#666666">One good answer, not the only one.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> if a fact needs two things to make sense, it lives on the line between them.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is one possible answer to the design lab’s conceptual question (a chatroom system). Work through the brief with the recipe from the previous section. Nouns that need their own details: Space, Channel, User, Message, so four entities. Verbs: users belong to spaces, spaces consist of channels, users join channels, users post messages, channels consist of messages.</p><p>Multiplicities: a space has at least one member (its creator), and a user can be in any number of spaces; a space has one or more channels, each channel belongs to exactly one space; a message has exactly one author and sits in exactly one channel. Facts that need two things: a user’s role depends on which space we mean (moderator in one, plain member in another), so role is an attribute of the BelongsTo relationship, with values member, moderator or admin; the creator is the one admin.</p><p>Muting is per user AND per channel, so muted belongs on Joins. Channel order: position on Channel (it could also be an attribute of Contains). Permissions: viewRole and postRole on Channel hold the lowest role allowed, so “mod announcements” has viewRole = member and postRole = moderator, and “moderator discussion” has viewRole = moderator.</p><p>Alternatives that are also fine: a separate Creates relationship (User 1..1 to Space 0..*) and a Moderates relationship instead of the role attribute; a Role entity if roles get complicated; displayName on BelongsTo if users can use a different name in each space. When this is translated to tables (next sections), BelongsTo and Joins are *:* so they become their own tables: Membership(userId, spaceId, role) and ChannelMember(userId, channelId, muted).</p><p>The 1:* relationships become foreign keys: Channel.spaceId, Message.userId, Message.channelId.</p></div></details>
+</section>
+<section class="topic" id="er-rules" aria-labelledby="er-rules-h">
+<div class="topic-meta"><a class="num" href="#er-rules" title="Link to this section">49</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Diagram to tables</p>
+<h2 id="er-rules-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Turning a diagram into tables: 3 core rules</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:14px;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:40px;height:40px;line-height:40px;text-align:center">1</p><h3 class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Each entity → a table</h3></div>
+<p style="font-size:26px;line-height:1.35">Split composites into parts; leave out derived attributes.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:12px 18px">Branch(<b>branchNo</b>, street,<br/>  city, postcode)</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:14px;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:40px;height:40px;line-height:40px;text-align:center">2</p><h3 class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">1:* → FK on the many side</h3></div>
+<p style="font-size:26px;line-height:1.35">Staff registers many Clients, so Client gets staffNo.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:12px 18px">Client(<b>clientNo</b>, fName,<br/>  lName, <span style="color:#7B2FCC">staffNo</span>)</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:14px;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:40px;height:40px;line-height:40px;text-align:center">3</p><h3 class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">*:* → a new linking table</h3></div>
+<p style="font-size:26px;line-height:1.35">Both PKs together make its PK, plus any link attributes.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:12px 18px">Viewing(<b style="color:#7B2FCC">clientNo</b>, <b style="color:#7B2FCC">propertyNo</b>,<br/>  viewDate, comment)</p>
+</div>
+</div>
+<div style="background:#361A54;border-radius:0;padding:18px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">-- rule 3 in SQL. Above: bold = primary key, purple = foreign key</span><br/><span style="color:#D0A3FF">CREATE TABLE</span> Viewing (<br/>  clientNo <span style="color:#D0A3FF">VARCHAR</span>(<span style="color:#FFAE80">5</span>), propertyNo <span style="color:#D0A3FF">VARCHAR</span>(<span style="color:#FFAE80">5</span>), viewDate <span style="color:#D0A3FF">DATE</span>, comment <span style="color:#D0A3FF">VARCHAR</span>(<span style="color:#FFAE80">200</span>),<br/>  <span style="color:#D0A3FF">PRIMARY KEY</span> (clientNo, propertyNo),<br/>  <span style="color:#D0A3FF">FOREIGN KEY</span> (clientNo)   <span style="color:#D0A3FF">REFERENCES</span> Client(clientNo),<br/>  <span style="color:#D0A3FF">FOREIGN KEY</span> (propertyNo) <span style="color:#D0A3FF">REFERENCES</span> Property(propertyNo));</p>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the foreign key lives with the many. Many-to-many gets its own table.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Logical design turns the ER diagram into a set of tables (a relational schema) with primary and foreign keys. Rule 1, entities: every strong entity becomes a table whose columns are its simple attributes. Composite attributes are flattened into their parts (address becomes street, city, postcode). Derived attributes (/monthlySal) are usually not stored, because the database can calculate them in a query. Multi-valued attributes can’t go in one cell; they get their own table (next section).</p><p>Rule 2, one-to-many: the “1” side is the parent and the “many” side is the child. Copy the parent’s primary key into the child’s table as a foreign key, plus any attributes of the relationship. Staff 1..1 Registers 0..* Client becomes Client(clientNo, fName, lName, telNo, staffNo). It can’t go the other way, because one staff row would need a list of clientNos. Rule 3, many-to-many (and complex relationships of degree 3+): create a new table for the relationship itself.</p><p>It holds a foreign key to each participating table; together they form its primary key; relationship attributes become its other columns. Client *:* Property with viewDate and comment becomes Viewing(clientNo, propertyNo, viewDate, comment). With PRIMARY KEY (clientNo, propertyNo), a client can view each property only once; if repeat viewings are allowed, add viewDate to the key or give the table its own viewingId.</p><p>In MySQL, write foreign keys as separate FOREIGN KEY … REFERENCES lines as above: InnoDB ignores a REFERENCES clause written inline after a column. After translating, check the result with normalisation (sections <a href="#anomalies">52</a>–<a href="#normalize-example">56</a>).</p></div></details>
+</section>
+<section class="topic" id="er-special" aria-labelledby="er-special-h">
+<div class="topic-meta"><a class="num" href="#er-special" title="Link to this section">50</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Diagram to tables</p>
+<h2 id="er-special-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The special cases</h2>
+</div>
+<div class="tablewrap"><table class="fw" style="width:1664px;font-size:24px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:24%;color:#FFFFFF;text-align:left">Shape</th><th style="width:36%;color:#FFFFFF;text-align:left">What to do</th><th style="width:40%;color:#FFFFFF;text-align:left">Example</th></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">1:1, mandatory both sides</td><td>Merge into one table</td><td style="color:#7B2FCC">User + UserPreferences → one User table</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#1A1A1A">1:1, mandatory one side</td><td>FK goes in the mandatory (forced) side</td><td style="color:#7B2FCC">Branch(branchNo, …, mgrStaffNo)</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">1:1, optional both sides</td><td>Pick a parent; FK goes in the other</td><td style="color:#7B2FCC">Parent = the side that takes part less</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#1A1A1A">Recursive (supervises)</td><td>Add a 2nd copy of the PK as an FK</td><td style="color:#7B2FCC">Staff(staffNo, …, supervisorNo)</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">Multi-valued attribute</td><td>New table: owner’s PK + the value</td><td style="color:#7B2FCC">BranchTelephone(branchNo, telNo)</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#1A1A1A">Weak entity</td><td>Own table; PK = owner’s PK + a part</td><td style="color:#7B2FCC">Preference(clientNo, prefType, maxRent)</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">Ternary (3+ entities)</td><td>New table holding every PK</td><td style="color:#7B2FCC">Registration(clientNo, branchNo, staffNo, …)</td></tr>
+</table></div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#EEDEFF;border-radius:0;padding:20px 28px">
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Weak entity:</b> can’t exist without its owner. A Preference means nothing once its Client is gone.</p>
+</div>
+<div class="grow" style="flex:1;background:#EEDEFF;border-radius:0;padding:20px 28px">
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Ternary PK:</b> lean on the “many” end. Registration’s PK is clientNo.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> lists and three-way links get their own table; loops get a second key.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>One-to-one relationships are the awkward case, because it isn’t obvious which side is the parent, so the lecture uses participation to decide. Mandatory on both sides (every instance on each side must be paired): combine both entities and any relationship attributes into one table and use one of their PKs, e.g. if every user must have exactly one preferences record, just put the preference columns in User.</p><p>Mandatory on one side: the optional participant is the parent and the forced one is the child, which gets the FK, exactly like 1:*. Every branch must have a manager but most staff don’t manage a branch, so Branch gets mgrStaffNo; the FK can also act as the child’s key. Optional on both sides: choose either as parent (preferably the one where fewer instances take part) and put its PK in the other as an FK. Recursive relationships relate rows of a table to other rows of the same table.</p><p>With mandatory participation, add a second copy of the PK under a new name (supervisorNo references staffNo in the same table); with optional participation on both sides, create a new table with two copies of the PK, such as Supervision(staffNo, supervisorNo). Multi-valued attributes go in a new table with the owner’s PK as an FK and one row per value: BranchTelephone(branchNo, telNo).</p><p>A weak entity depends on another entity to exist (a user’s preferences, a client’s requirements) and often has no key of its own; it still becomes a table, and its PK is decided after the others, usually the owner’s PK plus a distinguishing attribute. Complex relationships (degree 3+) become a table with every participant’s PK; for its own PK, favour the PK of the entity with the “many” (*) multiplicity, so Registration(clientNo, branchNo, staffNo, dateJoined) uses clientNo.</p><p>Super/subclasses use the four strategies on section <a href="#eer">46</a>.</p></div></details>
+</section>
+<section class="topic is-lab" id="lab-class-schema" aria-labelledby="lab-class-schema-h">
+<div class="topic-meta"><a class="num" href="#lab-class-schema" title="Link to this section">51</a><span class="badge lab">Lab</span></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B34E06">Part 3 · Lab 2 · Logical design</p>
+<h2 id="lab-class-schema-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Lab 2: translate the Class diagram</h2>
+</div>
+<p style="font-size:26px;line-height:1.4">Given: every class is exactly one type, {Mandatory, Or}; classes and instructors are many-to-many.</p>
+<div class="tablewrap"><table class="fw" style="width:1664px;font-size:24px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:26%;color:#FFFFFF;text-align:left">In the diagram</th><th style="width:28%;color:#FFFFFF;text-align:left">Rule</th><th style="width:46%;color:#FFFFFF;text-align:left">Table</th></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">Instructor</td><td>Entity → table</td><td style="color:#7B2FCC">Instructor(staffID, email UNIQUE, fName, lName)</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#1A1A1A">Class, {Mandatory, Or}</td><td>One table per subclass, Class columns copied in</td><td style="color:#7B2FCC">MultisessionClass(classCode, title, description, cost)</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">DayClass 1 —Occurs— 1 Session</td><td>1:1, mandatory both sides → merge</td><td style="color:#7B2FCC">DayClass(classCode, title, description, cost, day, time, location)</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#1A1A1A">MultisessionClass 1 —Has— * Session</td><td>1:* → FK on the many side</td><td style="color:#7B2FCC">Session(sessionID, day, time, location, classCode)</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#1A1A1A">Class * —Taught by— * Instructor</td><td>*:* → linking table, PK = both</td><td style="color:#7B2FCC">TaughtBy(classCode, staffID)</td></tr>
+</table></div>
+
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="row grow" style="flex:3;background:#FFF2EB;border-radius:0;padding:20px 28px;display:flex;gap:16px;align-items:flex-start;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+<p class="grow" style="flex:1;font-size:24px;line-height:1.35;color:#1A1A1A"><b>Catch:</b> TaughtBy.classCode can’t be a real FK, since it may point to either class table. Need one? Also keep a Class table.</p>
+</div>
+<div class="row grow" style="flex:2;background:#EEDEFF;border-radius:0;padding:20px 28px;display:flex;gap:16px;align-items:flex-start;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="flex:1;font-size:24px;line-height:1.35;color:#1A1A1A"><b>Also fine:</b> keep all sessions in Session; DayClass gets a sessionID FK.</p>
+</div>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is one reasonable answer to logical design question 1; compare it with the posted solution, because translation sometimes has more than one defensible result. Work through the diagram one element at a time using sections <a href="#er-rules">49</a>–<a href="#er-special">50</a> and <a href="#eer">46</a>. Instructor is a plain entity: its own table, with email marked UNIQUE because it is a candidate key {CK}.</p><p>Class is a superclass with {Mandatory, Or}: every class is exactly one subclass, so the lecture’s recommendation is one table per subclass, each carrying the superclass’s columns (classCode, title, description, cost) plus its own. MultisessionClass 1 Has * Session is one-to-many, so the FK goes on the many side: Session gets classCode referencing MultisessionClass.</p><p>DayClass 1 Occurs 1 Session is one-to-one with 1 at both ends, i.e. mandatory on both sides, so the rule says merge: a day class’s single session (day, time, location) becomes columns of DayClass, and the Session table only holds sessions of multisession classes. Class * Taught by * Instructor is many-to-many: a new linking table TaughtBy(classCode, staffID) whose primary key is both columns, with staffID a foreign key to Instructor.</p><p>The catch: classCode in TaughtBy may name a MultisessionClass or a DayClass, and a MySQL foreign key can only reference one table. You can still store it (and make sure class codes are unique across both tables), or choose a design with a Class table holding the shared columns and two subclass tables that reference it, which gives TaughtBy a single table to point at.</p><p>The alternative for Occurs keeps Session for both kinds of class and puts sessionID in DayClass as an FK; that also follows the 1:1 rules if you treat the Session side as optional.</p></div></details>
+</section>
+<section class="topic" id="anomalies" aria-labelledby="anomalies-h">
+<div class="topic-meta"><a class="num" href="#anomalies" title="Link to this section">52</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Normalisation</p>
+<h2 id="anomalies-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Why tidy tables? Anomalies</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;color:#666666">ViewingLog · PK = clientNo + propertyNo · <span style="color:#B34E06;font-weight:700">orange</span> = the same fact stored again</p>
+<div class="tablewrap"><table class="fw" style="width:1664px;font-size:24px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:11%;color:#FFFFFF;text-align:left">clientNo</th><th style="width:15%;color:#FFFFFF;text-align:left">cName</th><th style="width:12%;color:#FFFFFF;text-align:left">propertyNo</th><th style="width:17%;color:#FFFFFF;text-align:left">pAddress</th><th style="width:10%;color:#FFFFFF;text-align:left">staffNo</th><th style="width:16%;color:#FFFFFF;text-align:left">staffName</th><th style="width:19%;color:#FFFFFF;text-align:left">viewDate</th></tr>
+<tr style="background:#FFFFFF"><td>CR56</td><td style="color:#B34E06">Aline Stewart</td><td>PA14</td><td style="color:#B34E06">16 Holhead</td><td>SA9</td><td style="color:#B34E06">Mary Howe</td><td>2025-05-24</td></tr>
+<tr style="background:#F2F2F2"><td>CR56</td><td style="color:#B34E06">Aline Stewart</td><td>PG4</td><td style="color:#B34E06">6 Lawrence St</td><td>SG14</td><td style="color:#B34E06">David Ford</td><td>2025-05-26</td></tr>
+<tr style="background:#FFFFFF"><td>CR56</td><td style="color:#B34E06">Aline Stewart</td><td>PG36</td><td>2 Manor Rd</td><td>SG37</td><td>Ann Beech</td><td>2025-04-28</td></tr>
+<tr style="background:#F2F2F2"><td>CR62</td><td>Mary Tregear</td><td>PA14</td><td style="color:#B34E06">16 Holhead</td><td>SA9</td><td style="color:#B34E06">Mary Howe</td><td>2025-05-14</td></tr>
+<tr style="background:#FFFFFF"><td>CR76</td><td>John Kay</td><td>PG4</td><td style="color:#B34E06">6 Lawrence St</td><td>SG14</td><td style="color:#B34E06">David Ford</td><td>2025-04-20</td></tr>
+</table></div>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Update anomaly</h3>
+<p style="font-size:26px;line-height:1.35">Aline changes surname: 3 rows to edit. Miss one and CR56 has two names.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Insert anomaly</h3>
+<p style="font-size:26px;line-height:1.35">A new property with no viewings can’t be added: clientNo is part of the key.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Delete anomaly</h3>
+<p style="font-size:26px;line-height:1.35">Delete CR76’s only viewing and John Kay disappears too.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> store each fact once. Repeats are where anomalies breed.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Normalisation is the bottom-up route to a good design, and also the check you run after translating an ER diagram. Its goal, in the lecture’s words, is to minimise unnecessary duplicated data, because duplicates cause update anomalies. This table logs property viewings in one place. It is legal (every cell holds one value, and clientNo + propertyNo identifies each row), but facts are repeated: Aline Stewart’s name is stored three times, and the address and manager of PA14 and PG4 are stored twice each.</p><p>Three things go wrong. Update anomaly: the same fact lives in several rows, so a change must be made everywhere; if one row is missed the data contradicts itself (the lecture: “inconsistent data when data is updated in one storage location and not another”). Insert anomaly: you can’t record a fact until an unrelated fact exists; a property nobody has viewed has no clientNo, and a primary key column can’t be NULL.</p><p>Delete anomaly: deleting one fact removes another by accident; John Kay has one viewing, so deleting it also deletes the only record that he is a client (the lecture: “unintended loss of data”). The cure is to split the table so each fact is stored once, using functional dependencies (next sections) to decide where to cut, and checking that joins on the foreign keys rebuild the original rows exactly (the lossless-join property) and that every rule can still be enforced (dependency preservation).</p></div></details>
+</section>
+<section class="topic" id="fds" aria-labelledby="fds-h">
+<div class="topic-meta"><a class="num" href="#fds" title="Link to this section">53</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Normalisation</p>
+<h2 id="fds-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Functional dependencies: what decides what</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="fw" style="width:760px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:28px 32px;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1;color:#7B2FCC">A → B</p>
+<p style="font-size:28px;line-height:1.4;color:#1A1A1A">Fix the value of A, and B can only have <b>one</b> value. “A decides B.”</p>
+<hr style="border-top:1px solid #EAD6FF"/>
+<div class="row" style="display:flex;gap:16px;align-items:center;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="m9 12 2 2 4-4"></path></svg><p class="grow" style="flex:1;font-size:26px;line-height:1.35"><b>staffNo → fName</b>: SG37 is always Ann.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:center;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><p class="grow" style="flex:1;font-size:26px;line-height:1.35"><b>fName ↛ staffNo</b>: two staff could both be Ann.</p></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">It must hold for any possible data, not just today’s rows.</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 24px;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:26px;font-weight:700;color:#1A1A1A">Full <span style="font-weight:400;color:#666666">· needs the whole key</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#7B2FCC">(clientNo, propertyNo) → viewDate</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 24px;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:26px;font-weight:700;color:#1A1A1A">Partial <span style="font-weight:400;color:#666666">· part of the key is enough · breaks 2NF</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B34E06">clientNo → cName</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:18px 24px;display:flex;flex-direction:column;gap:4px">
+<p style="font-size:26px;font-weight:700;color:#1A1A1A">Transitive <span style="font-weight:400;color:#666666">· via a middle-man · breaks 3NF</span></p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#B34E06">propertyNo → staffNo → staffName</p>
+</div>
+<p style="font-size:24px;line-height:1.4;color:#666666">Examples from ViewingLog on the previous section.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> read the arrow as “decides”. Left side fixed → right side fixed.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A functional dependency (FD) is a rule about the meaning of the data. For attributes (or sets of attributes) A and B, A → B (“A functionally determines B”) means each value of A is associated with exactly one value of B. staffNo → fName holds: once you know the staff number, the first name is fixed. fName → staffNo does not hold (written fName ↛ staffNo), because two people can share a first name.</p><p>The lecture stresses that an FD must hold in theory, not just in one snapshot of the table: even if no two current staff share a full name, staffNo → fullName holds but fullName ↛ staffNo, because a duplicate name is possible. Three kinds matter for normalisation. Full: B depends on the whole of A, e.g. a viewing date needs both the client and the property.</p><p>Partial: when the key is composite, some column depends on only part of it, e.g. a client’s name depends only on clientNo; partial dependencies are what 2NF removes, so they can only occur when the PK has more than one column. Transitive: A → B and B → C, where B is not a key (B doesn’t decide A), so C depends on the key only through the “middle-man” B; e.g. a property decides its manager’s staffNo, and the staffNo decides the staff name; 3NF removes these.</p><p>The lecture’s own transitive example: (propertyNo, inspectionDate) → staffNo and staffNo → staffName. Practical tips from the lecture: keep the left side minimal, skip dependencies that are just two simpler ones chained together, and ignore trivial ones like A → A.</p></div></details>
+</section>
+<section class="topic is-lab" id="lab-fds" aria-labelledby="lab-fds-h">
+<div class="topic-meta"><a class="num" href="#lab-fds" title="Link to this section">54</a><span class="badge lab">Lab</span></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:28px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B34E06">Part 3 · Lab 2 · Functional dependencies</p>
+<h2 id="lab-fds-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Lab 2: what decides what in LibraryRental?</h2>
+</div>
+<p style="font-size:24px;line-height:1.35;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:16px 24px">LibraryRental(<b>transactionID</b>, renterID, renterName, rentalDate, dueDate, loanItemID, loanItemMedia, homeLibrary)</p>
+<div class="row" style="display:flex;gap:48px;align-items:flex-start;flex-direction:row">
+<div class="fw" style="width:900px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">The dependencies</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#7B2FCC">transactionID → all other columns (the PK)</p>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">renterID → renterName, homeLibrary</p><p style="font-size:24px;line-height:1.35">A renter has one name and one home library.</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">loanItemID → loanItemMedia</p><p style="font-size:24px;line-height:1.35">An item is a book or a DVD, whoever borrows it.</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#B34E06">rentalDate, loanItemMedia → dueDate</p><p style="font-size:24px;line-height:1.35">Only if the loan length is fixed per media type.</p></div>
+<p style="font-size:24px;line-height:1.35;color:#666666">Assumed: homeLibrary belongs to the renter.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:600;line-height:1.2;color:#1A1A1A">So: 2NF yes, 3NF no</h3>
+<p style="font-size:24px;line-height:1.35">One-column key, so nothing depends on part of it. But renterName hangs on renterID, a middle-man.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#EEDEFF;border-radius:0;padding:12px 18px">Rental(<b>transactionID</b>, renterID,<br/>  loanItemID, rentalDate, dueDate)<br/>Renter(<b>renterID</b>, renterName,<br/>  homeLibrary)<br/>LoanItem(<b>loanItemID</b>, loanItemMedia)</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> one-column key? 2NF comes free. Go hunting for middle-men.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is a worked answer to the design lab’s logical question 2. Method: for each column, ask “if I fix this, what else is fixed?”, using what the names mean in a real library rather than any sample rows. transactionID is the primary key, so it decides every other column. renterID decides renterName, because a renter has one name; it also decides homeLibrary if that means the library the renter is registered at.</p><p>If homeLibrary instead means the library an item belongs to, then loanItemID → homeLibrary; state your assumption in an answer, as either reading is defensible. loanItemID decides loanItemMedia (each item is one kind of media). dueDate is usually decided by the transaction alone, but if the library has a fixed loan period per media type (say 21 days for books, 7 for DVDs), then rentalDate and loanItemMedia together decide it; that is a business rule you would confirm with the client.</p><p>Note what does NOT hold: renterName ↛ renterID (two renters can share a name), and rentalDate ↛ renterID. Consequences: the key is a single column, so there can be no partial dependencies and the table is already in 2NF. But renterID → renterName and loanItemID → loanItemMedia are transitive dependencies (transactionID → renterID → renterName), so it is not in 3NF; a renter’s name is repeated on every rental and an item’s media type on every loan, which allows update anomalies.</p><p>Splitting off Renter and LoanItem, with renterID and loanItemID left in Rental as foreign keys, gives 3NF. If you keep the dueDate rule, a strict 3NF design would also compute dueDate rather than store it.</p></div></details>
+</section>
+<section class="topic" id="normal-forms" aria-labelledby="normal-forms-h">
+<div class="topic-meta"><a class="num" href="#normal-forms" title="Link to this section">55</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Normalisation</p>
+<h2 id="normal-forms-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The normal-form staircase</h2>
+</div>
+<div class="row" style="display:flex;gap:24px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column">
+<div style="height:90px"></div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 22px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:40px;font-weight:700;color:#7B2FCC">1NF</p>
+<p style="font-size:26px;font-weight:700;line-height:1.3;color:#1A1A1A">One value per cell</p>
+<p style="font-size:24px;line-height:1.35">Fix: flatten lists into rows, or give the list its own table.</p>
+<p style="font-size:24px;line-height:1.35;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:10px 14px">✗ telNo = '0207…, 0779…'<br/>✓ one row per number</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column">
+<div style="height:60px"></div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 22px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:40px;font-weight:700;color:#7B2FCC">2NF</p>
+<p style="font-size:26px;font-weight:700;line-height:1.3;color:#1A1A1A">Nothing depends on part of the key</p>
+<p style="font-size:24px;line-height:1.35">Fix: move it out with that part of the key.</p>
+<p style="font-size:24px;line-height:1.35;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:10px 14px">Lease(clientNo, propNo, cName, …): cName moves to Client</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column">
+<div style="height:30px"></div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 22px;display:flex;flex-direction:column;gap:10px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:40px;font-weight:700;color:#7B2FCC">3NF</p>
+<p style="font-size:26px;font-weight:700;line-height:1.3;color:#1A1A1A">Nothing depends on a non-key column</p>
+<p style="font-size:24px;line-height:1.35">Fix: move the middle-man and what it decides to a new table.</p>
+<p style="font-size:24px;line-height:1.35;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:10px 14px">staffNo → staffName moves to Staff</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column">
+<div style="background:#FFFFFF;border:2px dashed #B3B3B3;border-radius:0;padding:20px 22px;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:12px;flex-direction:row"><p class="grow" style="font-family:'DM Sans', Arial, sans-serif;font-size:40px;font-weight:700;color:#666666">BCNF</p><p class="grow" style="font-size:24px;font-weight:600;color:#B34E06">not examinable</p></div>
+<p style="font-size:26px;font-weight:700;line-height:1.3;color:#1A1A1A">Every decider is a candidate key</p>
+<p style="font-size:24px;line-height:1.35">Rarely differs from 3NF: only with overlapping composite keys.</p>
+<p style="font-size:24px;line-height:1.35;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:10px 14px">Teaching(pupil, subject, teacher): teacher → subject</p>
+</div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the key (1NF), the whole key (2NF), and nothing but the key (3NF), so help me Codd.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Normal forms are levels of tidiness, and each one includes all the ones below it: a table in 3NF is also in 1NF and 2NF, and BCNF implies 3NF. They only apply to relational tables. Unnormalised form (UNF) has no rules. 1NF: every cell holds a single value; no lists or repeating groups (a multi-valued attribute or a repeated set of columns like item1, item2, item3).</p><p>Two equivalent fixes from the lecture: flatten the list into several rows (copying the other data), or move the list to its own table keyed by the original table’s PK, one row per value. 2NF: no non-key column is fully determined by only PART of the primary key (no partial dependency), so it only needs checking when the key has more than one column. Fix: for each such dependency, create a new table with that part of the key and the columns it determines, and remove those columns from the original.</p><p>The lecture example: Lease(clientNo, propNo, cName, address, leaseStart) becomes Client(clientNo, cName), Property(propNo, address) and Lease(clientNo, propNo, leaseStart). 3NF: no non-key column depends on the key only through another non-key column (no transitive dependency). Fix: if A → B and B → C, move B and C into their own table with B as its key, and keep B in the original table as a foreign key.</p><p>Lecture example: (propertyNo, inspectionDate) → staffNo and staffNo → staffName, so staffName moves to a Staff table. BCNF (marked not examinable in the annotated slides): the left side of every FD must be a candidate key. It only bites when a table has two overlapping composite candidate keys.</p><p>Teaching(pupil, subject, teacher), where each teacher teaches one subject, has keys {pupil, subject} and {pupil, teacher} plus teacher → subject; the fix is Teaching(pupil, teacher) and TaughtSubject(teacher, subject), at the cost of no longer being able to enforce (pupil, subject) → teacher. The memory line is a play on the courtroom oath; E. F. Codd invented the relational model.</p></div></details>
+</section>
+<section class="topic" id="normalize-example" aria-labelledby="normalize-example-h">
+<div class="topic-meta"><a class="num" href="#normalize-example" title="Link to this section">56</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Shape · Normalisation</p>
+<h2 id="normalize-example-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Worked example: ViewingLog to 3NF</h2>
+</div>
+<div class="row" style="display:flex;gap:16px;align-items:center;flex-direction:row">
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">1NF: one big table</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:12px 14px">ViewingLog(<b>clientNo</b>,<br/>  <b>propertyNo</b>, cName,<br/>  pAddress, staffNo,<br/>  staffName, viewDate)</p>
+<p style="font-size:24px;line-height:1.35;color:#B34E06">cName needs only clientNo; pAddress, staffNo and staffName need only propertyNo.</p>
+</div>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">2NF: split by key part</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#F2F2F2;border-radius:0;padding:12px 14px">Client(<b>clientNo</b>, cName)<br/>Property(<b>propertyNo</b>,<br/>  pAddress, staffNo,<br/>  staffName)<br/>Viewing(<b>clientNo</b>, <b>propertyNo</b>,<br/>  viewDate)</p>
+<p style="font-size:24px;line-height:1.35;color:#B34E06">Still: staffName depends on staffNo, a middle-man.</p>
+</div>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<div class="grow" style="flex:1;align-self:stretch;background:#FFFFFF;border:2px solid #7B2FCC;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">3NF: split the middle-man</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A;background:#EEDEFF;border-radius:0;padding:12px 14px">Client(<b>clientNo</b>, cName)<br/>Property(<b>propertyNo</b>,<br/>  pAddress, staffNo)<br/>Staff(<b>staffNo</b>, staffName)<br/>Viewing(<b>clientNo</b>, <b>propertyNo</b>,<br/>  viewDate)</p>
+<p style="font-size:24px;line-height:1.35;color:#7B2FCC">Each fact once. Joining on the FKs rebuilds ViewingLog exactly.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> 2NF: split by part of the key. 3NF: split by the middle-man.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This follows the ViewingLog table from the anomalies section through each normal form; bold columns form each table’s primary key. Start: it is already in 1NF (one value per cell) with the composite key (clientNo, propertyNo).</p><p>List the FDs: clientNo → cName; propertyNo → pAddress, staffNo; staffNo → staffName; (clientNo, propertyNo) → viewDate. 1NF to 2NF: cName depends on only part of the key (clientNo), and pAddress and staffNo depend on only the other part (propertyNo); staffName comes along with them, since it depends on propertyNo through staffNo.</p><p>So make Client(clientNo, cName) and Property(propertyNo, pAddress, staffNo, staffName), and leave Viewing(clientNo, propertyNo, viewDate) holding only what needs the whole key. 2NF to 3NF: Property still has propertyNo → staffNo → staffName, a transitive dependency. Move staffNo and the column it decides into Staff(staffNo, staffName) and keep staffNo in Property as the foreign key.</p><p>Check the result: each fact is now stored once (Aline’s name once, Mary Howe’s name once), so the update, insert and delete anomalies are gone: a property can exist without viewings, deleting a viewing doesn’t delete a client, and renaming a member of staff touches one row. Lossless join: Viewing JOIN Client JOIN Property JOIN Staff on the foreign keys gives back exactly the original rows.</p><p>Notice that this is the same schema you would get by drawing the ER diagram (Client, Property, Staff entities; Viewing as a *:* relationship with viewDate) and translating it with the rules on sections <a href="#er-rules">49</a>–<a href="#er-special">50</a>: the top-down and bottom-up routes meet.</p></div></details>
+</section>
+<section class="topic is-lab" id="lab-anomalies" aria-labelledby="lab-anomalies-h">
+<div class="topic-meta"><a class="num" href="#lab-anomalies" title="Link to this section">57</a><span class="badge lab">Lab</span></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#B34E06">Part 3 · Lab 2 · Questions 3–5</p>
+<h2 id="lab-anomalies-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Lab 2: one anomaly per normal form</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;align-items:flex-start;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;color:#B34E06">Q3 · UNF → 1NF</p>
+<div style="background:#F2F2F2;border-radius:0;padding:12px 14px;display:flex;flex-direction:column;gap:4px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A">Order(<b>orderID</b>, custID,<br/>  items)</p><p style="font-size:24px;color:#666666">items = 'S7 ×2, U2 ×1'</p></div>
+<p style="font-size:24px;line-height:1.35"><b>Anomaly:</b> item S7 is renamed S8, so every order’s text list must be edited. Miss one and orders disagree.</p>
+<p style="font-size:24px;line-height:1.35;color:#7B2FCC"><b>1NF fix:</b> one row per order line, so one UPDATE … WHERE itemID = 'S7' catches all.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;color:#B34E06">Q4 · 1NF → 2NF</p>
+<div style="background:#F2F2F2;border-radius:0;padding:12px 14px;display:flex;flex-direction:column;gap:4px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A">OrderLine(<b>orderID</b>, <b>itemID</b>,<br/>  quantity, orderDate)</p><p style="font-size:24px;color:#666666">orderDate repeats on every line</p></div>
+<p style="font-size:24px;line-height:1.35"><b>Anomaly:</b> the date is corrected on one line but not the others, so the order has two dates.</p>
+<p style="font-size:24px;line-height:1.35;color:#7B2FCC"><b>2NF fix:</b> orderDate needs only orderID, so move it to Order(orderID, orderDate).</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;color:#B34E06">Q5 · 2NF → 3NF</p>
+<div style="background:#F2F2F2;border-radius:0;padding:12px 14px;display:flex;flex-direction:column;gap:4px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.4;color:#1A1A1A">Order(<b>orderID</b>, orderDate,<br/>  custID, custState)</p><p style="font-size:24px;color:#666666">custState repeats on every order</p></div>
+<p style="font-size:24px;line-height:1.35"><b>Anomaly:</b> a customer moves, so all their orders must change. Miss one and they live in two states.</p>
+<p style="font-size:24px;line-height:1.35;color:#7B2FCC"><b>3NF fix:</b> custState hangs on custID, a middle-man. Move it to Customer(custID, state).</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> each step removes one kind of repeat: lists, part-key facts, middle-man facts.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Design lab questions 3 to 5 ask you to invent a schema at one level and an update anomaly that the next level prevents. These examples reuse the Shop database from Lab 1 so the tables feel familiar; any domain works as long as you name the dependency that causes the repeat. Q3, UNF to 1NF: storing a list in one cell (a repeating group) breaks 1NF. If an item code changes, or one quantity changes, you have to find and edit text inside many cells, and nothing stops two orders formatting the same item differently.</p><p>You also can’t put a foreign key on a list. In 1NF each order line is its own row, so a single UPDATE statement finds every S7 reliably. Q4, 1NF to 2NF: OrderLine has the composite key (orderID, itemID), but orderDate depends on orderID alone, a partial dependency. The date is copied onto every line of the order, so fixing it in one place leaves the others wrong. 2NF moves orderDate (and custID) into an Order table keyed by orderID.</p><p>Q5, 2NF to 3NF: in Order(orderID, orderDate, custID, custState) every column depends on the whole single-column key, so it is in 2NF, but custState depends on custID, which is not a key: orderID → custID → custState, a transitive dependency. The customer’s state is repeated on each of their orders. 3NF moves it to Customer(custID, state) and keeps custID in Order as the foreign key. A good exam-style answer names the table, the dependency, the anomaly, and the split that fixes it.</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="speak.html"><span>Previous</span>Speak</a><a class="next" href="ship.html"><span>Next</span>Ship</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your “Databases &amp; SQL: Weeks 1–2” slide deck (COMP0178). Section numbers match the slide numbers.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–2</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

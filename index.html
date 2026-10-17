@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Databases & SQL · Weeks 1–2</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–2: SQL syntax, ER diagrams, normalisation and a small web app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-index">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–2 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout">
+
+<main id="main">
+<header class="home-hero">
+<div class="home-hero-in">
+<div class="hh-text">
+<p class="eyebrow">COMP0178 · Database Fundamentals · Weeks 1–2</p>
+<h1>Databases &amp; SQL,<br/>from zero</h1>
+<p class="lead">The four lecture decks rebuilt into one clear path: what a database is, how to speak SQL, how to design tables, and how a web app uses them.</p>
+<div class="hh-actions"><a class="btn primary" href="store.html">Start with Part 1</a><a class="btn" href="speak.html#sql-basics">Jump to SQL</a><a class="btn" href="revision.html">Cheat sheet</a></div>
+</div>
+<svg aria-label="A database cylinder icon" height="460" class="hero-art" viewbox="0 0 420 460" width="420"><rect fill="#9A3BFF" height="340" width="400" x="10" y="60"></rect><ellipse cx="210" cy="400" fill="#9A3BFF" rx="200" ry="44"></ellipse><path d="M10 175 A200 44 0 0 0 410 175" fill="none" stroke="#361A54" stroke-width="8"></path><path d="M10 290 A200 44 0 0 0 410 290" fill="none" stroke="#361A54" stroke-width="8"></path><ellipse cx="210" cy="60" fill="#BA82FF" rx="200" ry="44"></ellipse></svg>
+</div>
+</header>
+<section class="home-sec" id="roadmap">
+<h2>Four questions, in order</h2>
+<p class="sub">Store → Speak → Shape → Ship. Four S’s, four parts. Lab answers sit inside the parts that teach what they need, marked <span class="badge lab">Lab</span>.</p>
+<div class="part-grid"><article class="part-card">
+<a class="part-link" href="store.html"><span class="pc-num">1</span><span class="pc-name">Store</span></a>
+<p class="pc-desc">What is a database, and why keep data in tables?</p>
+<p class="pc-range">Sections 3–9</p>
+<details class="pc-topics"><summary>All 6 sections</summary><ol><li><a href="store.html#why-db"><span class="n">4</span>Why not just use files?</a></li><li><a href="store.html#dbms"><span class="n">5</span>Database vs. DBMS</a></li><li><a href="store.html#tables"><span class="n">6</span>The relational model: data lives in tables</a></li><li><a href="store.html#keys"><span class="n">7</span>Keys link the tables together</a></li><li><a href="store.html#levels"><span class="n">8</span>Three levels of abstraction</a></li><li><a href="store.html#web-tiers"><span class="n">9</span>Where the database lives in a web app</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="speak.html"><span class="pc-num">2</span><span class="pc-name">Speak</span></a>
+<p class="pc-desc">SQL syntax: build tables, add rows, ask questions.</p>
+<p class="pc-range">Sections 10–39 · <b>Lab 1 (SQL): 36–39</b></p>
+<details class="pc-topics"><summary>All 29 sections</summary><ol><li><a href="speak.html#sql-basics"><span class="n">11</span>How a SQL statement is built</a></li><li><a href="speak.html#sql-notation"><span class="n">12</span>How to read a syntax box</a></li><li><a href="speak.html#sql-commands"><span class="n">13</span>The SQL command list</a></li><li><a href="speak.html#sample-data"><span class="n">14</span>Our practice database: an estate agent</a></li><li><a href="speak.html#syn-create"><span class="n">15</span>Syntax: CREATE DATABASE and CREATE TABLE</a></li><li><a href="speak.html#create-table"><span class="n">16</span>Build it: CREATE TABLE</a></li><li><a href="speak.html#data-types"><span class="n">17</span>Choosing a data type for each column</a></li><li><a href="speak.html#constraints"><span class="n">18</span>Constraints: rules the database enforces</a></li><li><a href="speak.html#fk-actions"><span class="n">19</span>Foreign keys: what if the parent row goes?</a></li><li><a href="speak.html#alter-drop"><span class="n">20</span>Syntax: change, empty or remove a table</a></li><li><a href="speak.html#syn-dml"><span class="n">21</span>Syntax: INSERT, UPDATE and DELETE</a></li><li><a href="speak.html#crud"><span class="n">22</span>Add, change and remove rows</a></li><li><a href="speak.html#select-order"><span class="n">23</span>Syntax: the SELECT statement</a></li><li><a href="speak.html#select-basics"><span class="n">24</span>SELECT: pick columns, calculate, sort</a></li><li><a href="speak.html#where"><span class="n">25</span>WHERE: keep only the rows you want</a></li><li><a href="speak.html#aggregates"><span class="n">26</span>Aggregates: one answer from many rows</a></li><li><a href="speak.html#group-having"><span class="n">27</span>GROUP BY + HAVING: totals per group</a></li><li><a href="speak.html#syn-join"><span class="n">28</span>Syntax: joining tables</a></li><li><a href="speak.html#joins"><span class="n">29</span>JOIN: combine rows from two tables</a></li><li><a href="speak.html#outer-joins"><span class="n">30</span>Inner vs. outer joins: keeping unmatched rows</a></li><li><a href="speak.html#syn-subquery"><span class="n">31</span>Syntax: subqueries and set operations</a></li><li><a href="speak.html#subqueries"><span class="n">32</span>Subqueries: use one query’s answer in another</a></li><li><a href="speak.html#any-all-exists"><span class="n">33</span>Compare with a whole list: ANY, ALL, EXISTS</a></li><li><a href="speak.html#set-ops"><span class="n">34</span>Set operations: combine two results</a></li><li><a href="speak.html#more-tools"><span class="n">35</span>Four more tools you’ll meet</a></li><li><a href="speak.html#lab-shop"><span class="n">36</span>Lab 1: your first real queries</a></li><li><a href="speak.html#lab-sql-a"><span class="n">37</span>Lab 1, questions 1–4</a></li><li><a href="speak.html#lab-sql-b"><span class="n">38</span>Q5: a question inside a question</a></li><li><a href="speak.html#lab-sql-c"><span class="n">39</span>Lab 1, questions 6–7</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="shape.html"><span class="pc-num">3</span><span class="pc-name">Shape</span></a>
+<p class="pc-desc">Design: ER diagrams, tables, normalisation.</p>
+<p class="pc-range">Sections 40–57 · <b>Lab 2 (design): 48, 51, 54, 57</b></p>
+<details class="pc-topics"><summary>All 17 sections</summary><ol><li><a href="shape.html#design-process"><span class="n">41</span>From idea to tables in four steps</a></li><li><a href="shape.html#er-notation"><span class="n">42</span>Reading an ER diagram (UML style)</a></li><li><a href="shape.html#multiplicity"><span class="n">43</span>Multiplicity: how many can be linked?</a></li><li><a href="shape.html#rel-types"><span class="n">44</span>Three kinds of two-entity relationship</a></li><li><a href="shape.html#complex-rel"><span class="n">45</span>Three trickier shapes</a></li><li><a href="shape.html#eer"><span class="n">46</span>Inheritance: one parent, special children</a></li><li><a href="shape.html#draw-erd"><span class="n">47</span>How to draw your own ER diagram</a></li><li><a href="shape.html#lab-chat-erd"><span class="n">48</span>Lab 2: the chatroom ER diagram</a></li><li><a href="shape.html#er-rules"><span class="n">49</span>Turning a diagram into tables: 3 core rules</a></li><li><a href="shape.html#er-special"><span class="n">50</span>The special cases</a></li><li><a href="shape.html#lab-class-schema"><span class="n">51</span>Lab 2: translate the Class diagram</a></li><li><a href="shape.html#anomalies"><span class="n">52</span>Why tidy tables? Anomalies</a></li><li><a href="shape.html#fds"><span class="n">53</span>Functional dependencies: what decides what</a></li><li><a href="shape.html#lab-fds"><span class="n">54</span>Lab 2: what decides what in LibraryRental?</a></li><li><a href="shape.html#normal-forms"><span class="n">55</span>The normal-form staircase</a></li><li><a href="shape.html#normalize-example"><span class="n">56</span>Worked example: ViewingLog to 3NF</a></li><li><a href="shape.html#lab-anomalies"><span class="n">57</span>Lab 2: one anomaly per normal form</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="ship.html"><span class="pc-num">4</span><span class="pc-name">Ship</span></a>
+<p class="pc-desc">Build a small web app’s database, start to finish.</p>
+<p class="pc-range">Sections 58–63</p>
+<details class="pc-topics"><summary>All 5 sections</summary><ol><li><a href="ship.html#app-erd"><span class="n">59</span>A tiny auction site: from brief to diagram</a></li><li><a href="ship.html#app-schema"><span class="n">60</span>Create the tables</a></li><li><a href="ship.html#app-queries"><span class="n">61</span>One query behind each page</a></li><li><a href="ship.html#app-code"><span class="n">62</span>The code that runs a query</a></li><li><a href="ship.html#injection"><span class="n">63</span>Never glue user input into SQL</a></li></ol></details>
+</article><article class="part-card rev">
+<a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
+<p class="pc-desc">A one-page SQL cheat sheet and every memory hook.</p>
+<p class="pc-range">Sections 64–65</p>
+<details class="pc-topics"><summary>Both sections</summary><ol><li><a href="revision.html#cheat-sheet"><span class="n">64</span>SQL on one page</a></li><li><a href="revision.html#memory-hooks"><span class="n">65</span>The whole deck in 14 lines</a></li></ol></details>
+</article></div>
+<aside class="cta" aria-label="Revision">
+<div><h2>Revising for the exam?</h2><p>Every SQL pattern on one page, plus the memory hook from each section.</p></div>
+<a class="btn" href="revision.html">Open the cheat sheet</a>
+</aside>
+</section>
+<section class="home-sec how-band" id="how">
+<h2>How to use this site</h2>
+<div class="how-grid">
+<div class="how"><p class="eyebrow">Tip 1</p><h3>Read one section at a time</h3><p>Each numbered section teaches one idea. The numbers match the slides in your deck, so you can switch between them.</p></div>
+<div class="how"><p class="eyebrow">Tip 2</p><h3>Open “More detail”</h3><p>Under each section, the full explanation from the lecture plus extra context. Use the button in the sidebar to open them all.</p></div>
+<div class="how"><p class="eyebrow">Tip 3</p><h3>Light box = pattern, dark box = real SQL</h3><p class="demo syn"><span class="k">DELETE FROM</span> <i>table</i> <span class="o">[</span><span class="k">WHERE</span> <i>condition</i><span class="o">]</span>;</p><p>Purple means type it, orange means fill it in, grey brackets mark optional parts.</p></div>
+<div class="how"><p class="eyebrow">Tip 4</p><h3>Learn the “Remember” lines</h3><p>Every section ends with a memory hook. They are all collected in <a href="revision.html#memory-hooks">section 65</a> for revision.</p></div>
+</div>
+</section>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your “Databases &amp; SQL: Weeks 1–2” slide deck (COMP0178). Section numbers match the slide numbers.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–2</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

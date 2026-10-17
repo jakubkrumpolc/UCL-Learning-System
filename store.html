@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Store · Databases & SQL</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–2: SQL syntax, ER diagrams, normalisation and a small web app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-store">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–2 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html" aria-current="page"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#why-db"><span class="n">4</span><span class="t">Why not just use files?</span></a></li><li><a href="#dbms"><span class="n">5</span><span class="t">Database vs. DBMS</span></a></li><li><a href="#tables"><span class="n">6</span><span class="t">The relational model: data lives in tables</span></a></li><li><a href="#keys"><span class="n">7</span><span class="t">Keys link the tables together</span></a></li><li><a href="#levels"><span class="n">8</span><span class="t">Three levels of abstraction</span></a></li><li><a href="#web-tiers"><span class="n">9</span><span class="t">Where the database lives in a web app</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">01</p>
+<p class="eyebrow">Part 1 · Store</p>
+<h1>What is a database?</h1>
+<p class="lead">Why organisations keep data in one shared, organised place, and the software that looks after it.</p>
+<p class="range">Sections 4–9</p>
+<div class="about"><p>Part 1 covers the first Week 1 lecture (Overview of databases): why databases exist, what a DBMS does, the relational model (tables, rows, columns, keys), the three-level architecture, and where a database sits in a web application.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#why-db"><span class="n">4</span> Why not just use files?</a></li><li><a href="#dbms"><span class="n">5</span> Database vs. DBMS</a></li><li><a href="#tables"><span class="n">6</span> The relational model: data lives in tables</a></li><li><a href="#keys"><span class="n">7</span> Keys link the tables together</a></li><li><a href="#levels"><span class="n">8</span> Three levels of abstraction</a></li><li><a href="#web-tiers"><span class="n">9</span> Where the database lives in a web app</a></li></ol></details><section class="topic" id="why-db" aria-labelledby="why-db-h">
+<div class="topic-meta"><a class="num" href="#why-db" title="Link to this section">4</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 1 · Store</p>
+<h2 id="why-db-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Why not just use files?</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Before: every app keeps its own files</h3>
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#1A1A1A;background:#EEDEFF;padding:12px 16px;border-radius:0;text-align:center;width:200px">Sales app</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg>
+<p style="font-size:24px;color:#1A1A1A;background:#F2F2F2;border:1px dashed #666666;padding:12px 16px;border-radius:0;text-align:center;width:200px">sales.csv</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#1A1A1A;background:#EEDEFF;padding:12px 16px;border-radius:0;text-align:center;width:200px">HR app</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg>
+<p style="font-size:24px;color:#1A1A1A;background:#F2F2F2;border:1px dashed #666666;padding:12px 16px;border-radius:0;text-align:center;width:200px">staff.xlsx</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#1A1A1A;background:#EEDEFF;padding:12px 16px;border-radius:0;text-align:center;width:200px">Lettings app</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg>
+<p style="font-size:24px;color:#1A1A1A;background:#F2F2F2;border:1px dashed #666666;padding:12px 16px;border-radius:0;text-align:center;width:200px">lets.txt</p>
+</div>
+</div>
+<ul style="font-size:28px;line-height:1.5">
+<li>The same data is copied in many places</li>
+<li>Copies drift out of sync</li>
+<li>Different formats, hard to combine</li>
+</ul>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:24px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">After: one shared database</h3>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#1A1A1A;background:#EEDEFF;padding:12px 16px;border-radius:0;text-align:center;width:200px">Sales app</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#9A3BFF" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#1A1A1A;background:#EEDEFF;padding:12px 16px;border-radius:0;text-align:center;width:200px">HR app</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#9A3BFF" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px">
+<p style="font-size:24px;color:#1A1A1A;background:#EEDEFF;padding:12px 16px;border-radius:0;text-align:center;width:200px">Lettings app</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#9A3BFF" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg>
+</div>
+</div>
+<p style="font-size:24px;font-weight:600;color:#FFFFFF;background:#9A3BFF;padding:12px 16px;border-radius:0;text-align:center">DBMS + one shared database</p>
+</div>
+<ul style="font-size:28px;line-height:1.5">
+<li>Each fact is stored once, in one format</li>
+<li>Every app sees the same, current data</li>
+<li>Rules, security and backups in one place</li>
+</ul>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> a database is one shared “source of truth” instead of many private copies.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Before databases, the common approach was the file-based system: each application defined its own data format and kept its own files, unaware of the others. Imagine an estate agent where the sales team, HR and the lettings team each keep a list of staff. When someone changes branch, one list gets updated and the others don’t, so the data becomes inconsistent. Combining information (for example “which staff manage the most properties?”) is hard because the files use different formats.</p><p>A database centralises the data so it is stored and managed in one place, with one standard format and minimal duplication. Every organisation produces data (employees, products, sales) and behind nearly every web application there is a database holding users, posts, settings and so on.</p></div></details>
+</section>
+<section class="topic" id="dbms" aria-labelledby="dbms-h">
+<div class="topic-meta"><a class="num" href="#dbms" title="Link to this section">5</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 1 · Store</p>
+<h2 id="dbms-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Database vs. DBMS</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row">
+<div class="fw" style="width:720px;display:flex;flex-direction:column;gap:24px">
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Database</p>
+<p style="font-size:28px;line-height:1.4;color:#1A1A1A">A shared collection of related data, plus a description of that data (its <b>schema</b>).</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">DBMS</p>
+<p style="font-size:28px;line-height:1.4;color:#1A1A1A">Database Management System: the software that defines, creates, maintains and controls access to a database. <b>MySQL</b> is one.</p>
+</div>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">What a DBMS does for you</h3>
+<div class="row" style="display:flex;align-items:center;gap:20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><p class="grow" style="font-size:28px"><b>Access:</b> one language (SQL) to read and change data</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg><p class="grow" style="font-size:28px"><b>Speed:</b> indexes and query optimisation</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><rect height="11" rx="2" ry="2" width="18" x="3" y="11"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><p class="grow" style="font-size:28px"><b>Security:</b> who may see or change what</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="m9 12 2 2 4-4"></path></svg><p class="grow" style="font-size:28px"><b>Integrity:</b> rules the data must always obey</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;flex-direction:row"><svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:36px;height:36px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg><p class="grow" style="font-size:28px"><b>Recovery:</b> survives crashes and failed updates</p></div>
+<p style="font-size:24px;color:#666666">The price: more size, complexity and sometimes cost.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the database is the books; the DBMS is the librarian who files, finds, guards and repairs them.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Two textbook definitions from the lecture. A database is “a shared collection of logically related data (and a description of this data), designed to meet the information needs of an organisation”, or more briefly “a self-describing collection of integrated records”. The description of the format is called the schema. A DBMS is “a software system that enables users to define, create, and maintain a database and that provides controlled access to this database”.</p><p>In everyday speech people say “the database” for both, but in exams keep them separate. Products: relational DBMSs include MySQL and MariaDB (open source; MySQL is used in this module with the phpMyAdmin web interface), PostgreSQL, SQLite, Oracle, Microsoft SQL Server and IBM Db2. Relational databases are the oldest mature type and still dominant; before them came hierarchical databases, and modern alternatives include document databases such as MongoDB, which store JSON documents instead of tables.</p><p>The lecture lists MongoDB among open-source products, but note it is not relational. To work with any DBMS you need a data definition language (DDL) and a data manipulation language (DML); for relational databases SQL is both. Cloud providers (AWS, Azure, Google Cloud) also offer “database as a service”.</p></div></details>
+</section>
+<section class="topic" id="tables" aria-labelledby="tables-h">
+<div class="topic-meta"><a class="num" href="#tables" title="Link to this section">6</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 1 · Store</p>
+<h2 id="tables-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The relational model: data lives in tables</h2>
+</div>
+<div class="row" style="display:flex;gap:56px;flex-direction:row">
+<div class="fw" style="width:980px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;font-weight:700;color:#1A1A1A">Staff</p>
+<div class="tablewrap"><table class="fw" style="width:980px;font-size:26px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:18%;color:#FFFFFF;text-align:left">staffNo</th><th style="width:17%;color:#FFFFFF;text-align:left">fName</th><th style="width:24%;color:#FFFFFF;text-align:left">position</th><th style="width:18%;color:#FFFFFF;text-align:left">salary</th><th style="width:23%;color:#FFFFFF;text-align:left">branchNo</th></tr>
+<tr style="background:#FFFFFF"><td style="color:#7B2FCC">SL21</td><td>John</td><td>Manager</td><td>30000</td><td>B005</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#7B2FCC">SG37</td><td>Ann</td><td>Assistant</td><td>12000</td><td>B003</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#7B2FCC">SG14</td><td>David</td><td>Supervisor</td><td>18000</td><td>B003</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#7B2FCC">SA9</td><td>Mary</td><td>Assistant</td><td>9000</td><td>B007</td></tr>
+</table></div>
+<p style="font-size:28px;line-height:1.4;padding-top:16px">Written as a schema: <b>Staff</b> (<u>staffNo</u>, fName, position, salary, branchNo). The underlined column is the <b>primary key</b>.</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:22px">
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#7B2FCC">Table · relation</p><p style="font-size:26px;line-height:1.4">One kind of thing: Staff, Branch. Named in UpperCamelCase.</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#7B2FCC">Column · attribute</p><p style="font-size:26px;line-height:1.4">One property, like salary. Its allowed values are its <b>domain</b>. lowerCamelCase.</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#7B2FCC">Row · record · tuple</p><p style="font-size:26px;line-height:1.4">One instance: one staff member.</p></div>
+<div style="display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#7B2FCC">Degree · cardinality</p><p style="font-size:26px;line-height:1.4">Number of columns · number of rows. Here: 5 and 4.</p></div>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Degree goes across (columns); Cardinality Counts down (rows).</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>In a relational database the basic unit is a two-dimensional table, a lot like a spreadsheet tab, but stricter: every row has the same columns, each cell holds one value, and each column only accepts values from its domain (for example salary must be a number). One table represents one kind of thing (an entity such as Staff) or a relationship. The formal words come from maths: a table is a relation, a row is a tuple, and a column is an attribute. Degree is the number of columns; cardinality is the number of rows.</p><p>Every table has a primary key: an attribute (or set of attributes) that uniquely identifies each row; in schema notation it is underlined, as in Branch (branchNo, street, city, postcode). A database is a set of such tables. To build one you must define the columns and their domains (data definition) and then fill the tables with rows (data manipulation). Why tables?</p><p>They are simple, regular and easy to analyse, and the relational model is backed by a formal theory (relational algebra), standardised by SQL and implemented by many products.</p></div></details>
+</section>
+<section class="topic" id="keys" aria-labelledby="keys-h">
+<div class="topic-meta"><a class="num" href="#keys" title="Link to this section">7</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 1 · Store</p>
+<h2 id="keys-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Keys link the tables together</h2>
+</div>
+<div class="row" style="display:flex;gap:40px;align-items:center;flex-direction:row">
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;font-weight:700;color:#1A1A1A">Staff</p>
+<div class="tablewrap"><table class="fw" style="width:560px;font-size:26px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:30%;color:#FFFFFF;text-align:left">staffNo</th><th style="width:30%;color:#FFFFFF;text-align:left">fName</th><th style="width:40%;color:#BA82FF;text-align:left">branchNo</th></tr>
+<tr style="background:#FFFFFF"><td style="color:#7B2FCC">SG37</td><td>Ann</td><td style="color:#B34E06">B003</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#7B2FCC">SG14</td><td>David</td><td style="color:#B34E06">B003</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#7B2FCC">SL21</td><td>John</td><td style="color:#B34E06">B005</td></tr>
+</table></div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:40px">
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:120px;height:56px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#B34E06" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<p style="font-size:26px;line-height:1.4;text-align:center;color:#1A1A1A">Staff.branchNo holds a value that must exist in Branch.branchNo</p>
+</div>
+<div class="fw" style="width:420px;display:flex;flex-direction:column;gap:12px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;font-weight:700;color:#1A1A1A">Branch</p>
+<div class="tablewrap"><table class="fw" style="width:420px;font-size:26px;color:#1A1A1A">
+<tr style="background:#361A54"><th style="width:50%;color:#D0A3FF;text-align:left">branchNo</th><th style="width:50%;color:#FFFFFF;text-align:left">city</th></tr>
+<tr style="background:#FFFFFF"><td style="color:#7B2FCC">B003</td><td>Glasgow</td></tr>
+<tr style="background:#F2F2F2"><td style="color:#7B2FCC">B005</td><td>London</td></tr>
+<tr style="background:#FFFFFF"><td style="color:#7B2FCC">B007</td><td>Aberdeen</td></tr>
+</table></div>
+</div>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Primary key (PK)</h3>
+<p style="font-size:26px;line-height:1.4">The column(s) chosen to identify each row. Unique, never empty.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Foreign key (FK)</h3>
+<p style="font-size:26px;line-height:1.4">A column holding another table’s PK, so rows can link up.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Candidate key</h3>
+<p style="font-size:26px;line-height:1.4">Anything that could be the PK, like staffNo or email.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:8px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Composite key</h3>
+<p style="font-size:26px;line-height:1.4">A key made of 2+ columns together, e.g. (clientNo, propertyNo).</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> PK = your passport number. FK = someone else writing your passport number down to refer to you.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Keys are what make a set of separate tables behave like one connected database. The primary key (PK) is the one way you have chosen to identify a row: no two rows may share it and it may never be NULL (missing). A candidate key is any attribute, or minimal set of attributes, that could serve as the PK (staffNo, or an email address if every staff member has a unique one); you pick one of them to be the PK.</p><p>A composite key is a key made of several columns that only identify a row together: in a Viewing table, clientNo alone repeats and propertyNo alone repeats, but the pair (clientNo, propertyNo) is unique. A foreign key (FK) is a column in one table that stores the primary key of a row in another table. Here Staff.branchNo stores a Branch’s branchNo, which is how we know Ann works at the Glasgow branch without copying “Glasgow” into the Staff table.</p><p>The DBMS can enforce that every FK value really exists in the parent table (referential integrity, section <a href="speak.html#constraints">18</a>).</p></div></details>
+</section>
+<section class="topic" id="levels" aria-labelledby="levels-h">
+<div class="topic-meta"><a class="num" href="#levels" title="Link to this section">8</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 1 · Store</p>
+<h2 id="levels-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Three levels of abstraction</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row">
+<div class="fw" style="width:1000px;display:flex;flex-direction:column;gap:16px">
+<div style="background:#EEDEFF;border-radius:0;padding:20px 28px;display:flex;flex-direction:column;gap:6px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">1 · External level: views</h3>
+<p style="font-size:26px;line-height:1.4">What each user or app sees. Payroll sees names and salaries; reception sees names and phone numbers only.</p>
+</div>
+<div style="background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:20px 28px;display:flex;flex-direction:column;gap:6px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">2 · Conceptual level: the schema</h3>
+<p style="font-size:26px;line-height:1.4">Every table, column, key and rule, with no storage details. One for the whole database.</p>
+</div>
+<div style="background:#F2F2F2;border-radius:0;padding:20px 28px;display:flex;flex-direction:column;gap:6px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">3 · Internal level: storage</h3>
+<p style="font-size:26px;line-height:1.4">How the data physically sits on disk: files, indexes, data structures and algorithms.</p>
+</div>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Why layers?</h3>
+<p style="font-size:28px;line-height:1.4">You can change one level without breaking the others. This is called <b>data independence</b>.</p>
+<ul style="font-size:26px;line-height:1.5">
+<li>Move data to a faster disk: apps don’t change.</li>
+<li>Add a column: existing views still work.</li>
+</ul>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> a restaurant. Menu = external, recipe book = conceptual, pantry = internal.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is the classic three-tier (ANSI/SPARC) architecture of a DBMS. The external level holds views and subschemas: each user or application gets the part of the data it needs, and details it shouldn’t see are hidden. The conceptual level is the full logical description of the database (all tables, columns, constraints) without platform-specific details. The internal or physical level is how data is actually stored: file layouts, indexes, data structures and algorithms.</p><p>Each layer hides the details of the one below, so you can change one with minimal impact on the others (reduced coupling). This gives you the flexibility of specialised applications plus centralised storage. Vocabulary warning: the lecture also defines three kinds of schema used in design. A conceptual schema describes data independently of the type of database (this is the ER diagram in Part 3). A logical schema describes it for a specific type of database; for a relational database, that is the full set of tables.</p><p>A physical schema is how it is stored on a particular machine. So the word “conceptual” appears in both lists with slightly different meanings.</p></div></details>
+</section>
+<section class="topic" id="web-tiers" aria-labelledby="web-tiers-h">
+<div class="topic-meta"><a class="num" href="#web-tiers" title="Link to this section">9</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 1 · Store</p>
+<h2 id="web-tiers-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Where the database lives in a web app</h2>
+</div>
+<div class="row" style="display:flex;align-items:center;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:28px;display:flex;flex-direction:column;gap:12px">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:48px;height:48px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">1 · Browser</h3>
+<p style="font-size:26px;line-height:1.4">Shows pages and sends requests, like “show my bids”.</p>
+</div>
+<div style="width:200px;display:flex;flex-direction:column;align-items:center;gap:6px">
+<p style="font-size:24px;color:#666666">HTTP request</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:96px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#9A3BFF" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:96px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#B34E06" points="100,35 38,35 38,0 0,50 38,100 38,65 100,65"></polygon></svg>
+<p style="font-size:24px;color:#666666">HTML page</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:28px;display:flex;flex-direction:column;gap:12px">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:48px;height:48px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">2 · App server</h3>
+<p style="font-size:26px;line-height:1.4">Your code (PHP, Python…): checks input, sends SQL, builds the page.</p>
+</div>
+<div style="width:200px;display:flex;flex-direction:column;align-items:center;gap:6px">
+<p style="font-size:24px;color:#666666">SQL query</p>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:96px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#9A3BFF" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg>
+<svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:96px;height:40px;flex-shrink:0" viewbox="0 0 100 100"><polygon fill="#B34E06" points="100,35 38,35 38,0 0,50 38,100 38,65 100,65"></polygon></svg>
+<p style="font-size:24px;color:#666666">rows</p>
+</div>
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:28px;display:flex;flex-direction:column;gap:12px">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:48px;height:48px;color:#D0A3FF;flex-shrink:0" viewbox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#FFFFFF">3 · Database server</h3>
+<p style="font-size:26px;line-height:1.4;color:#DDBDFF">The DBMS (MySQL): runs the SQL and stores the data safely.</p>
+</div>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Inside the DBMS</h3>
+<p style="font-size:26px;line-height:1.4"><b>Query processor:</b> turns SQL into low-level steps<br/><b>Database manager:</b> security, rules, optimising, recovery<br/><b>File manager:</b> reads and writes the disk</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:28px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">In the cloud</h3>
+<p style="font-size:26px;line-height:1.4"><b>Database as a Service (DBaaS):</b> AWS, Azure or Google Cloud run the database server for you; you configure it and connect.</p>
+</div>
+</div>
+
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the browser never talks to the database directly; your app server does.</p>
+</div>
+
+
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Multi-user databases settled on a client–server architecture. In the three-tier version used by web apps: the thin client (a web browser) only displays pages and handles the user interface; the application server holds all the application logic and handles requests; and the data server stores and retrieves data. In very busy systems the data server can be split further into a transaction manager (queues and schedules updates, handles rollbacks) and a resource manager (reads and writes files).</p><p>Inside the DBMS, the lecture names three common parts: the query processor (translates queries into low-level instructions), the database manager (a large component handling authorisation, integrity checks, query optimisation, scheduling, failure recovery and temporary storage) and the file manager (stores data and auxiliary structures on disk, talking to the operating system). Cloud computing is “on-demand network access to a shared pool of configurable computing resources”.</p><p>The traditional model is to install the DBMS on your own machines; the trend is database as a service (DBaaS), a kind of software as a service, where the provider hosts the database and you configure it remotely. You will see this tier picture again in Part 4, where we build a small app.</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="index.html"><span>Previous</span>Home</a><a class="next" href="speak.html"><span>Next</span>Speak</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your “Databases &amp; SQL: Weeks 1–2” slide deck (COMP0178). Section numbers match the slide numbers.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–2</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>
