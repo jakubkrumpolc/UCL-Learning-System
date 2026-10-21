@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sigma · Databases & SQL</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-sigma">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–3 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html" aria-current="page"><span class="pn">6</span>Sigma</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#relations"><span class="n">6</span><span class="t">Why “relational”? Tables are relations</span></a></li><li><a href="#ra-ops"><span class="n">8</span><span class="t">Relational algebra: operations on tables</span></a></li><li><a href="#selection"><span class="n">9</span><span class="t">Selection σ: keep some rows</span></a></li><li><a href="#projection"><span class="n">10</span><span class="t">Projection Π: keep some columns</span></a></li><li><a href="#union-diff"><span class="n">11</span><span class="t">Union ∪ and difference −</span></a></li><li><a href="#product"><span class="n">13</span><span class="t">Cartesian product ×: every pair</span></a></li><li><a href="#theta-join"><span class="n">19</span><span class="t">Joins: a product, then a filter</span></a></li><li><a href="#natural-join"><span class="n">20</span><span class="t">Natural join: match on shared names</span></a></li><li><a href="#outer-join"><span class="n">21</span><span class="t">Outer joins keep the unmatched</span></a></li><li><a href="#semijoin"><span class="n">23</span><span class="t">Semijoin: filter by another table</span></a></li><li><a href="#division"><span class="n">24</span><span class="t">Division ÷: “for all” questions</span></a></li><li><a href="#aggregation"><span class="n">28</span><span class="t">Aggregation ℑ and rename ρ</span></a></li><li><a href="#read-ra"><span class="n">29</span><span class="t">Reading a long expression</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">06</p>
+<p class="eyebrow">Part 6 · Sigma</p>
+<h1>The algebra under SQL</h1>
+<p class="lead">Tables as mathematical relations, and the handful of operations (σ, Π, ∪, −, ×, joins, ÷) that every SQL query is built from.</p>
+<p class="range">Lecture 3b · sections 6–29</p>
+<div class="about"><p>Part 6 covers the Week 3 lecture “3b. Relational Algebra”: why relational databases are called that, the operations that can be applied to relations, and how to read expressions made of several operations.</p><p>Section numbers match the slide numbers in the 3b deck. Every example runs on the estate-agent tables from Part 2, so each result can be checked by hand.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#relations"><span class="n">6</span> Why “relational”? Tables are relations</a></li><li><a href="#ra-ops"><span class="n">8</span> Relational algebra: operations on tables</a></li><li><a href="#selection"><span class="n">9</span> Selection σ: keep some rows</a></li><li><a href="#projection"><span class="n">10</span> Projection Π: keep some columns</a></li><li><a href="#union-diff"><span class="n">11</span> Union ∪ and difference −</a></li><li><a href="#product"><span class="n">13</span> Cartesian product ×: every pair</a></li><li><a href="#theta-join"><span class="n">19</span> Joins: a product, then a filter</a></li><li><a href="#natural-join"><span class="n">20</span> Natural join: match on shared names</a></li><li><a href="#outer-join"><span class="n">21</span> Outer joins keep the unmatched</a></li><li><a href="#semijoin"><span class="n">23</span> Semijoin: filter by another table</a></li><li><a href="#division"><span class="n">24</span> Division ÷: “for all” questions</a></li><li><a href="#aggregation"><span class="n">28</span> Aggregation ℑ and rename ρ</a></li><li><a href="#read-ra"><span class="n">29</span> Reading a long expression</a></li></ol></details><section class="topic" id="relations" aria-labelledby="relations-h">
+<div class="topic-meta"><a class="num" href="#relations" title="Link to this section">6</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Foundations</p>
+<h2 id="relations-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Why “relational”? Tables are relations</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Set  { }</h3>
+<p style="font-size:26px;line-height:1.4">An <b>unordered</b> collection with <b>no repeats</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Tuple  ( )</h3>
+<p style="font-size:26px;line-height:1.4">An <b>ordered</b> list: a 2-tuple is a pair, a 3-tuple a triple…</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Cartesian product  A × B</h3>
+<p style="font-size:26px;line-height:1.4">Every possible combination: all pairs (a, b).</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Relation</h3>
+<p style="font-size:26px;line-height:1.4">Given sets A<sub>1</sub>…A<sub>n</sub>, a relation is a <b>subset</b> of A<sub>1</sub> × … × A<sub>n</sub>. Each A<sub>i</sub> is a <b>domain</b>.</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px">
+<div class="fw" style="width:980px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:980px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">In SQL you say…</th><th style="color:#FFFFFF;text-align:left">In maths it’s…</th><th style="color:#FFFFFF;text-align:left">Example (Staff)</th></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">table</td><td style="color:#B34E06">relation = a set of tuples</td><td>Staff</td></tr><tr style="background:#F2F2F2"><td style="color:#7B2FCC">row / record</td><td style="color:#B34E06">tuple in the relation</td><td>(“SG37”, “Ann”, “Beech”, …)</td></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">column / attribute</td><td style="color:#B34E06">domain the values come from</td><td>staffNo = all possible staff numbers</td></tr></table></div></div>
+<p style="font-size:26px;line-height:1.45;color:#1A1A1A">A pair (a, b) being <b>in</b> the relation means “a is related to b”. A pair that’s <b>missing</b> means they aren’t. A table works the same way: a row is in it, or it isn’t.</p>
+<p style="font-size:26px;line-height:1.45;color:#1A1A1A">Because every table is the same simple 2-D shape (a relation), tables can be <b>manipulated mathematically</b>. That maths is relational algebra.</p>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> relation = table, tuple = row, attribute = column. The name “relational” comes from the maths, not from the links between tables.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Recall from week 1: relational database management systems are formalised by relational algebra and calculus, standardised by the SQL standard, and implemented by products such as MySQL, Oracle, MariaDB, SQLite, PostgreSQL, Microsoft SQL Server and IBM Db2. This lecture is the “formalised” part.</p><p>A set is an unordered collection of data without repeats, written with curly brackets {}. A tuple is an ordered list, written with round brackets (): a 2-tuple is an ordered pair, a 3-tuple a triple and so on. The Cartesian product of sets is the set of all possible combinations of their elements: A × B contains every ordered pair (a, b). A mathematical (binary) relation describes a connection between elements of two sets: if (a, b) is in the relation, a is related to b; if (c, d) is missing, c and d don’t have that relationship. For n sets A1, A2, …, An, a relation is a particular subset of A1 × A2 × … × An, and each Ai is the domain that member of the tuple is drawn from.</p><p>In a relational database every table is such a relation. Attributes (columns) are the domains: staffNo is the set of all possible staff numbers, fName the set of all possible strings (perhaps up to some length). Records (rows) are the tuples included in the relation, e.g. (“SG37”, “Ann”, “Beech”, …). A table is a relation: a set of tuples. Strictly, a set has no order and no duplicates, which is why the theory says rows have no order and a table should have no duplicate rows (SQL is a little looser and allows duplicates unless you say DISTINCT).</p></div></details>
+</section><section class="topic" id="ra-ops" aria-labelledby="ra-ops-h">
+<div class="topic-meta"><a class="num" href="#ra-ops" title="Link to this section">8</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Foundations</p>
+<h2 id="ra-ops-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Relational algebra: operations on tables</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:520px;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Closure</h3>
+<p style="font-size:26px;line-height:1.4">Every operation takes relation(s) in and gives a <b>relation</b> out. So you can feed one result into the next and <b>chain</b> operations, like + and × in ordinary algebra.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Unary</h3>
+<p style="font-size:26px;line-height:1.4">Takes <b>one</b> relation: σ, Π.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Binary</h3>
+<p style="font-size:26px;line-height:1.4">Takes <b>two</b> relations: ∪, −, ×, and the derived ∩, ⋈, ÷.</p>
+</div>
+</div>
+<div class="fw" style="width:1060px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:1060px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">Operation</th><th style="color:#FFFFFF;text-align:left">Symbol</th><th style="color:#FFFFFF;text-align:left">Kind</th><th style="color:#FFFFFF;text-align:left">Roughly in SQL</th></tr><tr style="background:#EEDEFF"><td>Selection</td><td style="color:#7B2FCC">σ</td><td>basic · unary</td><td style="color:#B34E06">WHERE</td></tr><tr style="background:#EEDEFF"><td>Projection</td><td style="color:#7B2FCC">Π</td><td>basic · unary</td><td style="color:#B34E06">SELECT col, col</td></tr><tr style="background:#EEDEFF"><td>Union</td><td style="color:#7B2FCC">∪</td><td>basic · binary</td><td style="color:#B34E06">UNION</td></tr><tr style="background:#EEDEFF"><td>Set difference</td><td style="color:#7B2FCC">− or \</td><td>basic · binary</td><td style="color:#B34E06">EXCEPT</td></tr><tr style="background:#EEDEFF"><td>Cartesian product</td><td style="color:#7B2FCC">×</td><td>basic · binary</td><td style="color:#B34E06">FROM A, B</td></tr><tr style="background:#F2F2F2"><td>Intersection</td><td style="color:#7B2FCC">∩</td><td>derived</td><td style="color:#B34E06">INTERSECT</td></tr><tr style="background:#FFFFFF"><td>Join (θ, natural, outer, semi)</td><td style="color:#7B2FCC">⋈</td><td>derived</td><td style="color:#B34E06">JOIN … ON / USING</td></tr><tr style="background:#F2F2F2"><td>Division</td><td style="color:#7B2FCC">÷</td><td>derived</td><td style="color:#B34E06">“for all” queries</td></tr></table></div></div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> five basic operations: σ Π ∪ − ×. Everything else can be built from them.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Relational algebra performs transformations on relations to produce new relations. It has the property of closure: applying an operation to a relation yields another relation, of the same type. That is what lets you string several operations together into one expression, and it is why a SQL query can use a subquery’s result as if it were a table.</p><p>There are five basic operations: selection, projection, union, set difference and Cartesian product. Three derived operations can be expressed using the basic ones: intersection, join (several types) and division. A unary operation takes one relation as input (selection and projection); a binary operation takes two (union, set difference and Cartesian product, and the derived ones).</p><p>The SQL column is a guide, not an exact match: SQL tables can contain duplicates and have an order once you ORDER BY, whereas relations are sets. The highlighted rows are the five basic operations.</p></div></details>
+</section><section class="topic" id="selection" aria-labelledby="selection-h">
+<div class="topic-meta"><a class="num" href="#selection" title="Link to this section">9</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Basic · unary</p>
+<h2 id="selection-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Selection σ: keep some rows</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap"><b style="color:#7B2FCC">σ</b><sub style="font-size:.62em;color:#B34E06">predicate</sub>( R )</p>
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#FFFFFF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap"><b style="color:#7B2FCC">σ</b><sub style="font-size:.62em;color:#B34E06">salary &gt; 10000</sub>( Staff )</p>
+<div class="fw" style="width:1000px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:1000px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">staffNo</th><th style="color:#FFFFFF;text-align:left">fName</th><th style="color:#FFFFFF;text-align:left">lName</th><th style="color:#FFFFFF;text-align:left">position</th><th style="color:#FFFFFF;text-align:left">salary</th><th style="color:#FFFFFF;text-align:left">branchNo</th></tr><tr style="background:#FFFFFF"><td>SL21</td><td>John</td><td>White</td><td>Manager</td><td style="color:#B34E06">30000</td><td>B005</td></tr><tr style="background:#F2F2F2"><td>SG37</td><td>Ann</td><td>Beech</td><td>Assistant</td><td style="color:#B34E06">12000</td><td>B003</td></tr><tr style="background:#FFFFFF"><td>SG14</td><td>David</td><td>Ford</td><td>Supervisor</td><td style="color:#B34E06">18000</td><td>B003</td></tr><tr style="background:#F2F2F2"><td style="color:#B3B3B3;text-decoration:line-through">SA9</td><td style="color:#B3B3B3;text-decoration:line-through">Mary</td><td style="color:#B3B3B3;text-decoration:line-through">Howe</td><td style="color:#B3B3B3;text-decoration:line-through">Assistant</td><td style="color:#B34E06;color:#B3B3B3;text-decoration:line-through">9000</td><td style="color:#B3B3B3;text-decoration:line-through">B007</td></tr><tr style="background:#FFFFFF"><td>SG5</td><td>Susan</td><td>Brand</td><td>Manager</td><td style="color:#B34E06">24000</td><td>B003</td></tr><tr style="background:#F2F2F2"><td style="color:#B3B3B3;text-decoration:line-through">SL41</td><td style="color:#B3B3B3;text-decoration:line-through">Julie</td><td style="color:#B3B3B3;text-decoration:line-through">Lee</td><td style="color:#B3B3B3;text-decoration:line-through">Assistant</td><td style="color:#B34E06;color:#B3B3B3;text-decoration:line-through">9000</td><td style="color:#B3B3B3;text-decoration:line-through">B005</td></tr></table></div></div>
+<p style="font-size:26px;line-height:1.45;color:#666666">4 of 6 tuples satisfy the predicate. Same columns, fewer rows.</p>
+</div>
+<div class="fw" style="width:520px;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:520px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> *<br/><span style="color:#D0A3FF">FROM</span> Staff<br/><span style="color:#D0A3FF">WHERE</span> salary > 10000;</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Row filter</h3>
+<p style="font-size:26px;line-height:1.4">Keeps only the tuples for which the <b>predicate</b> is true. Like the <b>WHERE</b> clause.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Predicates</h3>
+<p style="font-size:24px;line-height:1.4">Can combine conditions: σ<sub>salary &gt; 10000 ∧ branchNo = ‘B003’</sub>(Staff) (∧ = AND, ∨ = OR, ¬ = NOT).</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> σ = Sieve: it lets some <b>rows</b> through.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Selection (also called restriction), written σpredicate(R), works on a single relation R. It produces a new relation containing only the tuples of R that satisfy the predicate. The columns stay the same; only rows are removed. In the example σsalary > 10000(Staff), Mary Howe (SA9) and Julie Lee (SL41), who earn 9,000, are dropped, leaving four staff.</p><p>The predicate can use comparisons (<, ≤, >, ≥, =, ≠) and combine them with the logical connectives ∧ (and), ∨ (or) and ¬ (not). Selection corresponds to the WHERE clause in SQL. Don’t be confused by names: SQL’s SELECT keyword does projection (choosing columns); relational algebra’s selection σ chooses rows, which is SQL’s WHERE.</p></div></details>
+</section><section class="topic" id="projection" aria-labelledby="projection-h">
+<div class="topic-meta"><a class="num" href="#projection" title="Link to this section">10</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Basic · unary</p>
+<h2 id="projection-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Projection Π: keep some columns</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap"><b style="color:#7B2FCC">Π</b><sub style="font-size:.62em;color:#B34E06">a1, …, an</sub>( R )</p>
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#FFFFFF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap"><b style="color:#7B2FCC">Π</b><sub style="font-size:.62em;color:#B34E06">staffNo, fName, lName, salary</sub>( Staff )</p>
+<div class="fw" style="width:1000px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:1000px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">staffNo</th><th style="color:#FFFFFF;text-align:left">fName</th><th style="color:#FFFFFF;text-align:left">lName</th><th style="color:#FFFFFF;text-align:left;opacity:.35">position</th><th style="color:#FFFFFF;text-align:left">salary</th><th style="color:#FFFFFF;text-align:left;opacity:.35">branchNo</th></tr><tr style="background:#FFFFFF"><td>SL21</td><td>John</td><td>White</td><td style="color:#B3B3B3;text-decoration:line-through">Manager</td><td>30000</td><td style="color:#B3B3B3;text-decoration:line-through">B005</td></tr><tr style="background:#F2F2F2"><td>SG37</td><td>Ann</td><td>Beech</td><td style="color:#B3B3B3;text-decoration:line-through">Assistant</td><td>12000</td><td style="color:#B3B3B3;text-decoration:line-through">B003</td></tr><tr style="background:#FFFFFF"><td>SG14</td><td>David</td><td>Ford</td><td style="color:#B3B3B3;text-decoration:line-through">Supervisor</td><td>18000</td><td style="color:#B3B3B3;text-decoration:line-through">B003</td></tr><tr style="background:#F2F2F2"><td>SA9</td><td>Mary</td><td>Howe</td><td style="color:#B3B3B3;text-decoration:line-through">Assistant</td><td>9000</td><td style="color:#B3B3B3;text-decoration:line-through">B007</td></tr><tr style="background:#FFFFFF"><td>SG5</td><td>Susan</td><td>Brand</td><td style="color:#B3B3B3;text-decoration:line-through">Manager</td><td>24000</td><td style="color:#B3B3B3;text-decoration:line-through">B003</td></tr><tr style="background:#F2F2F2"><td>SL41</td><td>Julie</td><td>Lee</td><td style="color:#B3B3B3;text-decoration:line-through">Assistant</td><td>9000</td><td style="color:#B3B3B3;text-decoration:line-through">B005</td></tr></table></div></div>
+<p style="font-size:26px;line-height:1.45;color:#666666">All 6 tuples, but only the 4 listed attributes: a 4-column relation.</p>
+</div>
+<div class="fw" style="width:520px;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:520px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> staffNo, fName,<br/>       lName, salary<br/><span style="color:#D0A3FF">FROM</span> Staff;</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Column filter</h3>
+<p style="font-size:26px;line-height:1.4">Keeps every tuple but <b>masks out</b> the attributes not listed. Like <b>SELECT [list]</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">No duplicates</h3>
+<p style="font-size:24px;line-height:1.4">A relation is a set, so Π<sub>position</sub>(Staff) has <b>3</b> tuples (Manager, Assistant, Supervisor), not 6. In SQL you need <b>SELECT DISTINCT</b> for that.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Π = Pick columns. σ cuts rows, Π cuts columns.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Projection, written Πa1,…,an(R), produces a new relation with all of R’s tuples but only the listed attributes; the others are masked out. ΠstaffNo, fName, lName, salary(Staff) gives a four-column table: a relation of 4-tuples.</p><p>It corresponds to the column list after SELECT in SQL. One difference matters in exams: relational algebra works on sets, so if removing columns makes two tuples identical, they collapse into one. Πposition(Staff) gives {Manager, Assistant, Supervisor}. SQL keeps duplicates by default (SELECT position FROM Staff returns six rows), so the exact SQL equivalent of a projection is SELECT DISTINCT.</p></div></details>
+</section><section class="topic" id="union-diff" aria-labelledby="union-diff-h">
+<div class="topic-meta"><a class="num" href="#union-diff" title="Link to this section">11</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Basic · binary</p>
+<h2 id="union-diff-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Union ∪ and difference −</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:240px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Πcity(Branch)</p><div class="tablewrap"><table class="fw" style="width:240px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">city</th></tr><tr style="background:#FFFFFF"><td>Glasgow</td></tr><tr style="background:#F2F2F2"><td>Bristol</td></tr><tr style="background:#FFFFFF"><td>London</td></tr><tr style="background:#F2F2F2"><td>Aberdeen</td></tr></table></div></div>
+<div class="fw" style="width:240px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Πcity(Property)</p><div class="tablewrap"><table class="fw" style="width:240px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">city</th></tr><tr style="background:#FFFFFF"><td>Aberdeen</td></tr><tr style="background:#F2F2F2"><td>London</td></tr><tr style="background:#FFFFFF"><td>Glasgow</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:28px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">Π<sub style="font-size:.62em;color:#B34E06">city</sub>(Branch) <b style="color:#7B2FCC">∪</b> Π<sub style="font-size:.62em;color:#B34E06">city</sub>(Property)</p>
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="fw" style="width:260px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">∪ result</p><div class="tablewrap"><table class="fw" style="width:260px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">city</th></tr><tr style="background:#FFFFFF"><td>Glasgow</td></tr><tr style="background:#F2F2F2"><td>Bristol</td></tr><tr style="background:#FFFFFF"><td>London</td></tr><tr style="background:#F2F2F2"><td>Aberdeen</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:0px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Union ∪</h3>
+<p style="font-size:24px;line-height:1.4">Every tuple in R <b>or</b> S, duplicates removed. “Cities with a branch <b>or</b> a property.” SQL: <b>UNION</b>.</p>
+</div>
+</div>
+</div>
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:28px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">Π<sub style="font-size:.62em;color:#B34E06">city</sub>(Branch) <b style="color:#7B2FCC">−</b> Π<sub style="font-size:.62em;color:#B34E06">city</sub>(Property)</p>
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="fw" style="width:260px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">− result</p><div class="tablewrap"><table class="fw" style="width:260px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">city</th></tr><tr style="background:#FFFFFF"><td>Bristol</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:0px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Difference − (or \)</h3>
+<p style="font-size:24px;line-height:1.4">Tuples in R that are <b>not</b> in S. “Cities with a branch but <b>no</b> property.” SQL: <b>EXCEPT</b>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> R and S must be <b>union compatible</b>: same columns, same domains. You can’t stack a list of cities on a list of salaries.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Union, R ∪ S, combines (without duplicates) the tuples of two relations that have identical schemas: the same list of (attribute name, domain) pairs. It is a “vertical join”: one table stacked on top of the other. Example: list all cities where there is either a branch office or a property for rent: Πcity(Branch) ∪ Πcity(PropertyForRent). It is the same as UNION in SQL.</p><p>Set difference, R − S (also written R \ S), removes from R every tuple that also appears in S. Like union, both sides must be union compatible. Example: cities with a branch office but no property for rent: Πcity(Branch) − Πcity(PropertyForRent). With our rows only Bristol qualifies. It corresponds to EXCEPT in SQL; MySQL supports EXCEPT from version 8.0.31, and before that you write it with NOT IN or NOT EXISTS.</p><p>The property rows used here (PA14 Aberdeen, PL94 London, PG4, PG36, PG21, PG16 Glasgow) are from the lecture’s DreamHome example. Note why both sides are projected onto city first: Branch and Property have different columns, so they are not union compatible until you project them.</p></div></details>
+</section><section class="topic" id="product" aria-labelledby="product-h">
+<div class="topic-meta"><a class="num" href="#product" title="Link to this section">13</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Basic · binary</p>
+<h2 id="product-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Cartesian product ×: every pair</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:140px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">P</p><div class="tablewrap"><table class="fw" style="width:140px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">P</th></tr><tr style="background:#FFFFFF"><td>a</td></tr><tr style="background:#F2F2F2"><td>b</td></tr></table></div></div>
+<div class="fw" style="width:140px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Q</p><div class="tablewrap"><table class="fw" style="width:140px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">Q</th></tr><tr style="background:#FFFFFF"><td>1</td></tr><tr style="background:#F2F2F2"><td>2</td></tr><tr style="background:#FFFFFF"><td>3</td></tr></table></div></div>
+<div class="fw" style="width:260px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">P × Q</p><div class="tablewrap"><table class="fw" style="width:260px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">P</th><th style="color:#FFFFFF;text-align:left">Q</th></tr><tr style="background:#FFFFFF"><td>a</td><td style="color:#B34E06">1</td></tr><tr style="background:#F2F2F2"><td>a</td><td style="color:#B34E06">2</td></tr><tr style="background:#FFFFFF"><td>a</td><td style="color:#B34E06">3</td></tr><tr style="background:#F2F2F2"><td>b</td><td style="color:#B34E06">1</td></tr><tr style="background:#FFFFFF"><td>b</td><td style="color:#B34E06">2</td></tr><tr style="background:#F2F2F2"><td>b</td><td style="color:#B34E06">3</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">R <b style="color:#7B2FCC">×</b> S</p>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Pairs everything with everything</h3>
+<p style="font-size:26px;line-height:1.4">Each tuple of R glued to each tuple of S. Result: <b>|R| × |S|</b> tuples and <b>cols(R) + cols(S)</b> columns.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Staff × Branch</h3>
+<p style="font-size:26px;line-height:1.4">6 × 4 = <b>24</b> rows, 6 + 2 = <b>8</b> columns. Most of them pair a person with a branch they don’t work at.</p>
+</div>
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> *<br/><span style="color:#D0A3FF">FROM</span> Staff, Branch;   -- 24 rows</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> product = every combination. On its own it’s rarely what you want; add a σ and it becomes a join.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The Cartesian product R × S is a “horizontal join”: pairwise concatenation of tuples. Every tuple in R is combined with every tuple in S, giving a table with |R| × |S| tuples and numcols(R) + numcols(S) columns. With P = {a, b} and Q = {1, 2, 3}, P × Q has 2 × 3 = 6 tuples.</p><p>In SQL it is what you get by listing two or more tables after FROM with no join condition. Staff × Branch has 24 rows, because each of the 6 staff is paired with each of the 4 branches. Only 6 of those rows are “true” (a staff member with their own branch); filtering them is exactly what a join does (two sections on).</p></div></details>
+</section><section class="topic" id="theta-join" aria-labelledby="theta-join-h">
+<div class="topic-meta"><a class="num" href="#theta-join" title="Link to this section">19</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Derived</p>
+<h2 id="theta-join-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Joins: a product, then a filter</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">R <b style="color:#7B2FCC">⋈</b><sub style="font-size:.62em;color:#B34E06">predicate</sub> S  =  <b style="color:#7B2FCC">σ</b><sub style="font-size:.62em;color:#B34E06">predicate</sub>( R <b style="color:#7B2FCC">×</b> S )</p>
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;line-height:1.5;color:#1A1A1A;background:#FFFFFF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">Staff <b style="color:#7B2FCC">⋈</b><sub style="font-size:.62em;color:#B34E06">Staff.branchNo = Branch.branchNo</sub> Branch</p>
+<div class="fw" style="width:1000px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Result (some columns hidden): 6 of the 24 product rows</p><div class="tablewrap"><table class="fw" style="width:1000px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">staffNo</th><th style="color:#FFFFFF;text-align:left">fName</th><th style="color:#FFFFFF;text-align:left">Staff.branchNo</th><th style="color:#FFFFFF;text-align:left">Branch.branchNo</th><th style="color:#FFFFFF;text-align:left">city</th></tr><tr style="background:#FFFFFF"><td>SL21</td><td>John</td><td style="color:#B34E06">B005</td><td style="color:#B34E06">B005</td><td>London</td></tr><tr style="background:#F2F2F2"><td>SG37</td><td>Ann</td><td style="color:#B34E06">B003</td><td style="color:#B34E06">B003</td><td>Glasgow</td></tr><tr style="background:#FFFFFF"><td>SG14</td><td>David</td><td style="color:#B34E06">B003</td><td style="color:#B34E06">B003</td><td>Glasgow</td></tr><tr style="background:#F2F2F2"><td>SA9</td><td>Mary</td><td style="color:#B34E06">B007</td><td style="color:#B34E06">B007</td><td>Aberdeen</td></tr><tr style="background:#FFFFFF"><td>SG5</td><td>Susan</td><td style="color:#B34E06">B003</td><td style="color:#B34E06">B003</td><td>Glasgow</td></tr><tr style="background:#F2F2F2"><td>SL41</td><td>Julie</td><td style="color:#B34E06">B005</td><td style="color:#B34E06">B005</td><td>London</td></tr></table></div></div>
+</div>
+<div class="fw" style="width:540px;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">θ-join (theta join)</h3>
+<p style="font-size:26px;line-height:1.4">Predicate uses any comparison: &lt; ≤ &gt; ≥ = ≠. Flexible and all-purpose.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Equijoin</h3>
+<p style="font-size:26px;line-height:1.4">A θ-join whose predicate is <b>=</b>. The most common kind; note both branchNo columns stay.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Intersection ∩</h3>
+<p style="font-size:24px;line-height:1.4">Tuples in <b>both</b> R and S. Derived: R ∩ S = R − (R − S).</p>
+</div>
+<div class="fw" style="width:540px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> *<br/><span style="color:#D0A3FF">FROM</span> Staff s <span style="color:#D0A3FF">JOIN</span> Branch b<br/>  <span style="color:#D0A3FF">ON</span> s.branchNo = b.branchNo;</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> join = × then σ. The predicate decides which pairs are “true”.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The derived operations are shorthand for combinations of basic ones. Intersection R ∩ S keeps tuples in both relations and equals R − (R − S). Division is covered later. Join is the frequently used operation that consists of a Cartesian product followed by a selection; the selection differs by type of join.</p><p>The theta join R ⋈predicate S is equivalent to σpredicate(R × S). The predicate involves a comparison (<, ≤, >, ≥, =, ≠); joins whose predicate uses = are called equijoins. It is the same as FROM … JOIN … ON in SQL and is flexible and all-purpose. Joining Staff to Branch on equal branchNo keeps the 6 meaningful pairs out of the 24 in the product. Both branchNo columns are kept in a theta join; the natural join (next) removes the copy.</p><p>A DBMS never actually builds the full product and then filters it (that would be far too slow on big tables); it uses indexes and smarter join algorithms. Relational algebra describes what the answer is, not how to compute it. The next lecture, query processing, is about the how.</p></div></details>
+</section><section class="topic" id="natural-join" aria-labelledby="natural-join-h">
+<div class="topic-meta"><a class="num" href="#natural-join" title="Link to this section">20</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Derived</p>
+<h2 id="natural-join-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Natural join: match on shared names</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">T</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">A</th><th style="color:#FFFFFF;text-align:left">B</th></tr><tr style="background:#FFFFFF"><td>a</td><td>1</td></tr><tr style="background:#F2F2F2"><td>b</td><td>2</td></tr></table></div></div>
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">U</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">B</th><th style="color:#FFFFFF;text-align:left">C</th></tr><tr style="background:#FFFFFF"><td>1</td><td>x</td></tr><tr style="background:#F2F2F2"><td>1</td><td>y</td></tr><tr style="background:#FFFFFF"><td>3</td><td>z</td></tr></table></div></div>
+<div class="fw" style="width:300px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">T ⋈ U</p><div class="tablewrap"><table class="fw" style="width:300px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">A</th><th style="color:#FFFFFF;text-align:left">B</th><th style="color:#FFFFFF;text-align:left">C</th></tr><tr style="background:#FFFFFF"><td>a</td><td style="color:#B34E06">1</td><td>x</td></tr><tr style="background:#F2F2F2"><td>a</td><td style="color:#B34E06">1</td><td>y</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">R <b style="color:#7B2FCC">⋈</b> S</p>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Automatic equijoin</h3>
+<p style="font-size:26px;line-height:1.4">Matches on <b>every</b> attribute with the <b>same name</b> in both relations, and keeps <b>one copy</b> of each.</p>
+</div>
+<p style="font-size:26px;line-height:1.45;color:#1A1A1A">= Π<sub>reduced list</sub>( σ<sub>R.c1 = S.c1, …</sub>( R × S ) )</p>
+<p style="font-size:24px;line-height:1.45;color:#666666">Here only B is shared. b has B = 2, which matches nothing in U, so b disappears.</p>
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> *<br/><span style="color:#D0A3FF">FROM</span> Staff <span style="color:#D0A3FF">JOIN</span> Branch<br/>  <span style="color:#D0A3FF">USING</span> (branchNo);</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> natural join = equijoin on all same-named columns, minus the duplicate column.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The natural join R ⋈ S (no subscript) is an equijoin that checks for equality on all attributes with the same name in both relations and removes the duplicate column(s) from the result. It is equivalent to Πreduced list(σR.c1=S.c1, etc.(R × S)): take the product, keep tuples where every shared attribute matches, then project away the second copy of each shared column.</p><p>In the lecture’s example T(A, B) and U(B, C) share B. T’s tuple (a, 1) matches U’s (1, x) and (1, y), giving (a, 1, x) and (a, 1, y); T’s (b, 2) matches nothing, so it is lost. SQL’s closest form is FROM … JOIN … USING (column); there is also NATURAL JOIN, but it silently joins on every same-named column, which breaks if someone later adds, say, a “name” column to both tables, so explicit USING or ON is safer.</p></div></details>
+</section><section class="topic" id="outer-join" aria-labelledby="outer-join-h">
+<div class="topic-meta"><a class="num" href="#outer-join" title="Link to this section">21</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Derived</p>
+<h2 id="outer-join-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Outer joins keep the unmatched</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:22px">
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="fw" style="width:180px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">T</p><div class="tablewrap"><table class="fw" style="width:180px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">A</th><th style="color:#FFFFFF;text-align:left">B</th></tr><tr style="background:#FFFFFF"><td>a</td><td>1</td></tr><tr style="background:#F2F2F2"><td>b</td><td>2</td></tr></table></div></div>
+<div class="fw" style="width:180px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">U</p><div class="tablewrap"><table class="fw" style="width:180px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">B</th><th style="color:#FFFFFF;text-align:left">C</th></tr><tr style="background:#FFFFFF"><td>1</td><td>x</td></tr><tr style="background:#F2F2F2"><td>1</td><td>y</td></tr><tr style="background:#FFFFFF"><td>3</td><td>z</td></tr></table></div></div>
+<div class="fw" style="width:280px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">T ⟕ U (left outer)</p><div class="tablewrap"><table class="fw" style="width:280px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">A</th><th style="color:#FFFFFF;text-align:left">B</th><th style="color:#FFFFFF;text-align:left">C</th></tr><tr style="background:#FFFFFF"><td>a</td><td>1</td><td>x</td></tr><tr style="background:#F2F2F2"><td>a</td><td>1</td><td>y</td></tr><tr style="background:#EEDEFF"><td>b</td><td>2</td><td><i style="color:#666666">NULL</i></td></tr></table></div></div>
+</div>
+<div class="fw" style="width:640px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Branch ⟕ Staff: Bristol kept, with NULLs</p><div class="tablewrap"><table class="fw" style="width:640px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">branchNo</th><th style="color:#FFFFFF;text-align:left">city</th><th style="color:#FFFFFF;text-align:left">staffNo</th></tr><tr style="background:#FFFFFF"><td>B003</td><td>Glasgow</td><td>SG37</td></tr><tr style="background:#F2F2F2"><td>B003</td><td>Glasgow</td><td>SG14</td></tr><tr style="background:#FFFFFF"><td>B003</td><td>Glasgow</td><td>SG5</td></tr><tr style="background:#EEDEFF"><td>B004</td><td>Bristol</td><td><i style="color:#666666">NULL</i></td></tr><tr style="background:#FFFFFF"><td>B005</td><td>London</td><td>SL21</td></tr><tr style="background:#F2F2F2"><td>B005</td><td>London</td><td>SL41</td></tr><tr style="background:#FFFFFF"><td>B007</td><td>Aberdeen</td><td>SA9</td></tr></table></div></div>
+</div>
+<div class="fw" style="width:600px;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Inner join (default)</h3>
+<p style="font-size:24px;line-height:1.4">Only pairs where the condition holds. Unmatched rows vanish.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Left / right outer</h3>
+<p style="font-size:24px;line-height:1.4">Also keeps unmatched rows of the <b>first</b> (left) or <b>second</b> (right) table; the other side is filled with <b>NULL</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Full outer</h3>
+<p style="font-size:24px;line-height:1.4">Keeps unmatched rows from <b>both</b>. MySQL has no FULL JOIN: UNION a LEFT and a RIGHT join.</p>
+</div>
+<div class="fw" style="width:600px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> b.*, s.staffNo<br/><span style="color:#D0A3FF">FROM</span> Branch b <span style="color:#D0A3FF">LEFT JOIN</span> Staff s<br/>  <span style="color:#D0A3FF">ON</span> b.branchNo = s.branchNo;</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> LEFT keeps everything on the left. The gaps become NULL.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>By default joins are inner joins: they only contain tuples where the join condition was fulfilled. Outer joins also retain tuples from one or both relations even if they didn’t match anything, filling the attributes that would have come from the other table with nulls. A left (outer) join preserves all rows of the first table, a right (outer) join all rows of the second, and a full outer join does both.</p><p>In the lecture’s picture T ⟕ U keeps (b, 2) with C = NULL. With our data, Branch LEFT JOIN Staff keeps Bristol (B004), which has no staff, as a row with staffNo NULL; an inner join would silently drop it. The lecture’s SQL pattern is SELECT b.*, p.* FROM Branch b [LEFT | RIGHT | FULL] JOIN Property p ON b.bCity = p.pCity; to list branches and properties in the same city along with the unmatched branches, properties, or both.</p><p>MySQL supports LEFT and RIGHT JOIN but not FULL OUTER JOIN; write it as a LEFT JOIN UNION a RIGHT JOIN. A handy trick: LEFT JOIN … WHERE s.staffNo IS NULL finds the left rows with no match at all (“branches with no staff”).</p></div></details>
+</section><section class="topic" id="semijoin" aria-labelledby="semijoin-h">
+<div class="topic-meta"><a class="num" href="#semijoin" title="Link to this section">23</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Derived</p>
+<h2 id="semijoin-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Semijoin: filter by another table</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">T</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">A</th><th style="color:#FFFFFF;text-align:left">B</th></tr><tr style="background:#FFFFFF"><td>a</td><td>1</td></tr><tr style="background:#F2F2F2"><td>b</td><td>2</td></tr></table></div></div>
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">U</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">B</th><th style="color:#FFFFFF;text-align:left">C</th></tr><tr style="background:#FFFFFF"><td>1</td><td>x</td></tr><tr style="background:#F2F2F2"><td>1</td><td>y</td></tr><tr style="background:#FFFFFF"><td>3</td><td>z</td></tr></table></div></div>
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">T ⋉ U</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">A</th><th style="color:#FFFFFF;text-align:left">B</th></tr><tr style="background:#FFFFFF"><td>a</td><td>1</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:28px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">R <b style="color:#7B2FCC">▹</b><sub style="font-size:.62em;color:#B34E06">predicate</sub> S  =  Π<sub style="font-size:.62em;color:#B34E06">R’s attributes</sub>( σ<sub style="font-size:.62em;color:#B34E06">predicate</sub>( R × S ) )</p>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Use S to filter R</h3>
+<p style="font-size:26px;line-height:1.4">Like a θ-join, but the result keeps <b>only R’s attributes</b>. “Which T tuples have a partner in U?”</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Example</h3>
+<p style="font-size:24px;line-height:1.4">Branch ▹<sub>Branch.branchNo = Staff.branchNo</sub> Staff = branches that have staff: <b>B003, B005, B007</b> (each once). Bristol is out.</p>
+</div>
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> * <span style="color:#D0A3FF">FROM</span> Branch b<br/><span style="color:#D0A3FF">WHERE</span> <span style="color:#D0A3FF">EXISTS</span> (<span style="color:#D0A3FF">SELECT</span> 1 <span style="color:#D0A3FF">FROM</span> Staff s<br/>  <span style="color:#D0A3FF">WHERE</span> s.branchNo = b.branchNo);</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> semijoin = “keep the R rows that have a match”, without bringing S’s columns along.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The semijoin R ▹predicate S is the same as a θ-join, except that the final result contains only R’s attributes. It is equivalent to ΠR’s attribute list(σpredicate(R × S)): S is used purely to filter R’s tuples. (Textbooks also write it ⋉.)</p><p>In the lecture’s picture T ▹B U gives just (a, 1): the T tuples whose B value appears in U. Because the result is a set, a T tuple with several matches still appears once. In SQL a semijoin is written with EXISTS or IN: SELECT * FROM Branch WHERE branchNo IN (SELECT branchNo FROM Staff). Query optimisers like semijoins because they never need to build the wide joined rows.</p></div></details>
+</section><section class="topic" id="division" aria-labelledby="division-h">
+<div class="topic-meta"><a class="num" href="#division" title="Link to this section">24</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Derived</p>
+<h2 id="division-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Division ÷: “for all” questions</h2>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:22px">
+<div class="row" style="display:flex;gap:28px;flex-direction:row">
+<div class="fw" style="width:380px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">R: who viewed what</p><div class="tablewrap"><table class="fw" style="width:380px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">clientNo</th><th style="color:#FFFFFF;text-align:left">propertyNo</th></tr><tr style="background:#FFFFFF"><td>CR56</td><td>PA14</td></tr><tr style="background:#F2F2F2"><td>CR76</td><td>PG4</td></tr><tr style="background:#EEDEFF"><td>CR56</td><td>PG4</td></tr><tr style="background:#F2F2F2"><td>CR62</td><td>PA14</td></tr><tr style="background:#EEDEFF"><td>CR56</td><td>PG36</td></tr></table></div></div>
+<div class="fw" style="width:240px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">S: 3-room properties</p><div class="tablewrap"><table class="fw" style="width:240px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">propertyNo</th></tr><tr style="background:#FFFFFF"><td>PG4</td></tr><tr style="background:#F2F2F2"><td>PG36</td></tr></table></div></div>
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">R ÷ S</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">clientNo</th></tr><tr style="background:#FFFFFF"><td>CR56</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Which clients viewed <u>every</u> 3-room property?</h3>
+<p style="font-size:26px;line-height:1.4">CR56 viewed PG4 <b>and</b> PG36. CR76 only saw PG4, so it’s out.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">R ÷ S = T</h3>
+<p style="font-size:24px;line-height:1.4">Attributes of T = attr(R) − attr(S). T is every value that appears in R paired with <b>all</b> of S: S × T gives nothing that isn’t already in R.</p>
+</div>
+</div>
+</div>
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:28px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">T₁ ← Π<sub style="font-size:.62em;color:#B34E06">attr(T)</sub>(R)  &nbsp;·&nbsp;  T₂ ← Π<sub style="font-size:.62em;color:#B34E06">attr(T)</sub>( (T₁ × S) − R )  &nbsp;·&nbsp;  T ← T₁ − T₂</p>
+<p style="font-size:24px;line-height:1.45;color:#666666">R = Π<sub>clientNo, propertyNo</sub>(Viewing) &nbsp;and&nbsp; S = Π<sub>propertyNo</sub>(σ<sub>rooms = 3</sub>(Property))</p>
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Step 1 · T₁</h3>
+<p style="font-size:24px;line-height:1.4">Every candidate (all clients in R): CR56, CR76, CR62.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Step 2 · T₂</h3>
+<p style="font-size:24px;line-height:1.4"><b>T₁ × S − R</b>: pairs a candidate <i>should</i> have but doesn’t. Their owners: CR76, CR62.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Step 3 · T₁ − T₂</h3>
+<p style="font-size:24px;line-height:1.4">The candidates missing nothing: <b>CR56</b>.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> division answers “… for <b>all</b> …” questions. Start with everyone, remove anyone missing something.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Division R ÷ S (= T) selects (part of) the tuples of R that match every value in S. The attributes of the result T are attr(R) − attr(S), and T is the largest relation such that S × T produces no tuples that weren’t already in R. It can be built from basic operations: Πattr(T)(R) − Πattr(T)((Πattr(T)(R) × S) − R). Read it as three steps: start with all candidate tuples in R; build every pairing that would be needed to “fully cover” S and subtract what R actually has, leaving only the missing pairs; remove the candidates that own a missing pair.</p><p>The lecture’s example: identify all clients who have viewed all properties with three rooms: (ΠclientNo, propertyNo(Viewing)) ÷ (ΠpropertyNo(σrooms = 3(PropertyForRent))). The 3-room properties are PG4 and PG36. CR56 viewed both, CR76 viewed only PG4, CR62 only PA14, so the result is CR56. In the abstract example V ÷ W with V = {(a,1), (a,2), (b,1), (b,2), (c,1)} and W = {1, 2}, the answer is {a, b}: c lacks (c, 2).</p><p>SQL has no division operator. The usual translation is a double NOT EXISTS (“clients for whom there is no 3-room property they have not viewed”), or GROUP BY clientNo HAVING COUNT(DISTINCT propertyNo) = (SELECT COUNT(*) …) on the filtered viewings.</p></div></details>
+</section><section class="topic" id="aggregation" aria-labelledby="aggregation-h">
+<div class="topic-meta"><a class="num" href="#aggregation" title="Link to this section">28</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Proposed</p>
+<h2 id="aggregation-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Aggregation ℑ and rename ρ</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">ρ<sub style="font-size:.62em;color:#B34E06">R(myCount)</sub> <b style="color:#7B2FCC">ℑ</b><sub style="font-size:.62em;color:#B34E06">COUNT propertyNo</sub>( σ<sub style="font-size:.62em;color:#B34E06">rent &gt; 350</sub>( Property ) )</p>
+<div class="row" style="display:flex;gap:24px;flex-direction:row">
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:560px;font-size:22px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">propertyNo</th><th style="color:#FFFFFF;text-align:left">city</th><th style="color:#FFFFFF;text-align:left">rooms</th><th style="color:#FFFFFF;text-align:left">rent</th></tr><tr style="background:#FFFFFF"><td>PA14</td><td>Aberdeen</td><td>6</td><td style="color:#B34E06">650</td></tr><tr style="background:#F2F2F2"><td>PL94</td><td>London</td><td>4</td><td style="color:#B34E06">400</td></tr><tr style="background:#FFFFFF"><td style="color:#B3B3B3;text-decoration:line-through">PG4</td><td style="color:#B3B3B3;text-decoration:line-through">Glasgow</td><td style="color:#B3B3B3;text-decoration:line-through">3</td><td style="color:#B34E06;color:#B3B3B3;text-decoration:line-through">350</td></tr><tr style="background:#F2F2F2"><td>PG36</td><td>Glasgow</td><td>3</td><td style="color:#B34E06">375</td></tr><tr style="background:#FFFFFF"><td>PG21</td><td>Glasgow</td><td>5</td><td style="color:#B34E06">600</td></tr><tr style="background:#F2F2F2"><td>PG16</td><td>Glasgow</td><td>4</td><td style="color:#B34E06">450</td></tr></table></div></div>
+<div class="fw" style="width:200px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">R</p><div class="tablewrap"><table class="fw" style="width:200px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">myCount</th></tr><tr style="background:#FFFFFF"><td>5</td></tr></table></div></div>
+</div>
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap"><sub style="font-size:.62em;color:#B34E06">branchNo</sub> <b style="color:#7B2FCC">ℑ</b><sub style="font-size:.62em;color:#B34E06">COUNT staffNo, SUM salary</sub>( Staff )</p>
+<div class="fw" style="width:620px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:620px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">branchNo</th><th style="color:#FFFFFF;text-align:left">COUNT staffNo</th><th style="color:#FFFFFF;text-align:left">SUM salary</th></tr><tr style="background:#FFFFFF"><td>B003</td><td>3</td><td>54000</td></tr><tr style="background:#F2F2F2"><td>B005</td><td>2</td><td>39000</td></tr><tr style="background:#FFFFFF"><td>B007</td><td>1</td><td>9000</td></tr></table></div></div>
+</div>
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Aggregation ℑ</h3>
+<p style="font-size:26px;line-height:1.4">Applies <b>COUNT, SUM, AVG, MIN, MAX</b> to a relation, as in SQL. Result: a one-value relation.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Grouping</h3>
+<p style="font-size:26px;line-height:1.4">Attributes written <b>before</b> ℑ form groups; the function runs per group. = <b>GROUP BY</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Rename ρ</h3>
+<p style="font-size:26px;line-height:1.4">Gives the result relation (and its columns) a better name. = <b>AS</b>.</p>
+</div>
+<div class="fw" style="width:560px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> branchNo, COUNT(staffNo),<br/>       SUM(salary)<br/><span style="color:#D0A3FF">FROM</span> Staff<br/><span style="color:#D0A3FF">GROUP BY</span> branchNo;</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> ℑ = the aggregate functions; the attributes on its left are the GROUP BY.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture lists aggregation and grouping as “proposed” extensions to relational algebra. Aggregation, ℑ list of <aggfunc, attr> pairs(R), applies aggregate functions (COUNT, SUM, AVG, MIN and MAX, as in SQL). Grouping, grouping attr(s) ℑ list of <aggfunc, attr> pairs(R), forms groups based on the attributes on the left and calculates the aggregate function for each group.</p><p>Either way the output is again a relation (a single value, a column or a table), so closure still holds. The rename operation ρ gives the new relation a better name: ρR(myCount) ℑ COUNT propertyNo(σrent > 350(PropertyForRent)) counts the properties renting for more than 350 and calls the result R with one column myCount. With our six properties, PG4 at exactly 350 is excluded, so myCount = 5.</p><p>Grouped by branch, the Staff salaries total 54,000 for B003 (12,000 + 18,000 + 24,000), 39,000 for B005 and 9,000 for B007. Bristol has no staff, so it does not appear: grouping only sees rows that exist.</p></div></details>
+</section><section class="topic" id="read-ra" aria-labelledby="read-ra-h">
+<div class="topic-meta"><a class="num" href="#read-ra" title="Link to this section">29</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Sigma · Putting it together</p>
+<h2 id="read-ra-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Reading a long expression</h2>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:36px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">Π<sub style="font-size:.62em;color:#B34E06">fName, lName, city</sub>( σ<sub style="font-size:.62em;color:#B34E06">salary &gt; 15000</sub>( Staff <b style="color:#7B2FCC">⋈</b> Branch ) )</p>
+<div class="row" style="display:flex;gap:36px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Start at the <b>innermost</b> brackets: Staff ⋈ Branch. Every staff member with their branch’s city (6 rows).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Then the σ around it: keep salary &gt; 15000 (3 rows).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Finally the outer Π: keep only fName, lName, city.</p></div>
+<div class="fw" style="width:620px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Result</p><div class="tablewrap"><table class="fw" style="width:620px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">fName</th><th style="color:#FFFFFF;text-align:left">lName</th><th style="color:#FFFFFF;text-align:left">city</th></tr><tr style="background:#FFFFFF"><td>John</td><td>White</td><td>London</td></tr><tr style="background:#F2F2F2"><td>David</td><td>Ford</td><td>Glasgow</td></tr><tr style="background:#FFFFFF"><td>Susan</td><td>Brand</td><td>Glasgow</td></tr></table></div></div>
+</div>
+<div class="fw" style="width:600px;display:flex;flex-direction:column;gap:14px">
+<div class="fw" style="width:600px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> fName, lName, city<br/><span style="color:#D0A3FF">FROM</span> Staff<br/>  <span style="color:#D0A3FF">JOIN</span> Branch <span style="color:#D0A3FF">USING</span> (branchNo)<br/><span style="color:#D0A3FF">WHERE</span> salary > 15000;</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Reading order</h3>
+<p style="font-size:24px;line-height:1.4">SQL is written <b>outside-in</b> (SELECT first) but runs <b>inside-out</b>: FROM/JOIN → WHERE → SELECT. RA shows that order directly.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Most used</h3>
+<p style="font-size:24px;line-height:1.4">σ and Π (unary), × and θ-joins (binary). Query processing (next week) is built on these.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> read RA inside-out: innermost relation first, outermost operation last.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The summary: relational algebra is the mathematical formalisation of relational databases. Tables are relations, and relations can be manipulated with RA operations that yield more relations. There are 5 basic operations (σ, Π, ∪, \, ×), 3 derived operations (intersection; joins: theta, natural, outer, semi; division) and the proposed aggregation operations. The most important are σ and Π (unary) and × and θ-joins (binary); these are used extensively in query processing, next week.</p><p>The third learning objective is to read expressions built from several operations. Work from the innermost brackets outwards, writing down the intermediate relation at each step, exactly as above. To translate to SQL: relations being joined go in FROM/JOIN, σ predicates go in WHERE, and the outermost Π becomes the SELECT list (with DISTINCT if duplicates matter).</p><p>Translating the other way is good exam practice: for any SQL query from Part 2, try writing the RA expression. A DBMS does the same internally: it turns SQL into a tree of RA operations and then rearranges it into a cheaper but equivalent tree (for example, applying σ before the join so fewer rows get joined).</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="seek.html"><span>Previous</span>Seek</a><a class="next" href="setup.html"><span>Next</span>Setup</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

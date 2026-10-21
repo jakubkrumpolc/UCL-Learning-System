@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Databases & SQL · Weeks 1–2</title>
-<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–2: SQL syntax, ER diagrams, normalisation and a small web app.">
+<title>Databases & SQL · Weeks 1–3</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -15,11 +15,11 @@
 <header class="masthead">
 <div class="mast-in">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
-<p class="mast-tag">Weeks 1–2 study guide</p>
+<p class="mast-tag">Weeks 1–3 study guide</p>
 </div>
 </header>
 <nav class="topbar" aria-label="Parts">
-<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
 </nav>
 <div class="layout">
 
@@ -27,17 +27,17 @@
 <header class="home-hero">
 <div class="home-hero-in">
 <div class="hh-text">
-<p class="eyebrow">COMP0178 · Database Fundamentals · Weeks 1–2</p>
+<p class="eyebrow">COMP0178 · Database Fundamentals · Weeks 1–3</p>
 <h1>Databases &amp; SQL,<br/>from zero</h1>
-<p class="lead">The four lecture decks rebuilt into one clear path: what a database is, how to speak SQL, how to design tables, and how a web app uses them.</p>
+<p class="lead">The lecture decks rebuilt into one clear path: what a database is, how to speak SQL, how to design tables, how a web app uses them, how data sits on disk, and the algebra underneath SQL. Plus a project kit for Git and the backend.</p>
 <div class="hh-actions"><a class="btn primary" href="store.html">Start with Part 1</a><a class="btn" href="speak.html#sql-basics">Jump to SQL</a><a class="btn" href="revision.html">Cheat sheet</a></div>
 </div>
 <svg aria-label="A database cylinder icon" height="460" class="hero-art" viewbox="0 0 420 460" width="420"><rect fill="#9A3BFF" height="340" width="400" x="10" y="60"></rect><ellipse cx="210" cy="400" fill="#9A3BFF" rx="200" ry="44"></ellipse><path d="M10 175 A200 44 0 0 0 410 175" fill="none" stroke="#361A54" stroke-width="8"></path><path d="M10 290 A200 44 0 0 0 410 290" fill="none" stroke="#361A54" stroke-width="8"></path><ellipse cx="210" cy="60" fill="#BA82FF" rx="200" ry="44"></ellipse></svg>
 </div>
 </header>
 <section class="home-sec" id="roadmap">
-<h2>Four questions, in order</h2>
-<p class="sub">Store → Speak → Shape → Ship. Four S’s, four parts. Lab answers sit inside the parts that teach what they need, marked <span class="badge lab">Lab</span>.</p>
+<h2>Six questions, in order, plus your project kit</h2>
+<p class="sub">Store → Speak → Shape → Ship → Seek → Sigma, then Setup for the group project. Lab answers sit inside the parts that teach what they need, marked <span class="badge lab">Lab</span>.</p>
 <div class="part-grid"><article class="part-card">
 <a class="part-link" href="store.html"><span class="pc-num">1</span><span class="pc-name">Store</span></a>
 <p class="pc-desc">What is a database, and why keep data in tables?</p>
@@ -58,11 +58,28 @@
 <p class="pc-desc">Build a small web app’s database, start to finish.</p>
 <p class="pc-range">Sections 58–63</p>
 <details class="pc-topics"><summary>All 5 sections</summary><ol><li><a href="ship.html#app-erd"><span class="n">59</span>A tiny auction site: from brief to diagram</a></li><li><a href="ship.html#app-schema"><span class="n">60</span>Create the tables</a></li><li><a href="ship.html#app-queries"><span class="n">61</span>One query behind each page</a></li><li><a href="ship.html#app-code"><span class="n">62</span>The code that runs a query</a></li><li><a href="ship.html#injection"><span class="n">63</span>Never glue user input into SQL</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="seek.html"><span class="pc-num">5</span><span class="pc-name">Seek</span></a>
+<p class="pc-desc">Storage: blocks, buffers, indexes, B+ trees and hashing.</p>
+<p class="pc-range">Lecture 3a · sections 4–24</p>
+<details class="pc-topics"><summary>All 12 sections</summary><ol><li><a href="seek.html#storage-types"><span class="n">4</span>Where data lives: memory vs. disk</a></li><li><a href="seek.html#blocks"><span class="n">6</span>Blocks: the unit the disk reads</a></li><li><a href="seek.html#slotted-page"><span class="n">9</span>Variable-length records: the slotted page</a></li><li><a href="seek.html#buffers"><span class="n">10</span>Buffers and dirty pages</a></li><li><a href="seek.html#find-row"><span class="n">14</span>The real problem: finding one row</a></li><li><a href="seek.html#clustered"><span class="n">16</span>Clustered vs. nonclustered indexes</a></li><li><a href="seek.html#dense-sparse"><span class="n">17</span>Dense vs. sparse indexes</a></li><li><a href="seek.html#multilevel"><span class="n">19</span>When the index is too big: multilevel</a></li><li><a href="seek.html#bplus"><span class="n">20</span>B+ trees: short and fat</a></li><li><a href="seek.html#hashing"><span class="n">21</span>Hashing: compute the address</a></li><li><a href="seek.html#overflow"><span class="n">23</span>When a bucket is full: overflow</a></li><li><a href="seek.html#index-vs-hash"><span class="n">24</span>Index or hash? Pick by the query</a></li></ol></details>
+</article>
+<article class="part-card">
+<a class="part-link" href="sigma.html"><span class="pc-num">6</span><span class="pc-name">Sigma</span></a>
+<p class="pc-desc">Relational algebra: σ, Π, ∪, −, ×, joins and division.</p>
+<p class="pc-range">Lecture 3b · sections 6–29</p>
+<details class="pc-topics"><summary>All 13 sections</summary><ol><li><a href="sigma.html#relations"><span class="n">6</span>Why “relational”? Tables are relations</a></li><li><a href="sigma.html#ra-ops"><span class="n">8</span>Relational algebra: operations on tables</a></li><li><a href="sigma.html#selection"><span class="n">9</span>Selection σ: keep some rows</a></li><li><a href="sigma.html#projection"><span class="n">10</span>Projection Π: keep some columns</a></li><li><a href="sigma.html#union-diff"><span class="n">11</span>Union ∪ and difference −</a></li><li><a href="sigma.html#product"><span class="n">13</span>Cartesian product ×: every pair</a></li><li><a href="sigma.html#theta-join"><span class="n">19</span>Joins: a product, then a filter</a></li><li><a href="sigma.html#natural-join"><span class="n">20</span>Natural join: match on shared names</a></li><li><a href="sigma.html#outer-join"><span class="n">21</span>Outer joins keep the unmatched</a></li><li><a href="sigma.html#semijoin"><span class="n">23</span>Semijoin: filter by another table</a></li><li><a href="sigma.html#division"><span class="n">24</span>Division ÷: “for all” questions</a></li><li><a href="sigma.html#aggregation"><span class="n">28</span>Aggregation ℑ and rename ρ</a></li><li><a href="sigma.html#read-ra"><span class="n">29</span>Reading a long expression</a></li></ol></details>
+</article>
+<article class="part-card">
+<a class="part-link" href="setup.html"><span class="pc-num">7</span><span class="pc-name">Setup</span></a>
+<p class="pc-desc">Project kit: Git for teams and a MySQL + PHP backend built from scripts.</p>
+<p class="pc-range"><b>Lab 3 (project tutorial 3): sections 3–21</b></p>
+<details class="pc-topics"><summary>All 13 sections</summary><ol><li><a href="setup.html#devtools"><span class="n">3</span>['The tutorial’s first tips are about working in HTML. Right-click → View page source shows the raw HTML of any page, which is also a good way to learn HTML from real sites. Most browsers have developer tools built in (in some you enable them in the options) or available as a plugin; right-click → Inspect element opens them. You can view the source, inspect elements and their CSS, and much more. Moving the cursor over the source highlights the matching part of the page, and you can visualise the effect of removing CSS rules.', 'The Console tab displays error messages and print statements generated while the current page loads (for example from JavaScript). It is very useful for working out why a page isn’t displaying properly.', 'For a database-backed site most bugs are on the server, where the browser can’t see them. PHP pages arrive in the browser as plain HTML, so View source shows what your PHP printed (a missing closing tag, a warning message in the middle of a table). During development turn on display_errors and error_reporting(E_ALL) at the top of a page (or in a shared include) so PHP errors appear on the page; turn them off before anything is public, because error messages can reveal file paths and SQL. Errors are also written to the PHP error log in your XAMPP or MAMP folder.']</a></li><li><a href="setup.html#git-model"><span class="n">7</span>How Git thinks: four places for your work</a></li><li><a href="setup.html#team-repo"><span class="n">8</span>Start the team repository</a></li><li><a href="setup.html#daily-loop"><span class="n">9</span>The daily loop: pull, add, commit, push</a></li><li><a href="setup.html#conflicts"><span class="n">10</span>Merge conflicts, calmly</a></li><li><a href="setup.html#branches"><span class="n">+</span>Branches: work on a feature without breaking main</a></li><li><a href="setup.html#sql-scripts"><span class="n">13</span>Keep the database in SQL scripts</a></li><li><a href="setup.html#create-db"><span class="n">14</span>Create the database and its user</a></li><li><a href="setup.html#engines"><span class="n">16</span>Tables and engines: use InnoDB</a></li><li><a href="setup.html#seed-load"><span class="n">17</span>Seed data, load the scripts, check it worked</a></li><li><a href="setup.html#backup"><span class="n">20</span>Back up before you break it</a></li><li><a href="setup.html#php-connect"><span class="n">+</span>Connect PHP to the database, safely</a></li><li><a href="setup.html#todo"><span class="n">21</span>Your project to-do list</a></li></ol></details>
 </article><article class="part-card rev">
 <a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
 <p class="pc-desc">A one-page SQL cheat sheet and every memory hook.</p>
-<p class="pc-range">Sections 64–65</p>
-<details class="pc-topics"><summary>Both sections</summary><ol><li><a href="revision.html#cheat-sheet"><span class="n">64</span>SQL on one page</a></li><li><a href="revision.html#memory-hooks"><span class="n">65</span>The whole deck in 14 lines</a></li></ol></details>
+<p class="pc-range">Sections 64–66</p>
+<details class="pc-topics"><summary>All 3 sections</summary><ol><li><a href="revision.html#cheat-sheet"><span class="n">64</span>SQL on one page</a></li><li><a href="revision.html#memory-hooks"><span class="n">65</span>The whole deck in 14 lines</a></li><li><a href="revision.html#week3-sheet"><span class="n">66</span>Week 3 on one page</a></li></ol></details>
 </article></div>
 <aside class="cta" aria-label="Revision">
 <div><h2>Revising for the exam?</h2><p>Every SQL pattern on one page, plus the memory hook from each section.</p></div>
@@ -84,18 +101,18 @@
 <div class="foot-in">
 <div class="foot-col">
 <p class="foot-h">Parts</p>
-<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li></ul>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li></ul>
 </div>
 <div class="foot-col">
 <p class="foot-h">Revision</p>
-<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
 </div>
 <div class="foot-col foot-about">
 <p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
-<p>Built from your “Databases &amp; SQL: Weeks 1–2” slide deck (COMP0178). Section numbers match the slide numbers.</p>
+<p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
 </div>
 </div>
-<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–2</p><a href="#top">Back to top</a></div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
 </footer>
 <script src="assets/site.js"></script>
 </body>

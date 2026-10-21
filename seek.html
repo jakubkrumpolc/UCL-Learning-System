@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seek · Databases & SQL</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-seek">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–3 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html" aria-current="page"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#storage-types"><span class="n">4</span><span class="t">Where data lives: memory vs. disk</span></a></li><li><a href="#blocks"><span class="n">6</span><span class="t">Blocks: the unit the disk reads</span></a></li><li><a href="#slotted-page"><span class="n">9</span><span class="t">Variable-length records: the slotted page</span></a></li><li><a href="#buffers"><span class="n">10</span><span class="t">Buffers and dirty pages</span></a></li><li><a href="#find-row"><span class="n">14</span><span class="t">The real problem: finding one row</span></a></li><li><a href="#clustered"><span class="n">16</span><span class="t">Clustered vs. nonclustered indexes</span></a></li><li><a href="#dense-sparse"><span class="n">17</span><span class="t">Dense vs. sparse indexes</span></a></li><li><a href="#multilevel"><span class="n">19</span><span class="t">When the index is too big: multilevel</span></a></li><li><a href="#bplus"><span class="n">20</span><span class="t">B+ trees: short and fat</span></a></li><li><a href="#hashing"><span class="n">21</span><span class="t">Hashing: compute the address</span></a></li><li><a href="#overflow"><span class="n">23</span><span class="t">When a bucket is full: overflow</span></a></li><li><a href="#index-vs-hash"><span class="n">24</span><span class="t">Index or hash? Pick by the query</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">05</p>
+<p class="eyebrow">Part 5 · Seek</p>
+<h1>How does the database find a row?</h1>
+<p class="lead">Where tables physically live, and the tricks (indexes and hashing) that find one row without reading them all.</p>
+<p class="range">Lecture 3a · sections 4–24</p>
+<div class="about"><p>Part 5 covers the Week 3 lecture “3a. Database Storage”: the types of storage, how records are packed into blocks and pages, buffers, and the two ways a DBMS finds a row quickly: indexes (dense, sparse, multilevel, B+ trees) and hashing.</p><p>Section numbers match the slide numbers in the 3a deck. The diagrams reuse the estate-agent Staff table from Part 2 where they can.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#storage-types"><span class="n">4</span> Where data lives: memory vs. disk</a></li><li><a href="#blocks"><span class="n">6</span> Blocks: the unit the disk reads</a></li><li><a href="#slotted-page"><span class="n">9</span> Variable-length records: the slotted page</a></li><li><a href="#buffers"><span class="n">10</span> Buffers and dirty pages</a></li><li><a href="#find-row"><span class="n">14</span> The real problem: finding one row</a></li><li><a href="#clustered"><span class="n">16</span> Clustered vs. nonclustered indexes</a></li><li><a href="#dense-sparse"><span class="n">17</span> Dense vs. sparse indexes</a></li><li><a href="#multilevel"><span class="n">19</span> When the index is too big: multilevel</a></li><li><a href="#bplus"><span class="n">20</span> B+ trees: short and fat</a></li><li><a href="#hashing"><span class="n">21</span> Hashing: compute the address</a></li><li><a href="#overflow"><span class="n">23</span> When a bucket is full: overflow</a></li><li><a href="#index-vs-hash"><span class="n">24</span> Index or hash? Pick by the query</a></li></ol></details><section class="topic" id="storage-types" aria-labelledby="storage-types-h">
+<div class="topic-meta"><a class="num" href="#storage-types" title="Link to this section">4</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Storage</p>
+<h2 id="storage-types-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Where data lives: memory vs. disk</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:28px;line-height:1.45;color:#1A1A1A">A database has to live <b>somewhere</b> on the computer. The DBMS wants to store it so that reading it back costs as little time as possible.</p>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:10px">
+<div class="fw" style="width:55%;background:#9A3BFF;color:#FFFFFF;padding:14px 24px;gap:2px"><p style="font-size:28px;font-weight:600">Main memory (RAM)</p><p style="font-size:22px;line-height:1.35;opacity:.92"><b>Primary</b> · Fastest · smallest · volatile: gone when the power goes</p></div>
+<div class="fw" style="width:70%;background:#A857FF;color:#FFFFFF;padding:14px 24px;gap:2px"><p style="font-size:28px;font-weight:600">Solid-state drive (SSD)</p><p style="font-size:22px;line-height:1.35;opacity:.92"><b>Secondary</b> · Flash memory · non-volatile · much faster than a hard disk</p></div>
+<div class="fw" style="width:85%;background:#361A54;color:#FFFFFF;padding:14px 24px;gap:2px"><p style="font-size:28px;font-weight:600">Magnetic hard disk</p><p style="font-size:22px;line-height:1.35;opacity:.92"><b>Secondary</b> · Non-volatile · large and cheap · slow to read</p></div>
+<div class="fw" style="width:100%;background:#F2F2F2;color:#1A1A1A;padding:14px 24px;gap:2px"><p style="font-size:28px;font-weight:600">Tape, archive drives, CDs</p><p style="font-size:22px;line-height:1.35;opacity:.92"><b>Tertiary</b> · Archive: data that rarely changes or is rarely read</p></div>
+<p style="font-size:22px;line-height:1.45;color:#666666">↑ faster and dearer per GB &nbsp;·&nbsp; ↓ bigger and cheaper per GB</p>
+</div>
+</div>
+<div class="fw" style="width:520px;display:flex;flex-direction:column;gap:16px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Primary storage</h3>
+<p style="font-size:26px;line-height:1.4">Where the computer <b>works</b> on data: main memory. Fast, but small and <b>volatile</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Secondary storage</h3>
+<p style="font-size:26px;line-height:1.4">Where data is <b>kept</b> when not in use: hard disks and SSDs. Survives power loss.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Tertiary storage</h3>
+<p style="font-size:26px;line-height:1.4">Archives: data not expected to change, or even be read, very often.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the database lives on disk but is worked on in memory. Every trip to disk is the slow part.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture opens with the reason storage matters: the contents of a database must physically sit on the computer, and we want to arrange them so that retrieving data spends as little time as possible reading. This overlaps heavily with operating systems: the same principles appear there, and many DBMSs deliberately replace the operating system’s default memory and file management with their own, tuned for database workloads.</p><p>Traditionally there are two kinds of storage. Main memory is fast but volatile: its contents disappear if the power is lost. Magnetic disk (hard drives) is non-volatile, though still subject to occasional failures and data loss. The more recent trend is flash memory and solid-state drives (SSDs): still non-volatile, much faster than spinning disks, but not quite as fast (or as expensive) as high-end main memory.</p><p>By role: primary storage is memory used for working and calculation (main memory); secondary storage keeps data while it isn’t being used (hard disks, SSDs); tertiary storage archives data that is no longer expected to change or even be read frequently (archive drives, tapes, CDs). The rest of the lecture assumes tables sit in secondary storage and must be brought into memory to be used.</p></div></details>
+</section><section class="topic" id="blocks" aria-labelledby="blocks-h">
+<div class="topic-meta"><a class="num" href="#blocks" title="Link to this section">6</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Storage</p>
+<h2 id="blocks-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Blocks: the unit the disk reads</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:16px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Block</h3>
+<p style="font-size:26px;line-height:1.4">Fixed-length unit of <b>storage</b>: the smallest piece the disk can read or allocate. Usually about <b>4–8 KB</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Page</h3>
+<p style="font-size:26px;line-height:1.4">Fixed-length unit of data used in <b>memory management</b>. Often the same size as a block; sometimes not.</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-size:28px;line-height:1.45;color:#1A1A1A">One row (record) is usually much smaller than a block, so the DBMS <b>packs several records into each block</b>.</p>
+<div class="row" style="display:flex;gap:28px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#7B2FCC">Fixed-length records</p>
+<ul style="font-size:26px;line-height:1.5"><li>Records per block known in advance</li><li>A new row can reuse a deleted row’s slot</li><li>Empty slots tracked in a <b>free list</b></li></ul>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#B34E06">Variable-length records</p>
+<ul style="font-size:26px;line-height:1.5"><li>VARCHAR, TEXT… make rows differ in size</li><li>A bit more bookkeeping</li><li>Still very feasible: see the next section</li></ul>
+</div>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the disk never hands over “one row”. It hands over a whole block, so put rows that are read together in the same block.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A block is a fixed-length unit of storage and the smallest unit of data that can be read from or allocated on the disk, typically around 4–8 KB. A page is a fixed-length unit of data used in memory management. Both are fixed-size chunks; depending on the system the two words are sometimes synonyms and sometimes not.</p><p>Leaving aside large objects (images, files), a record in a relational table is typically much smaller than a block, so many records are packed into one block. There are two designs. If every field, and therefore every record, is fixed-length, storage is simple: the number of records per block is known in advance, and when order doesn’t matter a new record can simply fill the space of a deleted one. The empty slots are kept in a “free list”.</p><p>Variable-length fields (VARCHAR, TEXT and so on) mean records differ in size, which adds some complication but is very workable, as the slotted-page structure shows. Because the disk transfers whole blocks, the cost of a query is roughly the number of blocks it has to read.</p></div></details>
+</section><section class="topic" id="slotted-page" aria-labelledby="slotted-page-h">
+<div class="topic-meta"><a class="num" href="#slotted-page" title="Link to this section">9</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Storage</p>
+<h2 id="slotted-page-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Variable-length records: the slotted page</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:860px;display:flex;flex-direction:column;gap:12px">
+<svg aria-hidden="true" class="free" style="width:860px;max-width:100%;height:auto;flex-shrink:0" viewbox="0 0 940 420" font-family="DM Sans, Arial, sans-serif"><defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9A3BFF"/></marker></defs><rect x="20" y="20" width="900" height="380" fill="#FFFFFF" stroke="#361A54" stroke-width="4"/><rect x="20" y="20" width="420" height="90" fill="#EEDEFF" stroke="#361A54" stroke-width="2"/><text x="34" y="52" font-size="22" font-weight="700" fill="#361A54">Header</text><text x="34" y="84" font-size="19" fill="#1A1A1A">count = 3 · end of free space</text><rect x="450" y="20" width="100" height="90" fill="#EEDEFF" stroke="#361A54" stroke-width="2"/><text x="500" y="56" font-size="19" text-anchor="middle" fill="#361A54" font-weight="700">slot 1</text><text x="500" y="86" font-size="17" text-anchor="middle" fill="#1A1A1A">offset, len</text><rect x="560" y="20" width="100" height="90" fill="#EEDEFF" stroke="#361A54" stroke-width="2"/><text x="610" y="56" font-size="19" text-anchor="middle" fill="#361A54" font-weight="700">slot 2</text><text x="610" y="86" font-size="17" text-anchor="middle" fill="#1A1A1A">offset, len</text><rect x="670" y="20" width="100" height="90" fill="#EEDEFF" stroke="#361A54" stroke-width="2"/><text x="720" y="56" font-size="19" text-anchor="middle" fill="#361A54" font-weight="700">slot 3</text><text x="720" y="86" font-size="17" text-anchor="middle" fill="#1A1A1A">offset, len</text><rect x="20" y="110" width="900" height="130" fill="#F2F2F2"/><text x="36" y="150" font-size="24" fill="#666666">free space</text><rect x="20" y="240" width="330" height="160" fill="#FFF2EB" stroke="#B34E06" stroke-width="2"/><text x="185.0" y="328" font-size="24" text-anchor="middle" fill="#B34E06" font-weight="700">record 3</text><rect x="350" y="240" width="250" height="160" fill="#FFF2EB" stroke="#B34E06" stroke-width="2"/><text x="475.0" y="328" font-size="24" text-anchor="middle" fill="#B34E06" font-weight="700">record 2</text><rect x="600" y="240" width="320" height="160" fill="#FFF2EB" stroke="#B34E06" stroke-width="2"/><text x="760.0" y="328" font-size="24" text-anchor="middle" fill="#B34E06" font-weight="700">record 1</text><path d="M500 110 C 500 190, 760 170, 760 236" fill="none" stroke="#9A3BFF" stroke-width="3" marker-end="url(#ah)"/><path d="M610 110 C 610 190, 475 170, 475 236" fill="none" stroke="#9A3BFF" stroke-width="3" marker-end="url(#ah)"/><path d="M720 110 C 720 190, 185 170, 185 236" fill="none" stroke="#9A3BFF" stroke-width="3" marker-end="url(#ah)"/></svg>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Each record gets two numbers: its <b>offset</b> (where it starts) and its <b>length</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">The <b>header</b> at the top of the block holds one slot per record with those numbers.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">The <b>records</b> are packed from the bottom.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Both ends “eat” the block and meet in the middle: the gap is the free space.</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> header at the top says <i>where</i>, records at the bottom are <i>what</i>. They grow towards each other.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Records with variable-length fields can be handled by storing two pieces of metadata per record: its offset (location within the block) and its length (size). The slotted-page structure organises a block (or page) around this. The top of the block holds a header with the offset/length entry for every record in that block (plus the number of entries and where the free space ends). The records themselves are stored contiguously from the bottom of the block.</p><p>Storage is therefore consumed from both ends and meets in the middle. To insert a record, the DBMS adds a slot to the header and writes the record just above the existing ones; to delete one, it marks the slot empty and can slide the remaining records along to close the gap, updating their offsets. Anything outside the block only needs to remember the slot number, so records can move inside the block without breaking references to them.</p><p>Operating systems use the same technique. The diagram is a sketch; the lecture shows the idea in words, and textbooks (Silberschatz, Korth and Sudarshan) draw it the same way.</p></div></details>
+</section><section class="topic" id="buffers" aria-labelledby="buffers-h">
+<div class="topic-meta"><a class="num" href="#buffers" title="Link to this section">10</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Storage</p>
+<h2 id="buffers-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Buffers and dirty pages</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Buffer</h3>
+<p style="font-size:26px;line-height:1.4">Anywhere that holds <b>temporary copies</b> of database data outside the main database, for reading or updating. Can be in memory or on disk.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Dirty page</h3>
+<p style="font-size:26px;line-height:1.4">A page in the buffer that has been <b>changed</b> but not yet written back to the database.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Flushing</h3>
+<p style="font-size:26px;line-height:1.4">Writing <b>everything</b> in the buffers to long-term storage, so all the temporary space is free again.</p>
+</div>
+</div>
+<div class="fw" style="width:760px;display:flex;flex-direction:column;gap:18px">
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">A query needs a page → it is copied from disk into the buffer.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">An UPDATE changes the copy in memory → the page is now <b>dirty</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">The buffer is full → the DBMS picks a page not used recently to throw out.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">If that page is dirty, it must be <b>written to disk first</b>, or the change is lost.</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> clean pages can just be dropped; dirty pages must be saved first.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>“Buffer” has many meanings. Originally it is something that sits in front of something else and is interacted with instead of it; the usual computing meaning is temporary memory for data that is being processed or transferred elsewhere. In databases, a buffer is anywhere that stores temporary copies of data outside the main database, for reading or updating, whether in primary or secondary storage.</p><p>Buffers hold data temporarily loaded from the database. When space runs out, some pages that are not being (or not recently) used are overwritten. If such a page holds updated data (a dirty page), that data must first be written back to the database. Flushing the buffers means writing all data held in them to long-term storage, which clears them so the whole temporary space can be used again.</p><p>This is why a DBMS cares about memory management: keeping the right pages in memory saves disk reads, and writing dirty pages back at the right moment protects your updates (this links to transactions and recovery later in the module).</p></div></details>
+</section><section class="topic" id="find-row" aria-labelledby="find-row-h">
+<div class="topic-meta"><a class="num" href="#find-row" title="Link to this section">14</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Indexing</p>
+<h2 id="find-row-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The real problem: finding one row</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<ul style="font-size:28px;line-height:1.5"><li>Tables live on disk as records packed into <b>blocks</b>.</li><li>To answer a query, (parts of) the table must be loaded into <b>memory</b>.</li><li>Reading from disk is <b>slow</b>.</li><li>Tables are often <b>much bigger</b> than memory.</li></ul>
+</div>
+<div class="fw" style="width:760px;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:760px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">SELECT</span> * <span style="color:#D0A3FF">FROM</span> Staff<br/><span style="color:#D0A3FF">WHERE</span> staffNo = <span style="color:#FFAE80">'SG37'</span>;<br/><br/><span style="color:#B3B3B3">-- no help: read every block until SG37 turns up</span><br/><span style="color:#B3B3B3">-- with an index or hash: jump to its block</span></p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Two ways to jump straight to the row</h3>
+<p style="font-size:26px;line-height:1.4"><b style="color:#7B2FCC">Indexes</b>: a sorted lookup structure (sections 15–20). <b style="color:#B34E06">Hashing</b>: compute the address from the key (sections 21–23).</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the goal of the rest of this lecture is fewer, smarter disk reads.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The summary slide restates the situation: tables are stored in secondary storage (“disk”) as a series of records, organised into blocks. Queries need (parts of) a table loaded into working memory before it can be returned or processed. Reading from secondary storage is slow and costly, and tables are often much larger than working memory.</p><p>So what if you want just one row? Without help, the DBMS would have to read block after block, scanning every record (a full table scan). The aim is to find the row with as few unnecessary disk reads as possible. The two techniques that follow are indexes, which keep a sorted structure of key values pointing at where the records are, and hashing, which calculates a storage location directly from the key.</p></div></details>
+</section><section class="topic" id="clustered" aria-labelledby="clustered-h">
+<div class="topic-meta"><a class="num" href="#clustered" title="Link to this section">16</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Indexing</p>
+<h2 id="clustered-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Clustered vs. nonclustered indexes</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:640px;display:flex;flex-direction:column;gap:24px">
+<div class="fw" style="width:640px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Records stored sorted by userID  (clustered index)</p><div class="tablewrap"><table class="fw" style="width:640px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">block 1</th><th style="color:#FFFFFF;text-align:left">block 2</th><th style="color:#FFFFFF;text-align:left">block 3</th></tr><tr style="background:#FFFFFF"><td>aaa</td><td>card190</td><td>dray01</td></tr><tr style="background:#F2F2F2"><td>aardvark</td><td>cats00</td><td>drew</td></tr><tr style="background:#FFFFFF"><td>abcd</td><td>ccard</td><td>dtan4</td></tr></table></div></div>
+<div class="fw" style="width:420px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Index of last names  (nonclustered)</p><div class="tablewrap"><table class="fw" style="width:420px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">lastName</th><th style="color:#FFFFFF;text-align:left">blocks</th></tr><tr style="background:#FFFFFF"><td>Adams</td><td style="color:#B34E06">2</td></tr><tr style="background:#F2F2F2"><td>Ahmad</td><td style="color:#B34E06">1, 10</td></tr><tr style="background:#FFFFFF"><td>Allen</td><td style="color:#B34E06">7, 21, 24</td></tr></table></div></div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Clustering / primary index</h3>
+<p style="font-size:26px;line-height:1.4">The attribute(s) that decide the <b>physical order</b> of the records on disk. Usually the primary key, but not necessarily.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Nonclustered / secondary index</h3>
+<p style="font-size:26px;line-height:1.4">An <b>extra</b> index on another attribute. It doesn’t match the storage order, so it points into blocks all over the table.</p>
+</div>
+<p style="font-size:26px;line-height:1.45;color:#1A1A1A">A table can be <b>sorted one way only</b>, so it has at most one clustered index, but as many secondary indexes as you like.</p>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> clustered = how the books stand on the shelf. Nonclustered = the catalogue that tells you which shelves to visit.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>An index is a data structure that helps retrieve specific records in a table quickly (random access) instead of scanning. The lecture sorts index types along three axes: clustering vs nonclustered (also called primary vs secondary), dense vs sparse (for clustered indexes) and single-level vs multilevel.</p><p>A clustering (primary) index is on the attribute or set of attributes that determines the order in which records are physically stored. It is usually the primary key, but doesn’t have to be. In the slide’s example the records are stored sorted by userID, so block 1 holds aaa, aardvark, abcd…, block 2 card190, cats00, ccard… and so on.</p><p>A nonclustered (secondary) index is an additional index on some other attribute, which comes apart from the table’s intrinsic storage order. The index of last names says Adams is in block 2, Ahmad in blocks 1 and 10, Allen in blocks 7, 21 and 24: matching rows are scattered. Think of it as sorted vs non-sorted attributes: a table can only be stored sorted along one dimension (its clustered index), so every other search key needs a secondary index. In MySQL’s InnoDB engine the primary key is always the clustered index.</p></div></details>
+</section><section class="topic" id="dense-sparse" aria-labelledby="dense-sparse-h">
+<div class="topic-meta"><a class="num" href="#dense-sparse" title="Link to this section">17</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Indexing</p>
+<h2 id="dense-sparse-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Dense vs. sparse indexes</h2>
+</div>
+<div class="row" style="display:flex;gap:36px;flex-direction:row">
+<div class="fw" style="width:420px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Dense: every key</p><div class="tablewrap"><table class="fw" style="width:420px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">userID</th><th style="color:#FFFFFF;text-align:left">block</th></tr><tr style="background:#FFFFFF"><td>aaa</td><td style="color:#B34E06">1</td></tr><tr style="background:#F2F2F2"><td>aardvark</td><td style="color:#B34E06">1</td></tr><tr style="background:#FFFFFF"><td>abcd</td><td style="color:#B34E06">1</td></tr><tr style="background:#F2F2F2"><td>card190</td><td style="color:#B34E06">2</td></tr><tr style="background:#FFFFFF"><td>cats00</td><td style="color:#B34E06">2</td></tr><tr style="background:#F2F2F2"><td>…</td><td style="color:#B34E06">…</td></tr></table></div></div>
+<div class="fw" style="width:420px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Sparse: one per block</p><div class="tablewrap"><table class="fw" style="width:420px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">userID</th><th style="color:#FFFFFF;text-align:left">block</th></tr><tr style="background:#FFFFFF"><td>aaa</td><td style="color:#B34E06">1</td></tr><tr style="background:#F2F2F2"><td>card190</td><td style="color:#B34E06">2</td></tr><tr style="background:#FFFFFF"><td>dray01</td><td style="color:#B34E06">3</td></tr><tr style="background:#F2F2F2"><td>…</td><td style="color:#B34E06">…</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Dense</h3>
+<p style="font-size:26px;line-height:1.4">Every value of the indexed attribute has its own pointer. Bigger index, direct hit.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Sparse</h3>
+<p style="font-size:26px;line-height:1.4">Only some values have a pointer. Find the nearest entry <b>at or below</b> your key, go to that block, then read forward. Works only because the data is sorted.</p>
+</div>
+<p style="font-size:26px;line-height:1.45;color:#1A1A1A">So sparse indexes only make sense for <b>clustered</b> indexes. A secondary index must be dense. The usual compromise: <b>one entry per block</b>.</p>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> sparse only works when the data is sorted the same way as the index.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A dense index has a direct pointer for every unique value of the indexed attribute(s). A sparse index has pointers for only some of the values; to find a key that isn’t listed, you use the sort order: find the largest index entry that is less than or equal to the key, go to that position, and scan forward from there.</p><p>Example with the userID index: the sparse index lists aaa → block 1, card190 → block 2, dray01 → block 3. To find “cats00”, the largest entry ≤ “cats00” is card190, so read block 2 and look inside it. This only works if the records themselves are stored in userID order, which is why sparse indexes are only relevant to clustered indexes. A secondary index has no order to fall back on, so it must be dense to be usable.</p><p>The common compromise is a sparse index with one entry per block: it is small (one entry per few dozen records) yet still takes you straight to the right block, and you would have to read the whole block anyway.</p></div></details>
+</section><section class="topic" id="multilevel" aria-labelledby="multilevel-h">
+<div class="topic-meta"><a class="num" href="#multilevel" title="Link to this section">19</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Indexing</p>
+<h2 id="multilevel-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">When the index is too big: multilevel</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:760px;display:flex;flex-direction:column;gap:12px">
+<svg aria-hidden="true" class="free" style="width:760px;max-width:100%;height:auto;flex-shrink:0" viewbox="0 0 840 460" font-family="DM Sans, Arial, sans-serif"><defs><marker id="am" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#361A54"/></marker></defs><rect x="20" y="150" width="170" height="150" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><text x="105" y="135" font-size="22" text-anchor="middle" font-weight="700" fill="#361A54">index of index</text><text x="45" y="195" font-size="24" fill="#1A1A1A">A–B</text><text x="45" y="235" font-size="24" fill="#1A1A1A">C–E</text><text x="45" y="275" font-size="24" fill="#1A1A1A">F–H</text><text x="405" y="20" font-size="22" text-anchor="middle" font-weight="700" fill="#361A54">index pages</text><rect x="320" y="30" width="170" height="120" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><text x="340" y="70" font-size="24" fill="#1A1A1A">A…</text><path d="M150 187 C 240 187, 240 90, 314 90" fill="none" stroke="#361A54" stroke-width="3" marker-end="url(#am)"/><rect x="320" y="180" width="170" height="120" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><text x="340" y="220" font-size="24" fill="#1A1A1A">C…</text><path d="M150 227 C 240 227, 240 240, 314 240" fill="none" stroke="#361A54" stroke-width="3" marker-end="url(#am)"/><rect x="320" y="330" width="170" height="120" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><text x="340" y="370" font-size="24" fill="#1A1A1A">F…</text><path d="M150 267 C 240 267, 240 390, 314 390" fill="none" stroke="#361A54" stroke-width="3" marker-end="url(#am)"/><text x="740" y="20" font-size="22" text-anchor="middle" font-weight="700" fill="#361A54">data blocks on disk</text><rect x="660" y="34" width="160" height="76" fill="#FFFFFF" stroke="#361A54" stroke-width="3"/><text x="740" y="80" font-size="20" text-anchor="middle" fill="#666666">block 1</text><rect x="660" y="118" width="160" height="76" fill="#FFFFFF" stroke="#361A54" stroke-width="3"/><text x="740" y="164" font-size="20" text-anchor="middle" fill="#666666">block 2</text><rect x="660" y="202" width="160" height="76" fill="#FFFFFF" stroke="#361A54" stroke-width="3"/><text x="740" y="248" font-size="20" text-anchor="middle" fill="#666666">block 3</text><rect x="660" y="286" width="160" height="76" fill="#FFFFFF" stroke="#361A54" stroke-width="3"/><text x="740" y="332" font-size="20" text-anchor="middle" fill="#666666">block 4</text><rect x="660" y="370" width="160" height="76" fill="#FFFFFF" stroke="#361A54" stroke-width="3"/><text x="740" y="416" font-size="20" text-anchor="middle" fill="#666666">block 5</text><path d="M490 70 C 570 70, 580 72, 654 72" fill="none" stroke="#361A54" stroke-width="2.5" marker-end="url(#am)"/><path d="M490 110 C 570 110, 580 156, 654 156" fill="none" stroke="#361A54" stroke-width="2.5" marker-end="url(#am)"/><path d="M490 220 C 570 220, 580 240, 654 240" fill="none" stroke="#361A54" stroke-width="2.5" marker-end="url(#am)"/><path d="M490 260 C 570 260, 580 324, 654 324" fill="none" stroke="#361A54" stroke-width="2.5" marker-end="url(#am)"/><path d="M490 380 C 570 380, 580 408, 654 408" fill="none" stroke="#361A54" stroke-width="2.5" marker-end="url(#am)"/><text x="105" y="340" font-size="20" text-anchor="middle" fill="#7B2FCC" font-weight="700">kept in memory</text></svg>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4"><b>Load the index</b> into memory and look up the key.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">The index gives the <b>exact block</b> (dense) or a <b>range</b> (sparse).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Load just that block from disk.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Index too big for memory? Build a <b>sparse index of the index</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">5</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Repeat as needed: the layers form a <b>tree</b>. Keep the root in memory.</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> an index of an index is a tree. Keep the root in memory and each level costs one disk read.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>To find a search key: load the index, look through it in memory for the entry you need, which tells you the exact location in secondary storage (dense) or a range (sparse), then load that block (or blocks) from disk. If the index is small enough, the DBMS can keep it in memory permanently and reuse it for later lookups.</p><p>If the index itself is too large to keep comfortably in memory, build another, sparse, index over the index records: it gives the addresses of the blocks that store each range of index entries (A–B, C–E, F–H…). From this “index of the index” you can load exactly the one index block you need. Add more layers as needed; the result is a tree, and keeping its root in memory at all times means each lookup reads one block per level.</p><p>Example: with 1,000,000 index entries and 200 entries per block, the bottom level has 5,000 blocks, the next level 25 blocks, and a single root block covers those 25. Any key is found with about 3 block reads.</p></div></details>
+</section><section class="topic" id="bplus" aria-labelledby="bplus-h">
+<div class="topic-meta"><a class="num" href="#bplus" title="Link to this section">20</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Indexing</p>
+<h2 id="bplus-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">B+ trees: short and fat</h2>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px">
+<svg aria-hidden="true" class="free" style="width:1000px;max-width:100%;height:auto;flex-shrink:0" viewbox="0 0 1180 445" font-family="DM Sans, Arial, sans-serif"><defs><marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#361A54"/></marker></defs><rect x="370" y="20" width="220" height="64" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><line x1="443.3333333333333" y1="20" x2="443.3333333333333" y2="84" stroke="#9A3BFF" stroke-width="1.5"/><line x1="516.6666666666666" y1="20" x2="516.6666666666666" y2="84" stroke="#9A3BFF" stroke-width="1.5"/><circle cx="406.6666666666667" cy="52" r="6" fill="#361A54"/><circle cx="553.3333333333334" cy="52" r="6" fill="#361A54"/><text x="480.0" y="61" font-size="22" text-anchor="middle" fill="#1A1A1A" font-weight="700">SG37</text><rect x="110" y="170" width="220" height="64" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><line x1="183.33333333333331" y1="170" x2="183.33333333333331" y2="234" stroke="#9A3BFF" stroke-width="1.5"/><line x1="256.66666666666663" y1="170" x2="256.66666666666663" y2="234" stroke="#9A3BFF" stroke-width="1.5"/><circle cx="146.66666666666666" cy="202" r="6" fill="#361A54"/><circle cx="293.33333333333337" cy="202" r="6" fill="#361A54"/><text x="220.0" y="211" font-size="22" text-anchor="middle" fill="#1A1A1A" font-weight="700">SG14</text><rect x="630" y="170" width="220" height="64" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><line x1="703.3333333333334" y1="170" x2="703.3333333333334" y2="234" stroke="#9A3BFF" stroke-width="1.5"/><line x1="776.6666666666666" y1="170" x2="776.6666666666666" y2="234" stroke="#9A3BFF" stroke-width="1.5"/><circle cx="666.6666666666666" cy="202" r="6" fill="#361A54"/><circle cx="813.3333333333334" cy="202" r="6" fill="#361A54"/><text x="740.0" y="211" font-size="22" text-anchor="middle" fill="#1A1A1A" font-weight="700">SL21</text><path d="M407 52 L230 164" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M553 52 L730 164" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><rect x="20" y="330" width="170" height="64" fill="#FFF2EB" stroke="#B34E06" stroke-width="2.5"/><text x="105.0" y="370" font-size="22" text-anchor="middle" fill="#B34E06" font-weight="700">SA9</text><rect x="230" y="330" width="170" height="64" fill="#FFF2EB" stroke="#B34E06" stroke-width="2.5"/><text x="315.0" y="370" font-size="22" text-anchor="middle" fill="#B34E06" font-weight="700">SG14</text><rect x="440" y="330" width="250" height="64" fill="#FFF2EB" stroke="#B34E06" stroke-width="2.5"/><text x="565.0" y="370" font-size="22" text-anchor="middle" fill="#B34E06" font-weight="700">SG37 · SG5</text><rect x="730" y="330" width="250" height="64" fill="#FFF2EB" stroke="#B34E06" stroke-width="2.5"/><text x="855.0" y="370" font-size="22" text-anchor="middle" fill="#B34E06" font-weight="700">SL21 · SL41</text><path d="M147 202 L105 324" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M293 202 L315 324" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M667 202 L565 324" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M813 202 L855 324" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M190 362 L226 362" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M400 362 L436 362" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><path d="M690 362 L726 362" stroke="#361A54" stroke-width="2.5" marker-end="url(#ab)"/><text x="610" y="58" font-size="20" fill="#7B2FCC" font-weight="700">root: one block, kept in memory</text><text x="870" y="208" font-size="20" fill="#7B2FCC" font-weight="700">inner nodes: one block each</text><text x="20" y="430" font-size="20" fill="#B34E06" font-weight="700">leaves hold the records, sorted and linked left → right</text><text x="20" y="40" font-size="19" fill="#666666">left of a key: smaller · right: equal or bigger</text></svg>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Balanced</h3>
+<p style="font-size:26px;line-height:1.4">Every leaf is the same distance from the root, so there is a guaranteed upper bound on depth. Insert, update and delete keep it balanced in <b>logarithmic time</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Short and fat</h3>
+<p style="font-size:26px;line-height:1.4">Each node is <b>one block</b>, packed with as many keys and pointers as fit (often hundreds). So the tree is only 3–4 levels deep even for millions of rows.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Leaves are the records</h3>
+<p style="font-size:26px;line-height:1.4">The bottom level holds the actual rows, kept in sorted order and linked left to right, so ranges and ORDER BY are cheap.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> B+ tree = a multilevel index that keeps itself balanced and sorted, with one block per node.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A B+ tree is one of many balanced tree data structures. Balanced trees guarantee an upper bound on the depth of the tree, and they come with specialised insert, update and delete algorithms that keep the tree balanced in logarithmic time.</p><p>B+ trees differ from other balanced trees (such as binary search trees) by being “short” and “fat”: each node is block-sized and is packed with as many pointers to other blocks as will fit. With hundreds of children per node, three or four levels cover millions of records, so a lookup needs only three or four block reads.</p><p>In the lecture’s description, the leaves of the B+ tree are the records of the database, which are different from the interior index nodes. The B+ tree also manages how records are placed in blocks on disk so the table stays in sorted order as items are inserted and deleted. The diagram uses the six staffNo values sorted as text (SA9 < SG14 < SG37 < SG5 < SL21 < SL41); real nodes hold hundreds of keys, not one. To find SG5: at the root SG5 ≥ SG37, go right; at SL21, SG5 < SL21, go left; read that leaf. MySQL’s InnoDB stores every table as a B+ tree on its primary key, which is why lookups and ranges on the primary key are fast.</p></div></details>
+</section><section class="topic" id="hashing" aria-labelledby="hashing-h">
+<div class="topic-meta"><a class="num" href="#hashing" title="Link to this section">21</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Hashing</p>
+<h2 id="hashing-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Hashing: compute the address</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<p class="nw" style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;line-height:1.5;color:#1A1A1A;background:#F7F0FF;border-left:6px solid #9A3BFF;border-radius:0;padding:16px 24px;overflow-x:auto;white-space:nowrap">h( <span style="color:#B34E06">search key</span> )  →  bucket address</p>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Feed the search key into the <b>hash function</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">It returns a storage location (a <b>bucket</b>).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4"><b>Store</b> the record there…</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">…and later <b>look in the same place</b> to find it again.</p></div>
+<div class="fw" style="width:640px;display:flex;flex-direction:column;gap:10px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:700;color:#1A1A1A">Toy hash: number part mod 4</p><div class="tablewrap"><table class="fw" style="width:640px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left">staffNo</th><th style="color:#FFFFFF;text-align:left">digits</th><th style="color:#FFFFFF;text-align:left">mod 4</th><th style="color:#FFFFFF;text-align:left">bucket</th></tr><tr style="background:#FFFFFF"><td>SG37</td><td>37</td><td>37 mod 4</td><td style="color:#B34E06">1</td></tr><tr style="background:#F2F2F2"><td>SG14</td><td>14</td><td>14 mod 4</td><td style="color:#B34E06">2</td></tr><tr style="background:#FFFFFF"><td>SL21</td><td>21</td><td>21 mod 4</td><td style="color:#B34E06">1</td></tr><tr style="background:#F2F2F2"><td>SA9</td><td>9</td><td>9 mod 4</td><td style="color:#B34E06">1</td></tr></table></div></div>
+</div>
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:700;color:#7B2FCC">A good hash function is…</p>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Deterministic</h3>
+<p style="font-size:26px;line-height:1.4">The same key <b>must</b> always give the same address.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Total</h3>
+<p style="font-size:26px;line-height:1.4">It gives an answer for <b>every</b> possible key.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Uniform</h3>
+<p style="font-size:26px;line-height:1.4">It spreads keys <b>evenly</b> across the buckets.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Fast</h3>
+<p style="font-size:26px;line-height:1.4">Quick to calculate, or the shortcut isn’t worth it.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> an index looks the key up; a hash works the address out.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Hashing is an alternative storage and retrieval system that allows (near) instantaneous insert, update and delete. A hash function takes the search-key value as input and outputs an address. Because the function is deterministic, you can compute where a record goes, store it there, and later compute the same location to retrieve it, with no index to search.</p><p>An ideal hash function for database storage has four properties: deterministic behaviour (the same search key sent in twice must give the same output); it gives an answer for every possible search key; it distributes keys over the available storage as uniformly as possible; and it is quick to calculate.</p><p>The toy function in the table takes the number in the staffNo and uses the remainder after dividing by 4 (mod 4). It is deterministic, total and fast, but not very uniform: SG37, SL21 and SA9 all land in bucket 1. Real systems use better-mixing functions. When too many keys land in one bucket, you need an overflow strategy, which is the next section.</p></div></details>
+</section><section class="topic" id="overflow" aria-labelledby="overflow-h">
+<div class="topic-meta"><a class="num" href="#overflow" title="Link to this section">23</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Hashing</p>
+<h2 id="overflow-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">When a bucket is full: overflow</h2>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px">
+<svg aria-hidden="true" class="free" style="width:1180px;max-width:100%;height:auto;flex-shrink:0" viewbox="0 0 1240 340" font-family="DM Sans, Arial, sans-serif"><defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#361A54"/></marker></defs><text x="20" y="34" font-size="24" font-weight="700" fill="#361A54">Open hashing (closed addressing)</text><text x="20" y="104" font-size="24" font-weight="700" fill="#1A1A1A">17</text><rect x="64" y="60" width="170" height="62" fill="#FFFFFF" stroke="#361A54" stroke-width="2.5"/><text x="20" y="174" font-size="24" font-weight="700" fill="#1A1A1A">18</text><rect x="64" y="130" width="170" height="62" fill="#D9D9D9" stroke="#361A54" stroke-width="2.5"/><text x="149" y="170" font-size="20" text-anchor="middle" fill="#1A1A1A">FULL</text><text x="20" y="244" font-size="24" font-weight="700" fill="#1A1A1A">19</text><rect x="64" y="200" width="170" height="62" fill="#FFFFFF" stroke="#361A54" stroke-width="2.5"/><path d="M234 161 L282 161" stroke="#361A54" stroke-width="2.5" marker-end="url(#ah2)"/><rect x="288" y="130" width="150" height="62" fill="#D9D9D9" stroke="#361A54" stroke-width="2.5"/><text x="363" y="170" font-size="20" text-anchor="middle" fill="#1A1A1A">FULL</text><path d="M438 161 L486 161" stroke="#361A54" stroke-width="2.5" marker-end="url(#ah2)"/><rect x="492" y="130" width="150" height="62" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="3"/><text x="567" y="170" font-size="20" text-anchor="middle" fill="#7B2FCC" font-weight="700">store here</text><text x="20" y="300" font-size="20" fill="#666666">h(key) = 18 → follow the overflow chain</text><text x="720" y="34" font-size="24" font-weight="700" fill="#361A54">Closed hashing (open addressing)</text><text x="720" y="104" font-size="24" font-weight="700" fill="#1A1A1A">17</text><rect x="764" y="60" width="170" height="62" fill="#FFFFFF" stroke="#361A54" stroke-width="2.5"/><text x="720" y="174" font-size="24" font-weight="700" fill="#1A1A1A">18</text><rect x="764" y="130" width="170" height="62" fill="#D9D9D9" stroke="#361A54" stroke-width="2.5"/><text x="849" y="170" font-size="20" text-anchor="middle" fill="#1A1A1A">FULL</text><text x="720" y="244" font-size="24" font-weight="700" fill="#1A1A1A">19</text><rect x="764" y="200" width="170" height="62" fill="#D9D9D9" stroke="#361A54" stroke-width="2.5"/><text x="849" y="240" font-size="20" text-anchor="middle" fill="#1A1A1A">FULL</text><text x="720" y="314" font-size="24" font-weight="700" fill="#1A1A1A">20</text><rect x="764" y="270" width="170" height="62" fill="#EEDEFF" stroke="#9A3BFF" stroke-width="2.5"/><text x="849" y="310" font-size="20" text-anchor="middle" fill="#7B2FCC" font-weight="700">store here</text><path d="M950 161 C 1010 190, 1010 300, 950 311" fill="none" stroke="#361A54" stroke-width="2.5" marker-end="url(#ah2)"/><text x="1020" y="240" font-size="20" fill="#666666">probe the next</text><text x="1020" y="266" font-size="20" fill="#666666">free bucket</text></svg>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Open hashing</h3>
+<p style="font-size:26px;line-height:1.4">The key <b>always</b> goes to its own bucket. Extra records go into overflow buckets chained on with a <b>linked list</b>. Needs a second structure besides the table.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Closed hashing</h3>
+<p style="font-size:26px;line-height:1.4">Overflow is pushed into <b>another</b> bucket, e.g. the next free one (<b>linear probing</b>). Where a key ends up depends on what was already in the table.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">What databases use</h3>
+<p style="font-size:26px;line-height:1.4">The <b>linked-list</b> (open hashing) kind, because deleting is easy: you never have to worry that a later key was pushed past the one you remove.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> open hashing = queue behind your own door. Closed hashing = take the next free door.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Sometimes the hash function assigns more items to a bucket than it can hold: bucket overflow. There are two strategies, with confusingly opposite names.</p><p>Open hashing uses an extra structure, such as a linked list of overflow buckets, to give a full bucket more room. Every key is definitely stored at the location the hash function gave (so it is also called closed addressing), but you need a secondary data structure besides the hash table itself (hence open hashing). In the slide, address 18 is full and so is its first overflow bucket, so the new record goes in a third bucket on the chain.</p><p>Closed hashing uses a rule such as linear probing to choose another hash location for the overflow item: if 18 is full, try 19; if 19 is full, try 20. Keys are therefore not necessarily stored where the hash function says (open addressing), and where a key ends up depends on the contents of the table at the time. Deletion becomes awkward, because removing a key can break the probe path to keys stored after it. That is why the linked-list type is the one commonly used in databases.</p></div></details>
+</section><section class="topic" id="index-vs-hash" aria-labelledby="index-vs-hash-h">
+<div class="topic-meta"><a class="num" href="#index-vs-hash" title="Link to this section">24</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Seek · Summary</p>
+<h2 id="index-vs-hash-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Index or hash? Pick by the query</h2>
+</div>
+<div class="row" style="display:flex;gap:36px;flex-direction:row">
+<div class="fw" style="width:1100px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:1100px;font-size:26px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left"></th><th style="color:#D0A3FF;text-align:left">Clustered index (B+ tree)</th><th style="color:#FFAE80;text-align:left">Hashing</th></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">Order</td><td>Stored <b>sorted</b>: ranges and ORDER BY are easy</td><td>Stored in <b>random</b> order: ranges and sorting are hard</td></tr><tr style="background:#F2F2F2"><td style="color:#7B2FCC">Cost</td><td><b>O(log n)</b> per operation</td><td><b>O(1)</b> in the typical case</td></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">Robustness</td><td>One implementation suits <b>any</b> data</td><td>Depends on a <b>good hash function</b>; a change in the key distribution can hurt it</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:32px;font-weight:700;color:#7B2FCC">Which one?</p>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">WHERE staffNo = …</h3>
+<p style="font-size:24px;line-height:1.4">Exact match on a key: <b>hash</b> is ideal; an index is fine too.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">WHERE salary BETWEEN …</h3>
+<p style="font-size:24px;line-height:1.4">Range, or ORDER BY: <b>index</b>. A hash can’t help.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> hash for “exactly this one”, index for “everything between these”.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture’s comparison: with a clustered index the data is stored in sorted order, so reading data in ranges or in sorted order is simple; operations cost O(log n); and a single implementation works for any type of data. With hashing the data is stored in effectively random order, so ranges and sorted reads are non-trivial; operations are O(1) in the typical case; and performance depends on choosing a good hash function, so a change in the distribution of search keys can change how well it performs.</p><p>The concepts from this lecture set up how a DBMS processes queries (coming next): primary vs secondary storage and their trade-offs; packing records into pages or blocks; and the two kinds of search aid, indexes (direct pointers to where data is, in various types, implemented as multilevel B+ trees) and hashing (a repeatable mapping from search key to storage location, giving near-instant lookup from the value itself).</p><p>In MySQL: CREATE INDEX idx_lname ON Staff(lName); adds a secondary B+ tree index (InnoDB’s default). The MEMORY engine can use HASH indexes. EXPLAIN SELECT … shows whether a query uses an index.</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="ship.html"><span>Previous</span>Ship</a><a class="next" href="sigma.html"><span>Next</span>Sigma</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

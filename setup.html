@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup · Databases & SQL</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body id="top" class="pg-setup">
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
+<p class="mast-tag">Weeks 1–3 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#devtools"><span class="n">3</span><span class="t">['The tutorial’s first tips are about working in HTML. Right-click → View page source shows the raw HTML of any page, which is also a good way to learn HTML from real sites. Most browsers have developer tools built in (in some you enable them in the options) or available as a plugin; right-click → Inspect element opens them. You can view the source, inspect elements and their CSS, and much more. Moving the cursor over the source highlights the matching part of the page, and you can visualise the effect of removing CSS rules.', 'The Console tab displays error messages and print statements generated while the current page loads (for example from JavaScript). It is very useful for working out why a page isn’t displaying properly.', 'For a database-backed site most bugs are on the server, where the browser can’t see them. PHP pages arrive in the browser as plain HTML, so View source shows what your PHP printed (a missing closing tag, a warning message in the middle of a table). During development turn on display_errors and error_reporting(E_ALL) at the top of a page (or in a shared include) so PHP errors appear on the page; turn them off before anything is public, because error messages can reveal file paths and SQL. Errors are also written to the PHP error log in your XAMPP or MAMP folder.']</span></a></li><li><a href="#git-model"><span class="n">7</span><span class="t">How Git thinks: four places for your work</span></a></li><li><a href="#team-repo"><span class="n">8</span><span class="t">Start the team repository</span></a></li><li><a href="#daily-loop"><span class="n">9</span><span class="t">The daily loop: pull, add, commit, push</span></a></li><li><a href="#conflicts"><span class="n">10</span><span class="t">Merge conflicts, calmly</span></a></li><li><a href="#branches"><span class="n">+</span><span class="t">Branches: work on a feature without breaking main</span></a></li><li><a href="#sql-scripts"><span class="n">13</span><span class="t">Keep the database in SQL scripts</span></a></li><li><a href="#create-db"><span class="n">14</span><span class="t">Create the database and its user</span></a></li><li><a href="#engines"><span class="n">16</span><span class="t">Tables and engines: use InnoDB</span></a></li><li><a href="#seed-load"><span class="n">17</span><span class="t">Seed data, load the scripts, check it worked</span></a></li><li><a href="#backup"><span class="n">20</span><span class="t">Back up before you break it</span></a></li><li><a href="#php-connect"><span class="n">+</span><span class="t">Connect PHP to the database, safely</span></a></li><li><a href="#todo"><span class="n">21</span><span class="t">Your project to-do list</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">07</p>
+<p class="eyebrow">Part 7 · Setup · Lab 3</p>
+<h1>Set up the group project</h1>
+<p class="lead">Git for teamwork and a MySQL + PHP backend you can rebuild from scripts: the habits that save the most time.</p>
+<p class="range">Project tutorial 3 · sections 3–21</p>
+<div class="about"><p>Part 7 covers <b>Project Tutorial 3: Time-saving Development Tips</b> (Lab 3): browser dev tools, working as a team with Git and GitHub, and keeping your MySQL database in scripts so everyone can rebuild it.</p><p>Section numbers match the tutorial’s slide numbers; <b>+</b> marks extra sections that go beyond the slides (branches, and connecting PHP safely). The examples continue the auction app from <a href="ship.html">Part 4</a>.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#devtools"><span class="n">3</span> ['The tutorial’s first tips are about working in HTML. Right-click → View page source shows the raw HTML of any page, which is also a good way to learn HTML from real sites. Most browsers have developer tools built in (in some you enable them in the options) or available as a plugin; right-click → Inspect element opens them. You can view the source, inspect elements and their CSS, and much more. Moving the cursor over the source highlights the matching part of the page, and you can visualise the effect of removing CSS rules.', 'The Console tab displays error messages and print statements generated while the current page loads (for example from JavaScript). It is very useful for working out why a page isn’t displaying properly.', 'For a database-backed site most bugs are on the server, where the browser can’t see them. PHP pages arrive in the browser as plain HTML, so View source shows what your PHP printed (a missing closing tag, a warning message in the middle of a table). During development turn on display_errors and error_reporting(E_ALL) at the top of a page (or in a shared include) so PHP errors appear on the page; turn them off before anything is public, because error messages can reveal file paths and SQL. Errors are also written to the PHP error log in your XAMPP or MAMP folder.']</a></li><li><a href="#git-model"><span class="n">7</span> How Git thinks: four places for your work</a></li><li><a href="#team-repo"><span class="n">8</span> Start the team repository</a></li><li><a href="#daily-loop"><span class="n">9</span> The daily loop: pull, add, commit, push</a></li><li><a href="#conflicts"><span class="n">10</span> Merge conflicts, calmly</a></li><li><a href="#branches"><span class="n">+</span> Branches: work on a feature without breaking main</a></li><li><a href="#sql-scripts"><span class="n">13</span> Keep the database in SQL scripts</a></li><li><a href="#create-db"><span class="n">14</span> Create the database and its user</a></li><li><a href="#engines"><span class="n">16</span> Tables and engines: use InnoDB</a></li><li><a href="#seed-load"><span class="n">17</span> Seed data, load the scripts, check it worked</a></li><li><a href="#backup"><span class="n">20</span> Back up before you break it</a></li><li><a href="#php-connect"><span class="n">+</span> Connect PHP to the database, safely</a></li><li><a href="#todo"><span class="n">21</span> Your project to-do list</a></li></ol></details><section class="topic" id="devtools" aria-labelledby="devtools-h">
+<div class="topic-meta"><a class="num" href="#devtools" title="Link to this section">3</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Front end</p>
+<h2 id="devtools-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Debug the page: source, Inspect, Console</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">View page source</h3>
+<p style="font-size:26px;line-height:1.4">Right-click → <b>View page source</b>. Shows the HTML the server sent. For a PHP page, that’s the <b>output</b> of your PHP, so it’s the quickest way to see what your code actually printed.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Inspect element</h3>
+<p style="font-size:26px;line-height:1.4">Right-click → <b>Inspect</b>. Hover the code to highlight that part of the page; switch CSS rules off and on live to see what each one does.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Console</h3>
+<p style="font-size:26px;line-height:1.4">The dev-tools tab with <b>error messages</b> and print output (e.g. JavaScript’s console.log). First place to look when the page won’t display properly.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Network</h3>
+<p style="font-size:26px;line-height:1.4">Lists every request. Click your form’s POST to see exactly which fields were sent to the PHP script, and what came back.</p>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#7B2FCC">When the problem is in PHP, not the browser</p>
+<div class="fw" style="width:980px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap">&lt;?php<br/><span style="color:#D0A3FF">ini_set</span>(<span style="color:#FFAE80">'display_errors'</span>, 1);&nbsp;&nbsp;<span style="color:#B3B3B3">// show errors (dev only)</span><br/><span style="color:#D0A3FF">error_reporting</span>(E_ALL);&nbsp;&nbsp;<span style="color:#B3B3B3">// report everything</span></p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:0px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">XAMPP error log</h3>
+<p style="font-size:24px;line-height:1.4">Blank page? Check <span style="font-family:'JetBrains Mono', 'Courier New', monospace">xamppfiles/logs/php_error_log</span> (Mac) or <span style="font-family:'JetBrains Mono', 'Courier New', monospace">xampp\php\logs</span> (Windows).</p>
+</div>
+</div>
+</div></p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>t</p><p>h</p><p>e</p><p> </p><p>b</p><p>r</p><p>o</p><p>w</p><p>s</p><p>e</p><p>r</p><p> </p><p>s</p><p>h</p><p>o</p><p>w</p><p>s</p><p> </p><p>w</p><p>h</p><p>a</p><p>t</p><p> </p><p>P</p><p>H</p><p>P</p><p> </p><p><</p><p>i</p><p>></p><p>p</p><p>r</p><p>o</p><p>d</p><p>u</p><p>c</p><p>e</p><p>d</p><p><</p><p>/</p><p>i</p><p>></p><p>.</p><p> </p><p>V</p><p>i</p><p>e</p><p>w</p><p> </p><p>s</p><p>o</p><p>u</p><p>r</p><p>c</p><p>e</p><p> </p><p>t</p><p>o</p><p> </p><p>s</p><p>e</p><p>e</p><p> </p><p>i</p><p>t</p><p> </p><p>r</p><p>a</p><p>w</p><p>;</p><p> </p><p>C</p><p>o</p><p>n</p><p>s</p><p>o</p><p>l</p><p>e</p><p> </p><p>a</p><p>n</p><p>d</p><p> </p><p>N</p><p>e</p><p>t</p><p>w</p><p>o</p><p>r</p><p>k</p><p> </p><p>t</p><p>o</p><p> </p><p>s</p><p>e</p><p>e</p><p> </p><p>w</p><p>h</p><p>a</p><p>t</p><p> </p><p>w</p><p>e</p><p>n</p><p>t</p><p> </p><p>w</p><p>r</p><p>o</p><p>n</p><p>g</p><p>.</p></div></details>
+</section><section class="topic" id="git-model" aria-labelledby="git-model-h">
+<div class="topic-meta"><a class="num" href="#git-model" title="Link to this section">7</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Git</p>
+<h2 id="git-model-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">How Git thinks: four places for your work</h2>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px">
+<svg aria-hidden="true" class="free" style="width:1580px;max-width:100%;height:auto;flex-shrink:0" viewbox="0 0 1650 385" font-family="DM Sans, Arial, sans-serif"><defs><marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#361A54"/></marker><marker id="ag2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#B34E06"/></marker></defs><rect x="20" y="120" width="290" height="130" fill="#FFFFFF" stroke="#361A54" stroke-width="3"/><text x="165.0" y="178" font-size="28" font-weight="700" text-anchor="middle" fill="#1A1A1A">Working folder</text><text x="165.0" y="214" font-size="20" text-anchor="middle" fill="#1A1A1A" opacity=".85">the files you edit</text><rect x="460" y="120" width="290" height="130" fill="#EEDEFF" stroke="#361A54" stroke-width="3"/><text x="605.0" y="178" font-size="28" font-weight="700" text-anchor="middle" fill="#1A1A1A">Staging area</text><text x="605.0" y="214" font-size="20" text-anchor="middle" fill="#1A1A1A" opacity=".85">changes picked for the commit</text><rect x="900" y="120" width="290" height="130" fill="#361A54" stroke="#361A54" stroke-width="3"/><text x="1045.0" y="178" font-size="28" font-weight="700" text-anchor="middle" fill="#FFFFFF">Local repository</text><text x="1045.0" y="214" font-size="20" text-anchor="middle" fill="#FFFFFF" opacity=".85">your commits (history)</text><rect x="1340" y="120" width="290" height="130" fill="#9A3BFF" stroke="#361A54" stroke-width="3"/><text x="1485.0" y="178" font-size="28" font-weight="700" text-anchor="middle" fill="#FFFFFF">GitHub (remote)</text><text x="1485.0" y="214" font-size="20" text-anchor="middle" fill="#FFFFFF" opacity=".85">the team’s shared copy</text><path d="M318 185 L450 185" stroke="#361A54" stroke-width="4" marker-end="url(#ag)"/><text x="385.0" y="168" font-size="22" font-weight="700" text-anchor="middle" fill="#7B2FCC" font-family="JetBrains Mono, monospace">git add</text><path d="M758 185 L890 185" stroke="#361A54" stroke-width="4" marker-end="url(#ag)"/><text x="825.0" y="168" font-size="22" font-weight="700" text-anchor="middle" fill="#7B2FCC" font-family="JetBrains Mono, monospace">git commit</text><path d="M1198 185 L1330 185" stroke="#361A54" stroke-width="4" marker-end="url(#ag)"/><text x="1265.0" y="168" font-size="22" font-weight="700" text-anchor="middle" fill="#7B2FCC" font-family="JetBrains Mono, monospace">git push</text><path d="M1485.0 254 C 1485.0 345, 165.0 345, 165.0 260" fill="none" stroke="#B34E06" stroke-width="4" marker-end="url(#ag2)"/><text x="825.0" y="334" font-size="24" font-weight="700" text-anchor="middle" fill="#B34E06" font-family="JetBrains Mono, monospace">git pull</text><text x="825.0" y="366" font-size="20" text-anchor="middle" fill="#666666">fetch teammates’ commits and merge them into your files</text><text x="1485.0" y="60" font-size="22" font-weight="700" text-anchor="middle" fill="#7B2FCC" font-family="JetBrains Mono, monospace">git clone</text><text x="1485.0" y="90" font-size="19" text-anchor="middle" fill="#666666">once: copy the whole repo down</text></svg>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Saves snapshots</h3>
+<p style="font-size:26px;line-height:1.4">Each <b>commit</b> records the state of the project, with a message. You can go back to any of them.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Lets you work at once</h3>
+<p style="font-size:26px;line-height:1.4">Everyone has a full copy. Work in parallel, then <b>merge</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Keeps the history</h3>
+<p style="font-size:26px;line-height:1.4"><span style="font-family:'JetBrains Mono', 'Courier New', monospace">git log</span> shows who changed what, when and why.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Local vs remote</h3>
+<p style="font-size:26px;line-height:1.4"><b>commit</b> only saves on <b>your</b> machine. Nobody sees it until you <b>push</b>.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> add → commit → push sends work up; pull brings everyone else’s down. Commit is local until you push.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A version control tool (the tutorial mentions Subversion and git) saves the current state of your project, allows several people to access and edit the files at the same time, and keeps a record of how the project has changed over time. Git is the standard choice, and GitHub hosts the shared copy.</p><p>It helps to picture four places. Your working folder holds the files you edit. git add copies chosen changes into the staging area: the list of changes you are proposing for the next snapshot. git commit turns everything staged into a commit in your local repository, with a message describing it. git push uploads your new commits to the remote (GitHub), where teammates can get them with git pull, which downloads their commits and merges them into your files. git clone is the one-off command that copies a whole remote repository to your machine to start with.</p><p>The key surprise for beginners: commit is local. You can commit ten times and your team sees nothing until you push. Conversely, their pushed work only reaches your files when you pull.</p></div></details>
+</section><section class="topic" id="team-repo" aria-labelledby="team-repo-h">
+<div class="topic-meta"><a class="num" href="#team-repo" title="Link to this section">8</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Git</p>
+<h2 id="team-repo-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Start the team repository</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:20px">
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Install Git: <b>git-scm.com/downloads</b> (macOS: it may already be there; run <span style="font-family:'JetBrains Mono', 'Courier New', monospace">git --version</span>).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4"><b>One</b> team member creates a <b>private</b> repository on GitHub (web interface) and adds the others under <b>Settings → Collaborators</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Everyone <b>clones</b> it into their *AMP web folder (<b>htdocs</b>), so Apache serves it straight away.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Open <b>http://localhost/auction/</b> (MAMP: port 8888) to see it running.</p></div>
+<div class="grow" style="flex:1;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3"># once per computer</span><br/>git config --global user.name "Your Name"<br/>git config --global user.email "you@ucl.ac.uk"<br/>git config --global pull.rebase false<br/><br/><span style="color:#B3B3B3"># Mac XAMPP · Windows: cd C:\xampp\htdocs</span><br/>cd /Applications/XAMPP/xamppfiles/htdocs<br/><span style="color:#B3B3B3"># URL from the green Code button on GitHub</span><br/><span style="color:#D0A3FF">git clone</span> https://github.com/<span style="color:#FFAE80">team</span>/<span style="color:#FFAE80">auction</span>.git</p>
+</div>
+</div>
+<div class="fw" style="width:660px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#7B2FCC">A tidy project folder</p>
+<div class="fw" style="width:660px;background:#F7F0FF;border-left:6px solid #9A3BFF;padding:20px 24px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.55;color:#1A1A1A;white-space:nowrap">htdocs/auction/<br/>├── .gitignore<br/>├── README.md          <span style="color:#666666">how to set it up</span><br/>├── config.example.php <span style="color:#666666">template, committed</span><br/>├── config.php         <span style="color:#B34E06;font-weight:700">passwords: NOT committed</span><br/>├── db.php             <span style="color:#666666">one shared connection</span><br/>├── index.php, browse.php, …<br/>└── sql/<br/>    ├── 00_create_db.sql<br/>    ├── 01_schema.sql<br/>    └── 02_seed.sql</p></div>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;font-weight:700;color:#7B2FCC">.gitignore</p>
+<div class="fw" style="width:660px;background:#F7F0FF;border-left:6px solid #9A3BFF;padding:20px 24px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.55;color:#1A1A1A;white-space:nowrap">config.php<br/>.DS_Store<br/>*.log<br/>backups/</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> one person creates the repo, everyone clones it into htdocs. Passwords stay out of Git.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The tutorial’s steps: install git (git-scm.com/downloads); create a shared repository on GitHub using its web interface; check it out from the command line with git clone [the URL GitHub gives you] (some IDEs, and GitHub Desktop, will do this for you). It may be helpful to clone straight into your *AMP www directory (htdocs), so the web server can run the code without copying files around. This week’s to-do: one team member sets up the GitHub project and the rest clone it.</p><p>Set your name and email once per computer so commits are labelled correctly. Setting pull.rebase false tells git that git pull should merge; recent git versions otherwise stop with “Need to specify how to reconcile divergent branches” the first time your copy and the remote have both changed. When you first push over HTTPS, GitHub will not accept your account password: sign in through the browser window Git Credential Manager opens, use GitHub Desktop or the gh CLI (gh auth login), or set up an SSH key.</p><p>Keep secrets out of the repository: a config.php holding the database password is listed in .gitignore, and a config.example.php with placeholder values is committed instead, so each teammate copies it and fills in their own. Ignore system junk (.DS_Store), logs and local database dumps too. A short README saying how to create the database and which config to copy saves your teammates (and markers) time.</p></div></details>
+</section><section class="topic" id="daily-loop" aria-labelledby="daily-loop-h">
+<div class="topic-meta"><a class="num" href="#daily-loop" title="Link to this section">9</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Git</p>
+<h2 id="daily-loop-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The daily loop: pull, add, commit, push</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:1060px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">git pull</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># start of a session: get teammates’ work</span><br/><span style="color:#B3B3B3"># … edit files, test in the browser …</span><br/><span style="color:#D0A3FF">git status</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># what changed? what’s staged?</span><br/><span style="color:#D0A3FF">git diff</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># the exact lines you changed</span><br/><span style="color:#D0A3FF">git add</span> browse.php sql/02_seed.sql&nbsp;&nbsp;<span style="color:#B3B3B3"># stage these changes</span><br/><span style="color:#D0A3FF">git commit</span> -m <span style="color:#FFAE80">"Browse page lists live auctions"</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># snapshot + message</span><br/><span style="color:#D0A3FF">git pull</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># anything new since? merge it first</span><br/><span style="color:#D0A3FF">git push</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># publish your commits</span><br/><br/><span style="color:#D0A3FF">git log</span> --oneline --graph&nbsp;&nbsp;<span style="color:#B3B3B3"># history at a glance</span><br/><span style="color:#D0A3FF">git restore</span> file.php&nbsp;&nbsp;<span style="color:#B3B3B3"># throw away uncommitted edits</span></p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Small, frequent commits</h3>
+<p style="font-size:24px;line-height:1.4">One idea per commit (“Add bid form”), not one per day. Easy to understand, easy to undo.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Good messages</h3>
+<p style="font-size:24px;line-height:1.4">Say what and why: “Fix bid check: reject bids below current price”, not “stuff”.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Push often</h3>
+<p style="font-size:24px;line-height:1.4">Pull before you start and before you push. The longer you wait, the bigger the conflicts.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">git add specific files</h3>
+<p style="font-size:24px;line-height:1.4">Check <b>git status</b> first; <span style="font-family:'JetBrains Mono', 'Courier New', monospace">git add .</span> happily stages files you didn’t mean to share.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> pull → work → add → commit → pull → push. Little and often keeps conflicts small.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Stage changes with git add [filename]: this adds the changes in that file to the list of changes you are proposing to make. git commit then updates your local repository with a snapshot of everything you have added; give it a message describing what you did (-m "…" on the command line, otherwise an editor opens).</p><p>Use git pull frequently to get the most up-to-date changes from the remote repository; a pull also automatically tries to merge them into your files. Once you have committed, publish with git push. Stage, commit and push frequently to keep the rest of your group in the loop and to prevent conflicts. If git push is rejected because the remote has commits you don’t have, git pull first, then push again.</p><p>Useful extras: git status (what changed and what is staged), git diff (the exact changed lines), git log --oneline --graph (history), git restore file (discard uncommitted changes to a file) and git revert <commit> (undo a pushed commit safely by adding a new commit that reverses it; avoid rewriting history that teammates already have). The tutorial points to Roger Dudler’s “git – the simple guide” (rogerdudler.github.io/git-guide) for a one-page reference.</p></div></details>
+</section><section class="topic" id="conflicts" aria-labelledby="conflicts-h">
+<div class="topic-meta"><a class="num" href="#conflicts" title="Link to this section">10</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Git</p>
+<h2 id="conflicts-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Merge conflicts, calmly</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:1000px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.5;color:#F2F2F2;white-space:nowrap">$ <span style="color:#D0A3FF">git pull</span><br/>Auto-merging browse.php<br/><span style="color:#B34E06;font-weight:700">CONFLICT (content): Merge conflict in browse.php</span><br/>Automatic merge failed; fix conflicts and then commit the result.</p>
+</div>
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:26px;font-weight:700;color:#1A1A1A">browse.php now contains both versions:</p>
+<div class="fw" style="width:1000px;background:#F7F0FF;border-left:6px solid #9A3BFF;padding:20px 24px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.55;color:#1A1A1A;white-space:nowrap"><span style="color:#B34E06;font-weight:700">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><span style="color:#666666">                 ← yours</span><br/>$title = "Live auctions";<br/><span style="color:#B34E06;font-weight:700">=======</span><br/>$title = "Current auctions";<br/><span style="color:#B34E06;font-weight:700">&gt;&gt;&gt;&gt;&gt;&gt;&gt; 3f9c2e1 (Rename title)</span><span style="color:#666666">  ← theirs</span></p></div>
+</div>
+<div class="fw" style="width:600px;display:flex;flex-direction:column;gap:14px">
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:24px;line-height:1.4">Open the file. Find the <b>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</b> markers (<b>git status</b> lists the files).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:24px;line-height:1.4">Decide: keep yours, keep theirs, or combine. <b>Talk to your teammate</b> if unsure.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:24px;line-height:1.4">Delete <b>all three</b> marker lines.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:24px;line-height:1.4">Test the page still works.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">5</p><p class="grow" style="flex:1;font-size:24px;line-height:1.4"><b>git add</b> the file, <b>git commit</b>, <b>git push</b>.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Prevent them</h3>
+<p style="font-size:24px;line-height:1.4">Pull often, push often, and split work by file or feature so two people rarely edit the same lines.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> git merges what it can. When two people change the same line, it asks <b>you</b> to decide.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A pull merges the remote changes into your files. Git does sensible merges automatically (different files, or different parts of the same file, are combined without fuss), but it is not a mind-reader: if you and a collaborator changed the same line in different ways, it can’t know which is right. It reports a merge conflict, and you need to resolve it manually and commit the final decision.</p><p>In the file, git marks the conflicting region: the lines between <<<<<<< HEAD and ======= are your version, the lines between ======= and >>>>>>> are the incoming one. Edit the region into what it should be (one version, the other, or a combination), delete the three marker lines, save, check the page still works, then git add the file and git commit (git pre-fills a merge message) and push. If it all goes wrong, git merge --abort returns you to the state before the pull.</p><p>Editors such as VS Code show “Accept current / Accept incoming / Accept both” buttons above each conflict, which is the same decision with less typing. Never commit a file that still contains the marker lines: PHP will refuse to run it.</p></div></details>
+</section><section class="topic" id="branches" aria-labelledby="branches-h">
+<div class="topic-meta"><a class="num" href="#branches" title="Link to this section">+</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Git · beyond the slides</p>
+<h2 id="branches-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Branches: work on a feature without breaking main</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:1000px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#D0A3FF">git switch</span> -c feature/bidding&nbsp;&nbsp;<span style="color:#B3B3B3"># new branch from where you are</span><br/><span style="color:#B3B3B3"># … edit, add, commit as usual …</span><br/><span style="color:#D0A3FF">git push</span> -u origin feature/bidding&nbsp;&nbsp;<span style="color:#B3B3B3"># first push of the branch</span><br/><span style="color:#B3B3B3"># on GitHub: open a Pull Request → teammate reviews → Merge</span><br/><br/><span style="color:#D0A3FF">git switch</span> main&nbsp;&nbsp;<span style="color:#B3B3B3"># back to the shared branch</span><br/><span style="color:#D0A3FF">git pull</span>&nbsp;&nbsp;<span style="color:#B3B3B3"># now includes the merged feature</span><br/><span style="color:#D0A3FF">git branch</span> -d feature/bidding&nbsp;&nbsp;<span style="color:#B3B3B3"># tidy up</span></p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Why bother?</h3>
+<p style="font-size:24px;line-height:1.4"><b>main</b> stays working at all times, so the demo never breaks because someone is half-way through a change.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Pull requests</h3>
+<p style="font-size:24px;line-height:1.4">A page on GitHub showing the branch’s changes. A teammate reads it before it’s merged: a free code review.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Keep it simple</h3>
+<p style="font-size:24px;line-height:1.4">Optional for a small team. If you use branches, keep them short-lived (a day or two) and merge often.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> main = always works. Build features on a branch, merge them back through a pull request.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This is not on the tutorial slides, but it is the natural next step once the daily loop is comfortable. A branch is a separate line of commits. git switch -c feature/bidding creates one and moves you onto it; your commits there don’t affect main until the branch is merged.</p><p>Push the branch with git push -u origin feature/bidding (-u links your local branch to the remote one, so later plain git push / git pull work). On GitHub, open a pull request from the branch into main: it shows every changed line, teammates can comment, and the Merge button combines it into main. Afterwards everyone switches to main and pulls.</p><p>Conflicts still happen with branches (they appear in the pull request, or when you merge main into your branch), and are resolved exactly as in the previous section. For a coursework team of three or four, working directly on main with frequent small commits is fine; branches are worth it when a change takes more than a session or would leave the site broken part-way.</p></div></details>
+</section><section class="topic" id="sql-scripts" aria-labelledby="sql-scripts-h">
+<div class="topic-meta"><a class="num" href="#sql-scripts" title="Link to this section">13</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Backend</p>
+<h2 id="sql-scripts-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Keep the database in SQL scripts</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div class="row" style="display:flex;gap:18px;flex-direction:row">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">mysql command line</h3>
+<p style="font-size:24px;line-height:1.4">Type SQL directly. Fast once you know it.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">phpMyAdmin</h3>
+<p style="font-size:24px;line-height:1.4">Web interface that comes with XAMPP/MAMP. Point and click, or paste SQL.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">MySQL Workbench</h3>
+<p style="font-size:24px;line-height:1.4">Desktop app: diagrams, query editor.</p>
+</div>
+</div>
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#7B2FCC">The tutorial’s suggestion</p>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Write <b>SQL scripts</b> in your editor or IDE.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Share them with teammates <b>through Git</b>, like any other code.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Load them with <b>phpMyAdmin</b> (or the mysql console).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">So your database and table definitions are <b>properly recorded</b>.</p></div>
+</div>
+<div class="fw" style="width:600px;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:600px;background:#F7F0FF;border-left:6px solid #9A3BFF;padding:20px 24px"><p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.55;color:#1A1A1A;white-space:nowrap">sql/<br/>├── 00_create_db.sql <span style="color:#666666">database + app user</span><br/>├── 01_schema.sql    <span style="color:#666666">CREATE TABLE …</span><br/>└── 02_seed.sql      <span style="color:#666666">INSERT sample rows</span></p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">Why scripts beat clicking</h3>
+<p style="font-size:26px;line-height:1.4">Anyone can rebuild an <b>identical</b> database in seconds. Changing the design = edit the script, re-run it. And Git shows how the schema changed.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">One rule</h3>
+<p style="font-size:24px;line-height:1.4">If you change a table in phpMyAdmin by clicking, <b>also</b> change the script, or your teammates’ databases will drift apart.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> the scripts are the real database design. Git shares them; phpMyAdmin just runs them.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Many tools work with MySQL: the mysql command-line client, phpMyAdmin, MySQL Workbench and others. The tutorial’s suggestion is to create SQL scripts, edited in an editor or IDE and shared with teammates via git, and load them using phpMyAdmin, so your database and table definitions are properly recorded.</p><p>Each teammate runs MySQL on their own computer, so the database itself is not shared through GitHub, only the scripts that build it. Numbering the scripts (00, 01, 02…) makes the run order obvious: create the database and user, then the tables (parents before children because of foreign keys), then the sample data. Because 00 drops and recreates the database, re-running all three gives everyone the same fresh state.</p><p>Scripts allow rapid experimentation with table designs without locking you in: change the CREATE TABLE, re-run, and test. The next sections build these three files for the auction app from Part 4.</p></div></details>
+</section><section class="topic" id="create-db" aria-labelledby="create-db-h">
+<div class="topic-meta"><a class="num" href="#create-db" title="Link to this section">14</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Backend</p>
+<h2 id="create-db-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Create the database and its user</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:1000px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">-- sql/00_create_db.sql</span><br/><span style="color:#D0A3FF">DROP DATABASE IF EXISTS</span> auction;<br/><br/><span style="color:#D0A3FF">CREATE DATABASE</span> auction<br/>  <span style="color:#D0A3FF">DEFAULT CHARACTER SET</span> <span style="color:#FFAE80">utf8mb4</span><br/>  <span style="color:#D0A3FF">DEFAULT COLLATE</span> <span style="color:#FFAE80">utf8mb4_unicode_ci</span>;<br/><br/><span style="color:#D0A3FF">CREATE USER IF NOT EXISTS</span> <span style="color:#FFAE80">'auction_app'</span>@<span style="color:#FFAE80">'localhost'</span><br/>  <span style="color:#D0A3FF">IDENTIFIED BY</span> <span style="color:#FFAE80">'change-me'</span>;<br/><span style="color:#D0A3FF">GRANT</span> SELECT, INSERT, UPDATE, DELETE<br/>  <span style="color:#D0A3FF">ON</span> auction.* <span style="color:#D0A3FF">TO</span> <span style="color:#FFAE80">'auction_app'</span>@<span style="color:#FFAE80">'localhost'</span>;<br/><br/><span style="color:#D0A3FF">USE</span> auction;</p>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:12px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">IF EXISTS</h3>
+<p style="font-size:24px;line-height:1.4">The first run has nothing to drop; without it the script stops with an error.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">utf8mb4</h3>
+<p style="font-size:24px;line-height:1.4">MySQL’s full UTF-8 (accents, all languages, emoji). Its older “utf8” stores only 3 bytes per character.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">A separate app user</h3>
+<p style="font-size:24px;line-height:1.4">Your PHP connects as <b>auction_app</b>, not root. It can read and change rows but <b>can’t DROP</b> tables: least privilege.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">MySQL 8 change</h3>
+<p style="font-size:24px;line-height:1.4">The slide’s <span style="font-family:'JetBrains Mono', 'Courier New', monospace">GRANT … IDENTIFIED BY</span> no longer works in MySQL 8: create the user first, then GRANT.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> run once as root: drop, create, make a limited user, grant it rights. Your app logs in as that user.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The tutorial’s script is DROP DATABASE Example; then CREATE DATABASE Example DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci; then GRANT SELECT, UPDATE, INSERT, DELETE ON Example.* TO 'exampleuser'@'localhost' IDENTIFIED BY 'mypassword'; and finally USE Example;. The version above keeps the same structure with three updates.</p><p>DROP DATABASE IF EXISTS doesn’t fail when the database isn’t there yet, so the script works the first time too. utf8mb4 is MySQL’s real UTF-8: its “utf8” (an alias for utf8mb3) can’t store 4-byte characters such as emoji, which users will type into item titles. MySQL 8.0 removed the IDENTIFIED BY clause from GRANT, so the user is created first with CREATE USER (MariaDB, which XAMPP ships instead of MySQL, still accepts the old form, but the two-step version works on both).</p><p>The GRANT gives the application user only SELECT, INSERT, UPDATE and DELETE on the auction database: everything a website needs, and nothing that can drop tables or touch other databases. This limits the damage of a bug or an SQL injection (Part 4, section 63). Run this script as root (phpMyAdmin’s default login on XAMPP); the password here is for a local test database only and, like config.php, real passwords never go into Git.</p></div></details>
+</section><section class="topic" id="engines" aria-labelledby="engines-h">
+<div class="topic-meta"><a class="num" href="#engines" title="Link to this section">16</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Backend</p>
+<h2 id="engines-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Tables and engines: use InnoDB</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:900px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">-- sql/01_schema.sql (first table)</span><br/><span style="color:#D0A3FF">CREATE TABLE</span> Member (<br/>  memberId    <span style="color:#FFAE80">INT</span> <span style="color:#D0A3FF">AUTO_INCREMENT PRIMARY KEY</span>,<br/>  email       <span style="color:#FFAE80">VARCHAR(100)</span> <span style="color:#D0A3FF">NOT NULL UNIQUE</span>,<br/>  displayName <span style="color:#FFAE80">VARCHAR(50)</span> <span style="color:#D0A3FF">NOT NULL</span><br/>) <span style="color:#D0A3FF">ENGINE</span> = <span style="color:#FFAE80">InnoDB</span>;</p>
+</div>
+<p style="font-size:24px;line-height:1.45;color:#1A1A1A">Same pattern as the slide’s <span style="font-family:'JetBrains Mono', 'Courier New', monospace">Users</span> table. The full Member/Item/Bid schema is in <a href="ship.html#app-schema">Part 4, section 60</a>.</p>
+</div>
+<div class="fw" style="width:640px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:640px;font-size:24px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left"></th><th style="color:#D0A3FF;text-align:left">InnoDB</th><th style="color:#FFAE80;text-align:left">MyISAM</th></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">Default?</td><td><b>Yes</b> (MySQL 5.5+)</td><td>Used to be</td></tr><tr style="background:#F2F2F2"><td style="color:#7B2FCC">Foreign keys</td><td><b>Supported</b></td><td>Ignored</td></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">Transactions</td><td><b>Safe</b>, row-level locking</td><td>Not transaction-safe</td></tr><tr style="background:#F2F2F2"><td style="color:#7B2FCC">Speed</td><td>Perceived as slower</td><td>Fast for simple reads</td></tr><tr style="background:#FFFFFF"><td style="color:#7B2FCC">Full-text search</td><td>Yes since MySQL 5.6</td><td>Yes</td></tr></table></div></div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> InnoDB: foreign keys and transactions. Your ER diagram’s lines only mean something on InnoDB.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A table definition looks like the tutorial’s first example: CREATE TABLE Users (id INTEGER AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(40) NOT NULL, family_name VARCHAR(40) NOT NULL) ENGINE = InnoDB;. Table design is important, and scripts let you experiment with designs quickly without locking yourself in.</p><p>MySQL supports several storage engines, even within the same database. MyISAM used to be the default: fast but not transaction-safe, up to 64 keys per table with a maximum key length of 1024 bytes, full-text columns and search, and no foreign keys (it accepts the FOREIGN KEY syntax but silently ignores it). InnoDB is transaction-safe with row-level locking and supports foreign keys, at the cost of (perceived) slower performance.</p><p>The slide says InnoDB has no full-text search; that was true of old versions, but InnoDB has supported FULLTEXT indexes since MySQL 5.6 (and MariaDB 10.0.5), and it has been the default engine since MySQL 5.5. For the project, use InnoDB everywhere: without it your FOREIGN KEY and ON DELETE rules do nothing. Week 3a’s storage lecture is about how an engine like InnoDB lays those tables out on disk (as a B+ tree on the primary key).</p></div></details>
+</section><section class="topic" id="seed-load" aria-labelledby="seed-load-h">
+<div class="topic-meta"><a class="num" href="#seed-load" title="Link to this section">17</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Backend</p>
+<h2 id="seed-load-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Seed data, load the scripts, check it worked</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:18px">
+<div class="fw" style="width:1000px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">-- sql/02_seed.sql</span><br/><span style="color:#D0A3FF">INSERT INTO</span> Member (email, displayName) <span style="color:#D0A3FF">VALUES</span><br/>  (<span style="color:#FFAE80">'ann@example.com'</span>, <span style="color:#FFAE80">'Ann'</span>),<br/>  (<span style="color:#FFAE80">'raj@example.com'</span>, <span style="color:#FFAE80">'Raj'</span>),<br/>  (<span style="color:#FFAE80">'mei@example.com'</span>, <span style="color:#FFAE80">'Mei'</span>);<br/><br/><span style="color:#D0A3FF">INSERT INTO</span> Item (sellerId, title, startPrice, endsAt) <span style="color:#D0A3FF">VALUES</span><br/>  (1, <span style="color:#FFAE80">'Vintage camera'</span>, 40.00, <span style="color:#FFAE80">'2026-12-01 18:00'</span>),<br/>  (2, <span style="color:#FFAE80">'Road bike'</span>, 150.00, <span style="color:#FFAE80">'2026-11-20 12:00'</span>);</p>
+</div>
+<div class="fw" style="width:1000px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">-- check it worked</span><br/><span style="color:#D0A3FF">SHOW DATABASES</span>;&nbsp;&nbsp;<span style="color:#B3B3B3"># which databases exist</span><br/><span style="color:#D0A3FF">SHOW TABLES</span>;&nbsp;&nbsp;<span style="color:#B3B3B3"># tables in the current database</span><br/><span style="color:#D0A3FF">DESCRIBE</span> Member;&nbsp;&nbsp;<span style="color:#B3B3B3"># column definitions</span><br/><span style="color:#D0A3FF">SELECT</span> * <span style="color:#D0A3FF">FROM</span> Member;&nbsp;&nbsp;<span style="color:#B3B3B3"># are the rows there?</span></p>
+</div>
+</div>
+<div class="fw" style="width:560px;display:flex;flex-direction:column;gap:14px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#7B2FCC">Three ways to load a script</p>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">phpMyAdmin → SQL tab</h3>
+<p style="font-size:24px;line-height:1.4">Paste the script, press <b>Go</b>. (Or the <b>Import</b> tab to upload the .sql file.)</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">mysql console</h3>
+<p style="font-size:24px;line-height:1.4"><span style="font-family:'JetBrains Mono', 'Courier New', monospace">source sql/01_schema.sql</span></p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Terminal</h3>
+<p style="font-size:24px;line-height:1.4"><span style="font-family:'JetBrains Mono', 'Courier New', monospace">mysql -u root &lt; sql/00_create_db.sql</span></p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Fake data, real tests</h3>
+<p style="font-size:24px;line-height:1.4">Seed enough rows to test every page: an item with no bids, one that has ended, a member with two items.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> never type test data twice: put it in 02_seed.sql and re-run it whenever you rebuild.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>It is often useful to add sample data with a script, so you don’t have to type it in repeatedly. Plain SQL INSERTs are enough (the tutorial inserts three Users rows one statement at a time; a single INSERT with several value lists, as above, does the same). For larger data sets, LOAD DATA INFILE reads rows from a stored CSV file.</p><p>Load whole scripts into MySQL with the source command in the mysql console (source createdb.sql), or copy and paste a script into phpMyAdmin’s SQL tab. In phpMyAdmin you may need to create the database first with its create-database form (or run 00_create_db.sql first). Once the database has data, confirm it with SELECT * FROM Users; and look around with SHOW DATABASES; (list databases), SHOW TABLES; (tables in the current database) and DESCRIBE Users; (column definitions), or use phpMyAdmin’s tabs.</p><p>With XAMPP the command-line client lives in /Applications/XAMPP/xamppfiles/bin/mysql on a Mac and C:\xampp\mysql\bin\mysql.exe on Windows (root has no password by default on a fresh XAMPP). memberId and itemId aren’t listed in the INSERTs because AUTO_INCREMENT fills them in, which is why the items can refer to sellers 1 and 2.</p></div></details>
+</section><section class="topic" id="backup" aria-labelledby="backup-h">
+<div class="topic-meta"><a class="num" href="#backup" title="Link to this section">20</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Backend</p>
+<h2 id="backup-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Back up before you break it</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">phpMyAdmin → Export</h3>
+<p style="font-size:26px;line-height:1.4">Creates a <b>dump</b>: a text file of SQL commands (CREATE TABLE + INSERTs) that rebuilds the database <b>with its data</b>.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">phpMyAdmin → Import</h3>
+<p style="font-size:26px;line-height:1.4">Runs a dump to restore it.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">When</h3>
+<p style="font-size:26px;line-height:1.4">Before changing the schema, before a demo, and whenever there’s data you’d hate to retype.</p>
+</div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:1000px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3"># Mac XAMPP (Windows: C:\xampp\mysql\bin\mysqldump.exe)</span><br/>/Applications/XAMPP/xamppfiles/bin/<span style="color:#D0A3FF">mysqldump</span> -u root auction \<br/>  &gt; backups/auction-2026-10-21.sql&nbsp;&nbsp;<span style="color:#B3B3B3"># save</span><br/><br/>/Applications/XAMPP/xamppfiles/bin/<span style="color:#D0A3FF">mysql</span> -u root auction \<br/>  &lt; backups/auction-2026-10-21.sql&nbsp;&nbsp;<span style="color:#B3B3B3"># restore</span></p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Dump vs. scripts</h3>
+<p style="font-size:24px;line-height:1.4">Scripts (sql/) are the <b>design</b>, shared in Git. Dumps (backups/) are <b>snapshots of data</b>, kept out of Git by .gitignore.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Export before you experiment. A dump is a script that puts everything back.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Use phpMyAdmin’s Export tab to create a dump of a database: all the data saved as a text file of SQL commands. Use the Import tab to load it back. The same can be done from the command line with mysqldump, which the tutorial notes is more complicated to get working with XAMPP on the lab machines (mainly because the XAMPP binaries are not on the PATH, hence the full paths above).</p><p>Make a dump before changing table definitions, before deleting test data and before a demo. Because the schema and seed scripts already live in Git, a fresh database can always be rebuilt; the dump additionally preserves whatever data you have added since, such as accounts and bids created while testing the site.</p><p>Keep dumps out of the repository (the backups/ line in .gitignore): they change on every export, can be large, and may contain personal or password data from testing.</p></div></details>
+</section><section class="topic" id="php-connect" aria-labelledby="php-connect-h">
+<div class="topic-meta"><a class="num" href="#php-connect" title="Link to this section">+</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · Backend · beyond the slides</p>
+<h2 id="php-connect-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Connect PHP to the database, safely</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<div class="fw" style="width:940px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">// config.php  (ignored by Git; copy config.example.php)</span><br/>&lt;?php<br/><span style="color:#D0A3FF">return</span> [<br/>  <span style="color:#FFAE80">'host'</span> =&gt; <span style="color:#FFAE80">'localhost'</span>, <span style="color:#FFAE80">'db'</span> =&gt; <span style="color:#FFAE80">'auction'</span>,<br/>  <span style="color:#FFAE80">'user'</span> =&gt; <span style="color:#FFAE80">'auction_app'</span>, <span style="color:#FFAE80">'pass'</span> =&gt; <span style="color:#FFAE80">'change-me'</span>,<br/>];</p>
+</div>
+<div class="fw" style="width:940px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">// db.php  (committed; every page does require "db.php")</span><br/>&lt;?php<br/>$c = <span style="color:#D0A3FF">require</span> __DIR__ . <span style="color:#FFAE80">'/config.php'</span>;<br/>$pdo = <span style="color:#D0A3FF">new PDO</span>(<br/>  <span style="color:#FFAE80">"mysql:host={$c['host']};dbname={$c['db']};charset=utf8mb4"</span>,<br/>  $c[<span style="color:#FFAE80">'user'</span>], $c[<span style="color:#FFAE80">'pass'</span>],<br/>  [PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION,<br/>   PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC]);</p>
+</div>
+</div>
+<div class="fw" style="width:660px;display:flex;flex-direction:column;gap:14px">
+<div class="fw" style="width:660px;background:#361A54;border-radius:0;padding:28px 32px">
+<p class="nw" style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:21px;line-height:1.5;color:#F2F2F2;white-space:nowrap"><span style="color:#B3B3B3">// item.php</span><br/><span style="color:#D0A3FF">require</span> <span style="color:#FFAE80">'db.php'</span>;<br/>$st = $pdo-&gt;<span style="color:#D0A3FF">prepare</span>(<br/>  <span style="color:#FFAE80">"SELECT title FROM Item WHERE itemId = ?"</span>);<br/>$st-&gt;<span style="color:#D0A3FF">execute</span>([$_GET[<span style="color:#FFAE80">'id'</span>]]);<br/>$item = $st-&gt;<span style="color:#D0A3FF">fetch</span>();</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#7B2FCC">One connection file</h3>
+<p style="font-size:24px;line-height:1.4">Every page includes <b>db.php</b>, so the connection is set up in exactly one place.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#1A1A1A">Exceptions on</h3>
+<p style="font-size:24px;line-height:1.4">ERRMODE_EXCEPTION makes SQL errors stop the page loudly instead of failing silently.</p>
+</div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:24px 28px;display:flex;flex-direction:column;gap:10px">
+<h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:600;line-height:1.2;color:#B34E06">Always prepare</h3>
+<p style="font-size:24px;line-height:1.4">Values from forms or URLs go in as <b>?</b> placeholders. See <a href="ship.html#injection">section 63</a>.</p>
+</div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> config.php = secrets (not in Git) · db.php = one shared PDO connection · every query with user input = prepare + ?.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This section joins the tutorial’s database setup to the PHP code from Part 4 (sections 62–63). Instead of writing new PDO(…) with a password on every page, keep the connection details in config.php, which returns an array and is listed in .gitignore. Commit a config.example.php with the same keys and placeholder values; each teammate copies it to config.php and fills in their own password.</p><p>db.php reads the config and creates one PDO connection. charset=utf8mb4 matches the database’s character set so non-English text survives the round trip. PDO::ERRMODE_EXCEPTION throws an exception on any SQL error (the default in PHP 8 too, but saying it explicitly protects older setups), and FETCH_ASSOC returns rows as arrays keyed by column name, e.g. $item["title"]. Every page then starts with require "db.php"; and has $pdo ready.</p><p>Any value that comes from the user (form fields, $_GET ids, cookies) goes through prepare() and execute() with ? placeholders, never string concatenation, and anything printed back into HTML goes through htmlspecialchars(). The app user from section 14 has no DROP rights, as a second line of defence.</p></div></details>
+</section><section class="topic" id="todo" aria-labelledby="todo-h">
+<div class="topic-meta"><a class="num" href="#todo" title="Link to this section">21</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 7 · Setup · This week</p>
+<h2 id="todo-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Your project to-do list</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#7B2FCC">From the tutorial</p>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Upload your <b>draft ER diagram</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4"><b>One member</b> sets up the GitHub project; the rest <b>clone</b> it into htdocs.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4"><b>Play around</b> with SQL databases and scripts for your server. You can change them later!</p></div>
+</div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'DM Sans', Arial, sans-serif;font-size:30px;font-weight:700;color:#B34E06">Suggested to get there</p>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">1</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Everyone: <span style="font-family:'JetBrains Mono', 'Courier New', monospace">git config</span> name and email; clone; open <b>localhost/your-project</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">2</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Commit <b>.gitignore</b>, <b>README.md</b> and <b>config.example.php</b> first.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">3</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Turn the ER diagram into <b>sql/00–02</b> scripts (Part 3 rules, Part 4 example).</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">4</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Each person runs the scripts and checks with <b>SHOW TABLES</b> / <b>DESCRIBE</b>.</p></div>
+<div class="row" style="display:flex;gap:16px;align-items:flex-start;flex-direction:row"><p style="font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;width:44px;height:44px;line-height:44px;text-align:center;flex-shrink:0">5</p><p class="grow" style="flex:1;font-size:26px;line-height:1.4">Add <b>db.php</b> and one page that lists rows, to prove the whole stack works.</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> by the end of the week: a shared repo, scripts that build your database, and one page that reads from it.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The tutorial’s to-dos for this week: upload your draft ER diagram; one member of your team sets up a GitHub project and the rest clone it to an appropriate place on their computers; and play around with making SQL databases and scripts for your server, remembering that you can make changes in the future.</p><p>The suggested steps turn that into a working skeleton: shared settings and ignore rules first (so nobody commits a password by accident), the database as numbered scripts generated from your ER diagram using the translation rules from Part 3, everyone able to rebuild it locally, and one page that connects through db.php and lists some seed rows. Once that page works on every teammate’s machine, the rest of the project is adding pages and queries.</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="sigma.html"><span>Previous</span>Sigma</a><a class="next" href="revision.html"><span>Next</span>Revision</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

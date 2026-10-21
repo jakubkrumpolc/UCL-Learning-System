@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Revision · Databases & SQL</title>
-<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–2: SQL syntax, ER diagrams, normalisation and a small web app.">
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -15,16 +15,16 @@
 <header class="masthead">
 <div class="mast-in">
 <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
-<p class="mast-tag">Weeks 1–2 study guide</p>
+<p class="mast-tag">Weeks 1–3 study guide</p>
 </div>
 </header>
 <nav class="topbar" aria-label="Parts">
-<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="revision.html" aria-current="page"><span class="pn">R</span>Revision</a></div>
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="revision.html" aria-current="page"><span class="pn">R</span>Revision</a></div>
 </nav>
 <div class="layout has-toc">
 <aside class="toc" aria-label="On this page">
 <p class="toc-title">On this page</p>
-<ol><li><a href="#cheat-sheet"><span class="n">64</span><span class="t">SQL on one page</span></a></li><li><a href="#memory-hooks"><span class="n">65</span><span class="t">The whole deck in 14 lines</span></a></li></ol>
+<ol><li><a href="#cheat-sheet"><span class="n">64</span><span class="t">SQL on one page</span></a></li><li><a href="#memory-hooks"><span class="n">65</span><span class="t">The whole deck in 14 lines</span></a></li><li><a href="#week3-sheet"><span class="n">66</span><span class="t">Week 3 on one page</span></a></li></ol>
 <button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
 </aside>
 <main id="main">
@@ -32,10 +32,10 @@
 <p class="hero-num" aria-hidden="true">R</p>
 <p class="eyebrow">Revision</p>
 <h1>Revise it all</h1>
-<p class="lead">A one-page SQL cheat sheet and every memory hook, for quick revision and for keeping open during the labs.</p>
-<p class="range">Sections 64–65</p>
+<p class="lead">A one-page SQL cheat sheet, every memory hook, and week 3 (storage, relational algebra, project setup) on one page.</p>
+<p class="range">Sections 64–66</p>
 
-</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#cheat-sheet"><span class="n">64</span> SQL on one page</a></li><li><a href="#memory-hooks"><span class="n">65</span> The whole deck in 14 lines</a></li></ol></details><section class="topic" id="cheat-sheet" aria-labelledby="cheat-sheet-h">
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#cheat-sheet"><span class="n">64</span> SQL on one page</a></li><li><a href="#memory-hooks"><span class="n">65</span> The whole deck in 14 lines</a></li><li><a href="#week3-sheet"><span class="n">66</span> Week 3 on one page</a></li></ol></details><section class="topic" id="cheat-sheet" aria-labelledby="cheat-sheet-h">
 <div class="topic-meta"><a class="num" href="#cheat-sheet" title="Link to this section">64</a></div>
 <div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:32px">
 <div style="display:flex;flex-direction:column;gap:8px">
@@ -108,25 +108,52 @@
 
 </div></div>
 <details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>All the main memory hooks from this site in one place, grouped by part: Store (what a database is), Speak (SQL), Shape (design) and Ship (using it in an app). A hook only works if it points to an understanding, so for each one, try to give the full idea and an example without looking. DBMS = librarian: the software that files, finds, guards and repairs data on your behalf. PK = passport number: the unique identifier; FK = someone else writing your passport number down to refer to you.</p><p>Degree = number of columns; cardinality = number of rows. DDL defines structure (CREATE, ALTER, DROP); DML changes rows (INSERT, UPDATE, DELETE). WHERE filters individual rows before grouping; HAVING filters groups after GROUP BY. LEFT JOIN keeps every row from the left table even with no match. &gt; ANY means greater than at least one value (the smallest); &gt; ALL means greater than every value (the largest). A comma-separated FROM list is a Cartesian product until the WHERE matches the keys.</p><p>Nouns become entities, verbs relationships, and asking “how many?” both ways gives multiplicities, which are written next to the entity being counted. In a one-to-many relationship, the FK goes in the table on the many side. 1NF: every cell depends on the key (one value); 2NF: on the whole key; 3NF: on nothing but the key. In apps, design each page around one query, and always pass user values through placeholders.</p><p>Active recall like this (testing yourself rather than rereading) is one of the most effective ways to remember material.</p></div></details>
-</section><nav class="pager" aria-label="Pages"><a class="prev" href="ship.html"><span>Previous</span>Ship</a><span></span></nav>
+</section><section class="topic" id="week3-sheet" aria-labelledby="week3-sheet-h">
+<div class="topic-meta"><a class="num" href="#week3-sheet" title="Link to this section">66</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:36px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Revision · Week 3</p>
+<h2 id="week3-sheet-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Week 3 on one page</h2>
+</div>
+<div class="row" style="display:flex;gap:32px;flex-direction:row">
+<div class="fw" style="width:820px;display:flex;flex-direction:column;gap:10px"><div class="tablewrap"><table class="fw" style="width:820px;font-size:23px;color:#1A1A1A"><tr style="background:#361A54"><th style="color:#FFFFFF;text-align:left"></th><th style="color:#FFFFFF;text-align:left">Operation</th><th style="color:#FFFFFF;text-align:left">Keeps…</th><th style="color:#FFFFFF;text-align:left">SQL</th></tr><tr style="background:#FFFFFF"><td><b style="color:#7B2FCC">σ</b></td><td>Selection</td><td>rows</td><td style="color:#B34E06">WHERE</td></tr><tr style="background:#F2F2F2"><td><b style="color:#7B2FCC">Π</b></td><td>Projection</td><td>columns</td><td style="color:#B34E06">SELECT DISTINCT a, b</td></tr><tr style="background:#FFFFFF"><td><b style="color:#7B2FCC">∪</b></td><td>Union</td><td>either</td><td style="color:#B34E06">UNION</td></tr><tr style="background:#F2F2F2"><td><b style="color:#7B2FCC">−</b></td><td>Difference</td><td>in R, not S</td><td style="color:#B34E06">EXCEPT / NOT IN</td></tr><tr style="background:#FFFFFF"><td><b style="color:#7B2FCC">×</b></td><td>Product</td><td>all pairs</td><td style="color:#B34E06">FROM R, S</td></tr><tr style="background:#F2F2F2"><td><b style="color:#7B2FCC">⋈</b></td><td>Join</td><td>× then σ</td><td style="color:#B34E06">JOIN … ON / USING</td></tr><tr style="background:#FFFFFF"><td><b style="color:#7B2FCC">⟕</b></td><td>Left outer join</td><td>+ unmatched, NULLs</td><td style="color:#B34E06">LEFT JOIN</td></tr><tr style="background:#F2F2F2"><td><b style="color:#7B2FCC">▹</b></td><td>Semijoin</td><td>R rows with a match</td><td style="color:#B34E06">WHERE EXISTS</td></tr><tr style="background:#FFFFFF"><td><b style="color:#7B2FCC">÷</b></td><td>Division</td><td>“for all”</td><td style="color:#B34E06">double NOT EXISTS</td></tr><tr style="background:#F2F2F2"><td><b style="color:#7B2FCC">ℑ</b></td><td>Aggregate</td><td>COUNT, SUM…</td><td style="color:#B34E06">GROUP BY</td></tr></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:10px">
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;text-align:center">Seek</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">The disk hands over whole <b>blocks</b>, never one row.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;text-align:center">Seek</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">Dirty page = changed in memory, not yet on disk.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;text-align:center">Seek</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">Clustered = shelf order; secondary = the catalogue.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;text-align:center">Seek</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">Sparse needs sorted data; secondary must be dense.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;text-align:center">Seek</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">B+ tree: one block per node, 3–4 reads to any row.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#9A3BFF;border-radius:0;text-align:center">Seek</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">Hash for “exactly this”; index for “between these”.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#B34E06;border-radius:0;text-align:center">Sigma</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">σ cuts rows, Π cuts columns; read RA inside-out.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#361A54;border-radius:0;text-align:center">Setup</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">pull → add → commit → pull → push. Commit is local.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:16px;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:12px 16px;flex-direction:row"><p style="width:96px;font-size:24px;font-weight:700;color:#FFFFFF;background:#361A54;border-radius:0;text-align:center">Setup</p><p class="grow" style="flex:1;font-size:24px;line-height:1.35">DB lives in sql/ scripts; passwords never in Git.</p></div>
+</div>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Seek finds rows fast, Sigma says which rows you want, Setup gets the project running.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The table summarises Part 6: each relational algebra operation, what it keeps, and its nearest SQL. σ and Π are unary; the rest are binary. ∩ (intersection) is R − (R − S). The hooks summarise Parts 5 and 7; each is explained in full in its section.</p><p>Exam-style practice: take any query from Part 2 and write it in relational algebra, then say which index (clustered, secondary or hash) would help the DBMS answer it fastest.</p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="setup.html"><span>Previous</span>Setup</a><span></span></nav>
 </main>
 </div>
 <footer class="sitefoot">
 <div class="foot-in">
 <div class="foot-col">
 <p class="foot-h">Parts</p>
-<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li></ul>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li></ul>
 </div>
 <div class="foot-col">
 <p class="foot-h">Revision</p>
-<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
 </div>
 <div class="foot-col foot-about">
 <p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
-<p>Built from your “Databases &amp; SQL: Weeks 1–2” slide deck (COMP0178). Section numbers match the slide numbers.</p>
+<p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
 </div>
 </div>
-<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–2</p><a href="#top">Back to top</a></div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
 </footer>
 <script src="assets/site.js"></script>
 </body>
