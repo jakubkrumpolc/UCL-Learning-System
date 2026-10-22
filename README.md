@@ -31,13 +31,17 @@ Most examples use the same small estate-agent database (six staff, four branches
 
 Open `index.html` in a browser.
 
-Or serve the folder locally so the links behave like a real website:
+Or use the startup file for your system. It serves the site on this computer and opens it in your browser:
 
-```bash
-python3 -m http.server 8000
-```
+- **Linux:** `./startup/linux.sh`
+- **macOS:** double-click `startup/macos.command`, or run that file in Terminal
+- **Windows:** double-click `startup/windows.bat`
 
-Then go to <http://localhost:8000>.
+Leave that window open while you study. The site is at <http://127.0.0.1:8000>. Press Ctrl+C in the window to stop the server.
+
+You need Python 3.7 or newer. To use a different port, add it on the end, for example `./startup/linux.sh 8080`. The macOS and Windows files take the same argument.
+
+If macOS refuses to open the startup file, right-click it and choose Open.
 
 ## How it's built
 
@@ -45,6 +49,7 @@ Then go to <http://localhost:8000>.
 index.html, store.html, …   one page per part
 assets/site.css             shared styles (UCL-style purple palette, DM Sans)
 assets/site.js              scaling, sidebar highlighting, "Open all More detail"
+startup/                    start the site on localhost (Linux, macOS, Windows)
 ```
 
 - **Look:** modelled on [ucl.ac.uk](https://www.ucl.ac.uk/), with a white masthead, a dark-purple nav bar and footer, square cards and purple accents. Colours are defined once in `assets/site.css`.
