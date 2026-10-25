@@ -51,6 +51,9 @@ class StudySiteHandler(http.server.SimpleHTTPRequestHandler):
 
 class LoopbackServer(http.server.ThreadingHTTPServer):
     entered = False
+    # Windows treats SO_REUSEADDR as permission for another process to bind
+    # this same port. Leave it off there so a second launch cannot share it.
+    allow_reuse_address = os.name != "nt"
 
     def serve_forever(self, poll_interval=0.5):
         self.entered = True
@@ -151,26 +154,22 @@ def stop_extra(server: LoopbackServer) -> None:
 
 def serve(port: int) -> int:
     url = f"http://{HOST}:{port}/"
-    state = classify_port(HOST, port)
-    if state == "site":
-        say(f"Already available at {url}")
-        open_browser(url)
-        return 0
-    if state in {"http", "busy"}:
-        fail(f"Port {port} is already in use on this computer.")
-        fail(
-            "Stop the other program, or run the startup file again with another "
-            "port, for example 8080."
-        )
-        return 1
 
     try:
         primary = make_server(HOST, port)
     except OSError as exc:
-        if classify_port(HOST, port) == "site":
+        state = classify_port(HOST, port)
+        if (state == "site"):
             say(f"Already available at {url}")
             open_browser(url)
             return 0
+        if (state in {"http", "busy"}):
+            fail(f"Port {port} is already in use on this computer.")
+            fail(
+                "Stop the other program, or run the startup file again with "
+                "another port, for example 8081."
+            )
+            return 1
         fail(f"Could not listen on {url} ({exc}).")
         return 1
 
