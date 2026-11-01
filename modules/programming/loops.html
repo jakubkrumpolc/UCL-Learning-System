@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3 · Repeat · Python Programming</title>
+<meta name="description" content="Loops: doing it again: Repeat a block once per item with for, or for as long as a condition holds with while, and steer the loop with break, continue and else.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-loops">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html"><span class="pn">2</span>Decide</a><a href="loops.html" aria-current="page"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html"><span class="pn">5</span>Define</a><a href="errors.html"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html"><span class="pn">8</span>Import</a><a href="data.html"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#loops"><span class="n">23</span><span class="t">Loops: run a block many times</span></a></li><li><a href="#for"><span class="n">24</span><span class="t"><code>for</code>: once for every item</span></a></li><li><a href="#range"><span class="n">25</span><span class="t"><code>range()</code>: a sequence of numbers</span></a></li><li><a href="#while"><span class="n">26</span><span class="t"><code>while</code>: repeat while a condition holds</span></a></li><li><a href="#infinite"><span class="n">27</span><span class="t">Infinite loops, on purpose and by mistake</span></a></li><li><a href="#break-continue"><span class="n">28</span><span class="t"><code>break</code>, <code>continue</code> and <code>pass</code></span></a></li><li><a href="#loop-else"><span class="n">29</span><span class="t"><code>else</code> on a loop: “finished without <code>break</code>”</span></a></li><li><a href="#nested"><span class="n">30</span><span class="t">Nested loops: a loop inside a loop</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">03</p>
+<p class="eyebrow">Part 3 · Repeat</p>
+<h1>Loops: doing it again</h1>
+<p class="lead">Repeat a block once per item with <code>for</code>, or for as long as a condition holds with <code>while</code>, and steer the loop with <code>break</code>, <code>continue</code> and <code>else</code>.</p>
+<p class="range">Sections 23–30 · Lecture 3</p>
+<div class="about"><p>Part 3 covers Lecture 3: <code>for</code> loops over sequences and <code>range()</code>, <code>while</code> loops, infinite loops (on purpose and by mistake), the control statements <code>break</code>, <code>continue</code> and <code>pass</code>, the <code>else</code> clause on loops, and nested loops.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#loops"><span class="n">23</span> Loops: run a block many times</a></li><li><a href="#for"><span class="n">24</span> <code>for</code>: once for every item</a></li><li><a href="#range"><span class="n">25</span> <code>range()</code>: a sequence of numbers</a></li><li><a href="#while"><span class="n">26</span> <code>while</code>: repeat while a condition holds</a></li><li><a href="#infinite"><span class="n">27</span> Infinite loops, on purpose and by mistake</a></li><li><a href="#break-continue"><span class="n">28</span> <code>break</code>, <code>continue</code> and <code>pass</code></a></li><li><a href="#loop-else"><span class="n">29</span> <code>else</code> on a loop: “finished without <code>break</code>”</a></li><li><a href="#nested"><span class="n">30</span> Nested loops: a loop inside a loop</a></li></ol></details><section class="topic" id="loops" aria-labelledby="loops-h">
+<div class="topic-meta"><a class="num" href="#loops" title="Link to this section">23</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="loops-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Loops: run a block many times</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Why loop?</h3><p style="font-size:28px;line-height:1.4;color:#1A1A1A">A <b>loop</b> runs the same block of code several times. The block is the <b>body</b> of the loop; a <b>control condition</b> decides how many times it runs.</p>
+<p style="font-size:26px;line-height:1.4;color:#666666">Get the condition wrong and the loop may never stop.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Two kinds of loop</h3><div class="tablewrap"><table style="font-size:26px;line-height:1.4"><thead><tr><th style="background:#F7F0FF"></th><th style="background:#F7F0FF"><code>for</code></th><th style="background:#F7F0FF"><code>while</code></th></tr></thead><tbody><tr><td>Runs</td><td>once per item in a sequence</td><td>while a condition is True</td></tr><tr><td>Stops</td><td>when the items run out</td><td>when the condition becomes False</td></tr><tr><td>Use when</td><td>you know what to go through</td><td>you don't know how many times</td></tr></tbody></table></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>for</code> walks through things you already have; <code>while</code> keeps going until something changes.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Any <code>for</code> loop can be rewritten as a <code>while</code> loop with a counter, but <code>for</code> is shorter and can't accidentally loop forever over a fixed sequence, so prefer it when there's something to walk through.</p><p><i>Source: Lecture 3, “Loops”.</i></p></div></details>
+</section>
+<section class="topic" id="for" aria-labelledby="for-h">
+<div class="topic-meta"><a class="num" href="#for" title="Link to this section">24</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="for-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>for</code>: once for every item</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:760px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">for</b> <i style="color:#B34E06">element</i> <b style="color:#7B2FCC">in</b> <i style="color:#B34E06">sequence</i>:
+    <i style="color:#B34E06">loop body</i></pre>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> i <span style="color:#D0A3FF">in</span> <span style="color:#FFAE80">"training"</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Current letter: "</span> + i)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Current letter: t
+Current letter: r
+Current letter: a
+Current letter: i
+Current letter: n
+Current letter: i
+Current letter: n
+Current letter: g</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">How it runs</h3><div style="display:flex;flex-direction:column;gap:8px;align-items:stretch"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;">Take the next item and call it <code>i</code></p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;">Run the body</p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;">Items left? Go round again; otherwise carry on after the loop</p></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <code>for</code> loop can walk through any sequence:</p>
+<div class="row" style="display:flex;gap:12px;flex-direction:row;flex-wrap:wrap"><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px">strings</p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px">lists</p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px">tuples</p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px">sets</p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px">dictionaries (their keys)</p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px"><code>range()</code></p></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> The loop variable takes each item in turn; you don't count, Python does.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The loop variable is an ordinary variable: after the loop it still holds the last item (<code>g</code> here).</p><p>Choose a name that says what each item is: <code>for letter in word:</code> or <code>for student in students:</code> reads better than <code>for i in ...</code> when the items aren't numbers.</p><p><i>Source: Lecture 3, “for loops”, “for loops iterating over sequential data types”.</i></p></div></details>
+</section>
+<section class="topic" id="range" aria-labelledby="range-h">
+<div class="topic-meta"><a class="num" href="#range" title="Link to this section">25</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="range-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>range()</code>: a sequence of numbers</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:860px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">range(<span style="color:#666666">[</span><i style="color:#B34E06">start</i>,<span style="color:#666666">]</span> <i style="color:#B34E06">stop</i> <span style="color:#666666">[</span>, <i style="color:#B34E06">step</i><span style="color:#666666">]</span>)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Counts from <code>start</code> (default 0) up to, but <b>not including</b>, <code>stop</code>, in jumps of <code>step</code> (default 1).</p>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">list</span>(<span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">7</span>)))
+<span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">list</span>(<span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">3</span>, <span style="color:#FFD27A">7</span>)))
+<span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">list</span>(<span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">3</span>, <span style="color:#FFD27A">7</span>, <span style="color:#FFD27A">2</span>)))
+<span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">list</span>(<span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">2</span>, -<span style="color:#FFD27A">20</span>, -<span style="color:#FFD27A">2</span>)))
+<span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">list</span>(<span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">2</span>, -<span style="color:#FFD27A">20</span>, <span style="color:#FFD27A">2</span>)))</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">[0, 1, 2, 3, 4, 5, 6]
+[3, 4, 5, 6]
+[3, 5]
+[2, 0, -2, -4, -6, -8, -10, -12, -14, -16, -18]
+[]</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">With a <code>for</code> loop</h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> i <span style="color:#D0A3FF">in</span> <span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">0</span>, <span style="color:#FFD27A">8</span>, <span style="color:#FFD27A">1</span>):
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"2**"</span> + <span style="color:#8FD8FF">str</span>(i) + <span style="color:#FFAE80">" ="</span>, <span style="color:#FFD27A">2</span>**i)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">2**0 = 1
+2**1 = 2
+2**2 = 4
+2**3 = 8
+2**4 = 16
+2**5 = 32
+2**6 = 64
+2**7 = 128</pre></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>range(n)</code> gives n numbers: 0 up to n − 1. The stop value is never included.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>range()</code> is <b>lazy</b>: <code>print(range(5))</code> shows <code>range(0, 5)</code>, not the numbers, because they're only made one at a time when a loop asks for them. That's why <code>range(1_000_000_000)</code> costs no memory. Wrap it in <code>list()</code> to see all the numbers at once.</p><p>A negative step counts down, and then <code>stop</code> must be smaller than <code>start</code>. <code>range(2, -20, 2)</code> is empty because you can't get from 2 down to −20 by adding 2.</p><p>Python 2 had <code>range()</code> (which built a list) and <code>xrange()</code> (lazy). Python 3 has only the lazy <code>range()</code>.</p><p><i>Source: Lecture 3, “range() function”, “for loops iterating over a range()”.</i></p></div></details>
+</section>
+<section class="topic" id="while" aria-labelledby="while-h">
+<div class="topic-meta"><a class="num" href="#while" title="Link to this section">26</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="while-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>while</code>: repeat while a condition holds</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:820px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">while</b> <i style="color:#B34E06">condition</i>:
+    <i style="color:#B34E06">loop body</i></pre>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x = <span style="color:#FFD27A">0</span>
+<span style="color:#D0A3FF">while</span> x &lt; <span style="color:#FFD27A">10</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"The square of "</span> + <span style="color:#8FD8FF">str</span>(x) + <span style="color:#FFAE80">" ="</span>, x * x)
+    x = x + <span style="color:#FFD27A">1</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">The square of 0 = 0
+The square of 1 = 1
+The square of 2 = 4
+…
+The square of 9 = 81</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">How it runs</h3><div style="display:flex;flex-direction:column;gap:8px;align-items:stretch"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;">Test the condition</p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>True:</b> run the body, then test again</p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>False:</b> carry on after the loop</p></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Something in the body must change the condition (here <code>x = x + 1</code>), or the loop never ends.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A <code>while</code> loop needs three things: a start value, a condition, and a change that moves towards False.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>If the condition is False the first time, the body never runs at all.</p><p><code>while</code> suits loops where you can't know the count in advance: “keep asking until the user types a valid number”, or “keep halving until the value is below 1”.</p><p><i>Source: Lecture 3, “while loops”.</i></p></div></details>
+</section>
+<section class="topic" id="infinite" aria-labelledby="infinite-h">
+<div class="topic-meta"><a class="num" href="#infinite" title="Link to this section">27</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="infinite-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Infinite loops, on purpose and by mistake</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">On purpose</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">while</span> <span style="color:#D0A3FF">True</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Process HTTP request... "</span>)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">A program that should run until it's closed, such as a web server waiting for connections, loops forever deliberately (and usually leaves with <code>break</code>).</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">By mistake</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">num = <span style="color:#FFD27A">1</span>
+<span style="color:#D0A3FF">while</span> num &gt; <span style="color:#FFD27A">0</span>:      <span style="color:#B3B3B3"># always True</span>
+    <span style="color:#8FD8FF">print</span>(num)
+    num = num + <span style="color:#FFD27A">1</span></pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>logic error</b>: the condition can never become False.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">num = <span style="color:#FFD27A">0.1</span>
+<span style="color:#D0A3FF">while</span> num != <span style="color:#FFD27A">1</span>:     <span style="color:#B3B3B3"># skips past 1!</span>
+    num += <span style="color:#FFD27A">0.1</span></pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>float error</b>: <code>num</code> reaches <code>0.9999999999999999</code>, then <code>1.0999999999999999</code>, never exactly 1.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#F7F0FF;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#7B2FCC;flex-shrink:0" viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Stuck?</b> to stop a runaway loop, press Ctrl+C in the terminal, or the stop button in PyCharm or Jupyter.</p>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Loop on <code>&lt;</code> or <code>&gt;</code>, not <code>!=</code>, especially with floats, so you can't step over the stopping point.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Changing a list while you loop over it can also loop forever: <code>for x in l: l.append(x + 1)</code> keeps adding items the loop still has to visit. Loop over a copy (<code>for x in l[:]:</code>) if you need to change the original.</p><p>The float example is the same problem as in <a href="values.html#float-trap">Never compare floats with ==</a>: 0.1 has no exact binary form, so ten additions don't land exactly on 1.0.</p><p><i>Source: Lecture 3, “Infinite loops”.</i></p></div></details>
+</section>
+<section class="topic" id="break-continue" aria-labelledby="break-continue-h">
+<div class="topic-meta"><a class="num" href="#break-continue" title="Link to this section">28</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="break-continue-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>break</code>, <code>continue</code> and <code>pass</code></h2>
+</div>
+<div class="row" style="display:flex;gap:24px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">break</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> character <span style="color:#D0A3FF">in</span> <span style="color:#FFAE80">'degree'</span>:
+    <span style="color:#D0A3FF">if</span> character == <span style="color:#FFAE80">'g'</span>:
+        <span style="color:#D0A3FF">break</span>
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'Current letter :'</span>, character)
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'Outside the for loop.'</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Current letter : d
+Current letter : e
+Outside the for loop.</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Leaves the loop</b> at once; the program carries on after it.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">continue</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> character <span style="color:#D0A3FF">in</span> <span style="color:#FFAE80">'degree'</span>:
+    <span style="color:#D0A3FF">if</span> character == <span style="color:#FFAE80">'g'</span>:
+        <span style="color:#D0A3FF">continue</span>
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'Current letter :'</span>, character)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Current letter : d
+Current letter : e
+Current letter : r
+Current letter : e
+Current letter : e</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Skips the rest of this round</b> and goes on to the next item.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">pass</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> x <span style="color:#D0A3FF">in</span> <span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">5</span>):
+    <span style="color:#D0A3FF">if</span> x == <span style="color:#FFD27A">3</span>:
+        <span style="color:#D0A3FF">pass</span>   <span style="color:#B3B3B3"># TODO: handle 3</span>
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'Number is'</span>, x)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Does nothing.</b> A placeholder where Python needs a statement but you have none yet. Here every number 0–4 is printed.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>break</code> leaves the loop, <code>continue</code> skips to the next round, <code>pass</code> does nothing at all.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>They work the same way in <code>while</code> loops. In the lecture's <code>while</code> example with <code>continue</code>, the counter is decreased <i>before</i> the <code>continue</code>; if it came after, the loop would get stuck repeating the same value forever.</p><p>In nested loops, <code>break</code> and <code>continue</code> only affect the innermost loop they are in.</p><p><i>Source: Lecture 3, “Control statements in for and while loops”: break, continue, pass.</i></p></div></details>
+</section>
+<section class="topic" id="loop-else" aria-labelledby="loop-else-h">
+<div class="topic-meta"><a class="num" href="#loop-else" title="Link to this section">29</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="loop-else-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>else</code> on a loop: “finished without <code>break</code>”</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:860px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">for</b> <i style="color:#B34E06">item</i> <b style="color:#7B2FCC">in</b> <i style="color:#B34E06">sequence</i>:
+    <i style="color:#B34E06">body</i>
+<b style="color:#7B2FCC">else</b>:
+    <i style="color:#B34E06">runs <b style="color:#7B2FCC">if</b> the loop ended normally</i></pre>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> i <span style="color:#D0A3FF">in</span> <span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">5</span>):
+    <span style="color:#8FD8FF">print</span>(i)
+    <span style="color:#D0A3FF">if</span> i == <span style="color:#FFD27A">3</span>:
+        <span style="color:#D0A3FF">break</span>
+<span style="color:#D0A3FF">else</span>:   <span style="color:#B3B3B3"># no break</span>
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'the for loop completed OK!'</span>)
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'outside the for loop'</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">0
+1
+2
+3
+outside the for loop</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Typical use: search</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The <code>else</code> block runs when a <code>for</code> loop <b>runs out of items</b>, or a <code>while</code> condition <b>becomes False</b>.</p>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">It is **skipped if the loop ended with <code>break</code>**. Change the <code>3</code> above to <code>7</code> and the loop finishes, so the <code>else</code> message appears.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> n <span style="color:#D0A3FF">in</span> numbers:
+    <span style="color:#D0A3FF">if</span> n &lt; <span style="color:#FFD27A">0</span>:
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'found a negative'</span>)
+        <span style="color:#D0A3FF">break</span>
+<span style="color:#D0A3FF">else</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'no negatives'</span>)</pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A loop's <code>else</code> means “no break happened”.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>while … else</code> works the same way: <code>else</code> runs when the condition becomes False, not after a <code>break</code>.</p><p>Without <code>for</code>/<code>else</code> you'd need a flag variable: <code>found = False</code> before the loop, <code>found = True</code> before the <code>break</code>, and <code>if not found:</code> after it.</p><p><i>Source: Lecture 3, “for-else loop”, “while-else loop”.</i></p></div></details>
+</section>
+<section class="topic" id="nested" aria-labelledby="nested-h">
+<div class="topic-meta"><a class="num" href="#nested" title="Link to this section">30</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · Repeat</p>
+<h2 id="nested-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Nested loops: a loop inside a loop</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:980px;display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">for</span> i <span style="color:#D0A3FF">in</span> <span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">3</span>):
+    <span style="color:#D0A3FF">for</span> j <span style="color:#D0A3FF">in</span> <span style="color:#8FD8FF">range</span>(<span style="color:#FFD27A">5</span>):
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"("</span> + <span style="color:#8FD8FF">str</span>(i) + <span style="color:#FFAE80">","</span> + <span style="color:#8FD8FF">str</span>(j) + <span style="color:#FFAE80">")"</span>, end=<span style="color:#FFAE80">" "</span>)
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"← finished i ="</span>, i)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">(0,0) (0,1) (0,2) (0,3) (0,4) ← finished i = 0
+(1,0) (1,1) (1,2) (1,3) (1,4) ← finished i = 1
+(2,0) (2,1) (2,2) (2,3) (2,4) ← finished i = 2</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">How many times?</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">For <b>each</b> round of the outer loop, the inner loop runs <b>all the way through</b>.</p>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">3 outer rounds × 5 inner rounds = <b>15</b> pairs.</p>
+<p style="font-size:26px;line-height:1.4;color:#666666"><code>for</code> and <code>while</code> loops can be nested inside each other in any combination.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Inner loop runs completely for every single step of the outer one: the counts multiply.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture prints each pair on its own line; <code>end=" "</code> above keeps one row per value of <code>i</code> so the pattern is easier to see.</p><p>With nested <code>while</code> loops, reset the inner counter inside the outer loop (<code>y = 0</code> at the top of the outer body). If you set it once before both loops, the inner loop only runs on the first outer round.</p><p>Nested loops are how you walk through grids and tables: <code>for row in grid: for cell in row: …</code>. The work grows fast: two nested loops over n items do n × n steps, which matters in <a href="../algorithmics/index.html">Algorithmics</a>.</p><p><i>Source: Lecture 3, “Nested loops”.</i></p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="decisions.html"><span>Previous</span>Decide</a><a class="next" href="collections.html"><span>Next</span>Collect</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

@@ -3,23 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Databases & SQL · Weeks 1–3</title>
-<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
+<title>UCL CS Learning System</title>
+<meta name="description" content="A study portal for UCL Computer Science: lecture decks rebuilt as clear study guides, one module at a time, plus Scribe for live lecture transcripts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
+<script src="assets/portal.js"></script>
 </head>
-<body id="top" class="pg-index">
+<body id="top" class="pg-portal">
 <a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="index.html#modules">Modules</a><a href="scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
 <header class="masthead">
 <div class="mast-in">
-<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a>
-<p class="mast-tag">Weeks 1–3 study guide</p>
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">CS</span><span class="brand-text"><b>UCL CS Learning System</b><span>Computer Science study portal</span></span></a>
+<p class="mast-tag">Modules, revision and lecture transcripts</p>
 </div>
 </header>
-<nav class="topbar" aria-label="Parts">
-<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+<nav class="topbar" aria-label="Portal sections">
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Home</a><a href="modules/databases/index.html"><span class="pn">DB</span>Database Fundamentals</a><a href="modules/programming/index.html"><span class="pn">PY</span>Python Programming</a><a href="modules/algorithmics/index.html"><span class="pn">AL</span>Algorithmics</a><a href="scribe.html"><span class="pn"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span>Scribe</a></div>
 </nav>
 <div class="layout">
 
@@ -27,72 +35,103 @@
 <header class="home-hero">
 <div class="home-hero-in">
 <div class="hh-text">
-<p class="eyebrow">COMP0178 · Database Fundamentals · Weeks 1–3</p>
-<h1>Databases &amp; SQL,<br/>from zero</h1>
-<p class="lead">The lecture decks rebuilt into one clear path: what a database is, how to speak SQL, how to design tables, how a web app uses them, how data sits on disk, and the algebra underneath SQL. Plus a project kit for Git and the backend.</p>
-<div class="hh-actions"><a class="btn primary" href="store.html">Start with Part 1</a><a class="btn" href="speak.html#sql-basics">Jump to SQL</a><a class="btn" href="revision.html">Cheat sheet</a></div>
+<p class="eyebrow">UCL Computer Science · Study portal</p>
+<h1>Every module,<br/>one place</h1>
+<p class="lead">Lecture decks rebuilt into clear study guides, one module at a time, with worked examples, diagrams and a memory hook for every idea. Scribe writes down lectures as they happen.</p>
+<div class="hh-actions"><a class="btn primary" href="#modules">Choose a module</a><a class="btn" href="scribe.html">Open Scribe</a></div>
 </div>
-<svg aria-label="A database cylinder icon" height="460" class="hero-art" viewbox="0 0 420 460" width="420"><rect fill="#9A3BFF" height="340" width="400" x="10" y="60"></rect><ellipse cx="210" cy="400" fill="#9A3BFF" rx="200" ry="44"></ellipse><path d="M10 175 A200 44 0 0 0 410 175" fill="none" stroke="#361A54" stroke-width="8"></path><path d="M10 290 A200 44 0 0 0 410 290" fill="none" stroke="#361A54" stroke-width="8"></path><ellipse cx="210" cy="60" fill="#BA82FF" rx="200" ry="44"></ellipse></svg>
+<svg aria-hidden="true" class="hero-art" height="240" viewBox="0 0 240 240" width="240"><rect fill="#9A3BFF" height="112" width="112"></rect><text fill="#FFFFFF" font-family="'DM Sans', Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" x="56" y="70">DB</text><rect fill="#BA82FF" height="112" width="112" x="128"></rect><g fill="none" stroke="#361A54" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" transform="translate(160 32) scale(2)"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></g><rect fill="#BA82FF" height="112" width="112" y="128"></rect><text fill="#361A54" font-family="'DM Sans', Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" x="56" y="198">PY</text><rect fill="#9A3BFF" height="112" width="112" x="128" y="128"></rect><text fill="#FFFFFF" font-family="'DM Sans', Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" x="184" y="198">AL</text></svg>
 </div>
 </header>
-<section class="home-sec" id="roadmap">
-<h2>Six questions, in order, plus your project kit</h2>
-<p class="sub">Store → Speak → Shape → Ship → Seek → Sigma, then Setup for the group project. Lab answers sit inside the parts that teach what they need, marked <span class="badge lab">Lab</span>.</p>
-<div class="part-grid"><article class="part-card">
-<a class="part-link" href="store.html"><span class="pc-num">1</span><span class="pc-name">Store</span></a>
-<p class="pc-desc">What is a database, and why keep data in tables?</p>
-<p class="pc-range">Sections 3–9</p>
-<details class="pc-topics"><summary>All 6 sections</summary><ol><li><a href="store.html#why-db"><span class="n">4</span>Why not just use files?</a></li><li><a href="store.html#dbms"><span class="n">5</span>Database vs. DBMS</a></li><li><a href="store.html#tables"><span class="n">6</span>The relational model: data lives in tables</a></li><li><a href="store.html#keys"><span class="n">7</span>Keys link the tables together</a></li><li><a href="store.html#levels"><span class="n">8</span>Three levels of abstraction</a></li><li><a href="store.html#web-tiers"><span class="n">9</span>Where the database lives in a web app</a></li></ol></details>
-</article><article class="part-card">
-<a class="part-link" href="speak.html"><span class="pc-num">2</span><span class="pc-name">Speak</span></a>
-<p class="pc-desc">SQL syntax: build tables, add rows, ask questions.</p>
-<p class="pc-range">Sections 10–39 · <b>Lab 1 (SQL): 36–39</b></p>
-<details class="pc-topics"><summary>All 29 sections</summary><ol><li><a href="speak.html#sql-basics"><span class="n">11</span>How a SQL statement is built</a></li><li><a href="speak.html#sql-notation"><span class="n">12</span>How to read a syntax box</a></li><li><a href="speak.html#sql-commands"><span class="n">13</span>The SQL command list</a></li><li><a href="speak.html#sample-data"><span class="n">14</span>Our practice database: an estate agent</a></li><li><a href="speak.html#syn-create"><span class="n">15</span>Syntax: CREATE DATABASE and CREATE TABLE</a></li><li><a href="speak.html#create-table"><span class="n">16</span>Build it: CREATE TABLE</a></li><li><a href="speak.html#data-types"><span class="n">17</span>Choosing a data type for each column</a></li><li><a href="speak.html#constraints"><span class="n">18</span>Constraints: rules the database enforces</a></li><li><a href="speak.html#fk-actions"><span class="n">19</span>Foreign keys: what if the parent row goes?</a></li><li><a href="speak.html#alter-drop"><span class="n">20</span>Syntax: change, empty or remove a table</a></li><li><a href="speak.html#syn-dml"><span class="n">21</span>Syntax: INSERT, UPDATE and DELETE</a></li><li><a href="speak.html#crud"><span class="n">22</span>Add, change and remove rows</a></li><li><a href="speak.html#select-order"><span class="n">23</span>Syntax: the SELECT statement</a></li><li><a href="speak.html#select-basics"><span class="n">24</span>SELECT: pick columns, calculate, sort</a></li><li><a href="speak.html#where"><span class="n">25</span>WHERE: keep only the rows you want</a></li><li><a href="speak.html#aggregates"><span class="n">26</span>Aggregates: one answer from many rows</a></li><li><a href="speak.html#group-having"><span class="n">27</span>GROUP BY + HAVING: totals per group</a></li><li><a href="speak.html#syn-join"><span class="n">28</span>Syntax: joining tables</a></li><li><a href="speak.html#joins"><span class="n">29</span>JOIN: combine rows from two tables</a></li><li><a href="speak.html#outer-joins"><span class="n">30</span>Inner vs. outer joins: keeping unmatched rows</a></li><li><a href="speak.html#syn-subquery"><span class="n">31</span>Syntax: subqueries and set operations</a></li><li><a href="speak.html#subqueries"><span class="n">32</span>Subqueries: use one query’s answer in another</a></li><li><a href="speak.html#any-all-exists"><span class="n">33</span>Compare with a whole list: ANY, ALL, EXISTS</a></li><li><a href="speak.html#set-ops"><span class="n">34</span>Set operations: combine two results</a></li><li><a href="speak.html#more-tools"><span class="n">35</span>Four more tools you’ll meet</a></li><li><a href="speak.html#lab-shop"><span class="n">36</span>Lab 1: your first real queries</a></li><li><a href="speak.html#lab-sql-a"><span class="n">37</span>Lab 1, questions 1–4</a></li><li><a href="speak.html#lab-sql-b"><span class="n">38</span>Q5: a question inside a question</a></li><li><a href="speak.html#lab-sql-c"><span class="n">39</span>Lab 1, questions 6–7</a></li></ol></details>
-</article><article class="part-card">
-<a class="part-link" href="shape.html"><span class="pc-num">3</span><span class="pc-name">Shape</span></a>
-<p class="pc-desc">Design: ER diagrams, tables, normalisation.</p>
-<p class="pc-range">Sections 40–57 · <b>Lab 2 (design): 48, 51, 54, 57</b></p>
-<details class="pc-topics"><summary>All 17 sections</summary><ol><li><a href="shape.html#design-process"><span class="n">41</span>From idea to tables in four steps</a></li><li><a href="shape.html#er-notation"><span class="n">42</span>Reading an ER diagram (UML style)</a></li><li><a href="shape.html#multiplicity"><span class="n">43</span>Multiplicity: how many can be linked?</a></li><li><a href="shape.html#rel-types"><span class="n">44</span>Three kinds of two-entity relationship</a></li><li><a href="shape.html#complex-rel"><span class="n">45</span>Three trickier shapes</a></li><li><a href="shape.html#eer"><span class="n">46</span>Inheritance: one parent, special children</a></li><li><a href="shape.html#draw-erd"><span class="n">47</span>How to draw your own ER diagram</a></li><li><a href="shape.html#lab-chat-erd"><span class="n">48</span>Lab 2: the chatroom ER diagram</a></li><li><a href="shape.html#er-rules"><span class="n">49</span>Turning a diagram into tables: 3 core rules</a></li><li><a href="shape.html#er-special"><span class="n">50</span>The special cases</a></li><li><a href="shape.html#lab-class-schema"><span class="n">51</span>Lab 2: translate the Class diagram</a></li><li><a href="shape.html#anomalies"><span class="n">52</span>Why tidy tables? Anomalies</a></li><li><a href="shape.html#fds"><span class="n">53</span>Functional dependencies: what decides what</a></li><li><a href="shape.html#lab-fds"><span class="n">54</span>Lab 2: what decides what in LibraryRental?</a></li><li><a href="shape.html#normal-forms"><span class="n">55</span>The normal-form staircase</a></li><li><a href="shape.html#normalize-example"><span class="n">56</span>Worked example: ViewingLog to 3NF</a></li><li><a href="shape.html#lab-anomalies"><span class="n">57</span>Lab 2: one anomaly per normal form</a></li></ol></details>
-</article><article class="part-card">
-<a class="part-link" href="ship.html"><span class="pc-num">4</span><span class="pc-name">Ship</span></a>
-<p class="pc-desc">Build a small web app’s database, start to finish.</p>
-<p class="pc-range">Sections 58–63</p>
-<details class="pc-topics"><summary>All 5 sections</summary><ol><li><a href="ship.html#app-erd"><span class="n">59</span>A tiny auction site: from brief to diagram</a></li><li><a href="ship.html#app-schema"><span class="n">60</span>Create the tables</a></li><li><a href="ship.html#app-queries"><span class="n">61</span>One query behind each page</a></li><li><a href="ship.html#app-code"><span class="n">62</span>The code that runs a query</a></li><li><a href="ship.html#injection"><span class="n">63</span>Never glue user input into SQL</a></li></ol></details>
-</article><article class="part-card">
-<a class="part-link" href="seek.html"><span class="pc-num">5</span><span class="pc-name">Seek</span></a>
-<p class="pc-desc">Storage: blocks, buffers, indexes, B+ trees and hashing.</p>
-<p class="pc-range">Lecture 3a · sections 4–24</p>
-<details class="pc-topics"><summary>All 12 sections</summary><ol><li><a href="seek.html#storage-types"><span class="n">4</span>Where data lives: memory vs. disk</a></li><li><a href="seek.html#blocks"><span class="n">6</span>Blocks: the unit the disk reads</a></li><li><a href="seek.html#slotted-page"><span class="n">9</span>Variable-length records: the slotted page</a></li><li><a href="seek.html#buffers"><span class="n">10</span>Buffers and dirty pages</a></li><li><a href="seek.html#find-row"><span class="n">14</span>The real problem: finding one row</a></li><li><a href="seek.html#clustered"><span class="n">16</span>Clustered vs. nonclustered indexes</a></li><li><a href="seek.html#dense-sparse"><span class="n">17</span>Dense vs. sparse indexes</a></li><li><a href="seek.html#multilevel"><span class="n">19</span>When the index is too big: multilevel</a></li><li><a href="seek.html#bplus"><span class="n">20</span>B+ trees: short and fat</a></li><li><a href="seek.html#hashing"><span class="n">21</span>Hashing: compute the address</a></li><li><a href="seek.html#overflow"><span class="n">23</span>When a bucket is full: overflow</a></li><li><a href="seek.html#index-vs-hash"><span class="n">24</span>Index or hash? Pick by the query</a></li></ol></details>
+
+<section class="home-sec" id="modules">
+<h2>Modules</h2>
+<p class="sub">Each module follows its lectures in order, one idea per numbered section, and lab or problem-sheet answers sit beside the parts that teach what they need. Switch between modules from the module name at the top of any module page.</p>
+<article class="module-card">
+<div>
+<p class="mc-code">COMP0178</p>
+<h3 class="mc-name"><a href="modules/databases/index.html">Database Fundamentals</a></h3>
+<p class="mc-desc">What a database is, how to speak SQL, how to design tables, how a web app uses them, how data sits on disk, and the algebra underneath SQL. Plus a project kit for Git and the backend.</p>
+<p class="mc-meta">Weeks 1–3 · 7 parts and a revision sheet · <b>Labs 1–3</b></p>
+<a class="ui-btn primary" href="modules/databases/index.html">Open the module</a>
+</div>
+<ol class="mc-parts" aria-label="Parts of Database Fundamentals">
+<li><a href="modules/databases/store.html"><span class="n">1</span>Store<span class="d">What a database is</span></a></li>
+<li><a href="modules/databases/speak.html"><span class="n">2</span>Speak<span class="d">SQL syntax · Lab 1</span></a></li>
+<li><a href="modules/databases/shape.html"><span class="n">3</span>Shape<span class="d">ER diagrams, normal forms · Lab 2</span></a></li>
+<li><a href="modules/databases/ship.html"><span class="n">4</span>Ship<span class="d">A small web app’s database</span></a></li>
+<li><a href="modules/databases/seek.html"><span class="n">5</span>Seek<span class="d">Storage and indexes</span></a></li>
+<li><a href="modules/databases/sigma.html"><span class="n">6</span>Sigma<span class="d">Relational algebra</span></a></li>
+<li><a href="modules/databases/setup.html"><span class="n">7</span>Setup<span class="d">Project kit · Lab 3</span></a></li>
+<li><a href="modules/databases/revision.html"><span class="n">R</span>Revision<span class="d">Cheat sheet and memory hooks</span></a></li>
+</ol>
 </article>
-<article class="part-card">
-<a class="part-link" href="sigma.html"><span class="pc-num">6</span><span class="pc-name">Sigma</span></a>
-<p class="pc-desc">Relational algebra: σ, Π, ∪, −, ×, joins and division.</p>
-<p class="pc-range">Lecture 3b · sections 6–29</p>
-<details class="pc-topics"><summary>All 13 sections</summary><ol><li><a href="sigma.html#relations"><span class="n">6</span>Why “relational”? Tables are relations</a></li><li><a href="sigma.html#ra-ops"><span class="n">8</span>Relational algebra: operations on tables</a></li><li><a href="sigma.html#selection"><span class="n">9</span>Selection σ: keep some rows</a></li><li><a href="sigma.html#projection"><span class="n">10</span>Projection Π: keep some columns</a></li><li><a href="sigma.html#union-diff"><span class="n">11</span>Union ∪ and difference −</a></li><li><a href="sigma.html#product"><span class="n">13</span>Cartesian product ×: every pair</a></li><li><a href="sigma.html#theta-join"><span class="n">19</span>Joins: a product, then a filter</a></li><li><a href="sigma.html#natural-join"><span class="n">20</span>Natural join: match on shared names</a></li><li><a href="sigma.html#outer-join"><span class="n">21</span>Outer joins keep the unmatched</a></li><li><a href="sigma.html#semijoin"><span class="n">23</span>Semijoin: filter by another table</a></li><li><a href="sigma.html#division"><span class="n">24</span>Division ÷: “for all” questions</a></li><li><a href="sigma.html#aggregation"><span class="n">28</span>Aggregation ℑ and rename ρ</a></li><li><a href="sigma.html#read-ra"><span class="n">29</span>Reading a long expression</a></li></ol></details>
+<article class="module-card">
+<div>
+<p class="mc-code">COMP0066</p>
+<h3 class="mc-name"><a href="modules/programming/index.html">Python Programming</a></h3>
+<p class="mc-desc">Introductory Programming, from your first <code>print()</code> to classes and data science: values and types, decisions, loops, collections, functions, exceptions and files, objects, modules, NumPy and pandas.</p>
+<p class="mc-meta">Lectures 1–9 · 9 parts and a revision sheet · every example runnable</p>
+<a class="ui-btn primary" href="modules/programming/index.html">Open the module</a>
+</div>
+<ol class="mc-parts" aria-label="Parts of Python Programming">
+<li><a href="modules/programming/values.html"><span class="n">1</span>Values<span class="d">Variables and types</span></a></li>
+<li><a href="modules/programming/decisions.html"><span class="n">2</span>Decide<span class="d">if, input, operators</span></a></li>
+<li><a href="modules/programming/loops.html"><span class="n">3</span>Repeat<span class="d">for and while loops</span></a></li>
+<li><a href="modules/programming/collections.html"><span class="n">4</span>Collect<span class="d">Lists, tuples, sets, dicts</span></a></li>
+<li><a href="modules/programming/functions.html"><span class="n">5</span>Define<span class="d">Strings, functions, scope</span></a></li>
+<li><a href="modules/programming/errors.html"><span class="n">6</span>Handle<span class="d">Exceptions and files</span></a></li>
+<li><a href="modules/programming/objects.html"><span class="n">7</span>Objects<span class="d">Classes and inheritance</span></a></li>
+<li><a href="modules/programming/modules.html"><span class="n">8</span>Import<span class="d">Modules, packages, logging</span></a></li>
+<li><a href="modules/programming/data.html"><span class="n">9</span>Analyse<span class="d">NumPy and pandas</span></a></li>
+<li><a href="modules/programming/revision.html"><span class="n">R</span>Revision<span class="d">Cheat sheet and memory hooks</span></a></li>
+</ol>
 </article>
-<article class="part-card">
-<a class="part-link" href="setup.html"><span class="pc-num">7</span><span class="pc-name">Setup</span></a>
-<p class="pc-desc">Project kit: Git for teams and a MySQL + PHP backend built from scripts.</p>
-<p class="pc-range"><b>Lab 3 (project tutorial 3): sections 3–21</b></p>
-<details class="pc-topics"><summary>All 13 sections</summary><ol><li><a href="setup.html#devtools"><span class="n">3</span>['The tutorial’s first tips are about working in HTML. Right-click → View page source shows the raw HTML of any page, which is also a good way to learn HTML from real sites. Most browsers have developer tools built in (in some you enable them in the options) or available as a plugin; right-click → Inspect element opens them. You can view the source, inspect elements and their CSS, and much more. Moving the cursor over the source highlights the matching part of the page, and you can visualise the effect of removing CSS rules.', 'The Console tab displays error messages and print statements generated while the current page loads (for example from JavaScript). It is very useful for working out why a page isn’t displaying properly.', 'For a database-backed site most bugs are on the server, where the browser can’t see them. PHP pages arrive in the browser as plain HTML, so View source shows what your PHP printed (a missing closing tag, a warning message in the middle of a table). During development turn on display_errors and error_reporting(E_ALL) at the top of a page (or in a shared include) so PHP errors appear on the page; turn them off before anything is public, because error messages can reveal file paths and SQL. Errors are also written to the PHP error log in your XAMPP or MAMP folder.']</a></li><li><a href="setup.html#git-model"><span class="n">7</span>How Git thinks: four places for your work</a></li><li><a href="setup.html#team-repo"><span class="n">8</span>Start the team repository</a></li><li><a href="setup.html#daily-loop"><span class="n">9</span>The daily loop: pull, add, commit, push</a></li><li><a href="setup.html#conflicts"><span class="n">10</span>Merge conflicts, calmly</a></li><li><a href="setup.html#branches"><span class="n">+</span>Branches: work on a feature without breaking main</a></li><li><a href="setup.html#sql-scripts"><span class="n">13</span>Keep the database in SQL scripts</a></li><li><a href="setup.html#create-db"><span class="n">14</span>Create the database and its user</a></li><li><a href="setup.html#engines"><span class="n">16</span>Tables and engines: use InnoDB</a></li><li><a href="setup.html#seed-load"><span class="n">17</span>Seed data, load the scripts, check it worked</a></li><li><a href="setup.html#backup"><span class="n">20</span>Back up before you break it</a></li><li><a href="setup.html#php-connect"><span class="n">+</span>Connect PHP to the database, safely</a></li><li><a href="setup.html#todo"><span class="n">21</span>Your project to-do list</a></li></ol></details>
-</article><article class="part-card rev">
-<a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
-<p class="pc-desc">A one-page SQL cheat sheet and every memory hook.</p>
-<p class="pc-range">Sections 64–66</p>
-<details class="pc-topics"><summary>All 3 sections</summary><ol><li><a href="revision.html#cheat-sheet"><span class="n">64</span>SQL on one page</a></li><li><a href="revision.html#memory-hooks"><span class="n">65</span>The whole deck in 14 lines</a></li><li><a href="revision.html#week3-sheet"><span class="n">66</span>Week 3 on one page</a></li></ol></details>
-</article></div>
-<aside class="cta" aria-label="Revision">
-<div><h2>Revising for the exam?</h2><p>Every SQL pattern on one page, plus the memory hook from each section.</p></div>
-<a class="btn" href="revision.html">Open the cheat sheet</a>
-</aside>
+<article class="module-card">
+<div>
+<p class="mc-code">COMP0070</p>
+<h3 class="mc-name"><a href="modules/algorithmics/index.html">Algorithmics</a></h3>
+<p class="mc-desc">Algorithms and data structures: how to measure an algorithm, graphs, trees and heaps, then greedy algorithms, divide and conquer, dynamic programming and graph search, every one traced by hand.</p>
+<p class="mc-meta">Lecture notes, sections 2–7 · 6 parts and a revision sheet · <b>Problem sheet 1</b></p>
+<a class="ui-btn primary" href="modules/algorithmics/index.html">Open the module</a>
+</div>
+<ol class="mc-parts" aria-label="Parts of Algorithmics">
+<li><a href="modules/algorithmics/analysis.html"><span class="n">1</span>Measure<span class="d">Running time, insertion sort</span></a></li>
+<li><a href="modules/algorithmics/structures.html"><span class="n">2</span>Structure<span class="d">Graphs, trees, heaps</span></a></li>
+<li><a href="modules/algorithmics/greedy.html"><span class="n">3</span>Greedy<span class="d">Kruskal, Prim, Dijkstra</span></a></li>
+<li><a href="modules/algorithmics/divide.html"><span class="n">4</span>Divide<span class="d">Binary search, Merge, Quick</span></a></li>
+<li><a href="modules/algorithmics/dynamic.html"><span class="n">5</span>Dynamic<span class="d">Floyd, Warshall</span></a></li>
+<li><a href="modules/algorithmics/search.html"><span class="n">6</span>Traverse<span class="d">Depth- and breadth-first</span></a></li>
+<li><a href="modules/algorithmics/revision.html"><span class="n">R</span>Revision<span class="d">Cheat sheet · Problem sheet 1</span></a></li>
+</ol>
+</article>
+<p class="soon">More modules will appear here as they’re written.</p>
 </section>
+
+<section class="home-sec" id="tools">
+<h2>Tools</h2>
+<p class="sub">Both are in the bar at the top of every page, so they’re never more than a click away.</p>
+<div class="part-grid">
+<article class="part-card">
+<a class="part-link" href="scribe.html"><span class="pc-num" aria-hidden="true"><svg class="pc-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span><span class="pc-name">Scribe</span></a>
+<p class="pc-desc">Transcribe a lecture live, then search, rename and export it.</p>
+<p class="pc-range">Needs start.py and an xAI key</p>
+</article>
+<article class="part-card">
+<a class="part-link" href="settings.html"><span class="pc-num" aria-hidden="true"><svg class="pc-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg></span><span class="pc-name">Settings</span></a>
+<p class="pc-desc">Light, dark or system theme for every page, your xAI key and model, and where Scribe saves recordings.</p>
+<p class="pc-range">Applies across the whole portal</p>
+</article>
+</div>
+</section>
+
 <section class="home-sec how-band" id="how">
-<h2>How to use this site</h2>
+<h2>How the portal works</h2>
 <div class="how-grid">
-<div class="how"><p class="eyebrow">Tip 1</p><h3>Read one section at a time</h3><p>Each numbered section teaches one idea. The numbers match the slides in your deck, so you can switch between them.</p></div>
-<div class="how"><p class="eyebrow">Tip 2</p><h3>Open “More detail”</h3><p>Under each section, the full explanation from the lecture plus extra context. Use the button in the sidebar to open them all.</p></div>
-<div class="how"><p class="eyebrow">Tip 3</p><h3>Light box = pattern, dark box = real SQL</h3><p class="demo syn"><span class="k">DELETE FROM</span> <i>table</i> <span class="o">[</span><span class="k">WHERE</span> <i>condition</i><span class="o">]</span>;</p><p>Purple means type it, orange means fill it in, grey brackets mark optional parts.</p></div>
-<div class="how"><p class="eyebrow">Tip 4</p><h3>Learn the “Remember” lines</h3><p>Every section ends with a memory hook. They are all collected in <a href="revision.html#memory-hooks">section 65</a> for revision.</p></div>
+<div class="how"><p class="eyebrow">Step 1</p><h3>Start it with start.py</h3><p>Double-click <b>start.py</b> in the portal folder, or run <b>python3 start.py</b>. It opens the portal and runs Scribe. Leave its window open while you study.</p></div>
+<div class="how"><p class="eyebrow">Step 2</p><h3>Pick a module</h3><p>Read one section at a time. Each one says which lecture slides it comes from, so you can switch between the two.</p></div>
+<div class="how"><p class="eyebrow">Step 3</p><h3>Record with Scribe</h3><p>Lines appear as they’re spoken and stay on this computer, ready to search, rename and export.</p></div>
+<div class="how"><p class="eyebrow">Step 4</p><h3>Make it yours</h3><p>Open <b>Settings</b> in the top bar to switch between light and dark, add your xAI key and choose where recordings are saved.</p></div>
 </div>
 </section>
 </main>
@@ -100,20 +139,19 @@
 <footer class="sitefoot">
 <div class="foot-in">
 <div class="foot-col">
-<p class="foot-h">Parts</p>
-<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li></ul>
+<p class="foot-h">Modules</p>
+<ul><li><a href="modules/databases/index.html">Database Fundamentals</a></li><li><a href="modules/programming/index.html">Python Programming</a></li><li><a href="modules/algorithmics/index.html">Algorithmics</a></li></ul>
 </div>
 <div class="foot-col">
-<p class="foot-h">Revision</p>
-<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li><li><a href="speak.html#lab-sql-a">Lab 1 (SQL)</a></li><li><a href="shape.html#lab-chat-erd">Lab 2 (design)</a></li></ul>
+<p class="foot-h">Tools</p>
+<ul><li><a href="scribe.html">Scribe · live transcription</a></li><li><a href="settings.html">Settings</a></li></ul>
 </div>
 <div class="foot-col foot-about">
-<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
-<p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">CS</span>UCL CS Learning System</p>
+<p>Personal study notes for UCL Computer Science modules, built from the lecture slides and lab sheets. Not official UCL material.</p>
 </div>
 </div>
-<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
+<div class="foot-base"><p>UCL CS Learning System · Computer Science study portal</p><a href="#top">Back to top</a></div>
 </footer>
-<script src="assets/site.js"></script>
 </body>
 </html>

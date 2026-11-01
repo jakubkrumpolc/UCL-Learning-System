@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5 · Define · Python Programming</title>
+<meta name="description" content="Strings, functions and scope: Work with text using string methods, package code into reusable functions, and know which variable Python means when names clash.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-functions">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html"><span class="pn">2</span>Decide</a><a href="loops.html"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html" aria-current="page"><span class="pn">5</span>Define</a><a href="errors.html"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html"><span class="pn">8</span>Import</a><a href="data.html"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#slicing"><span class="n">40</span><span class="t">Strings: indexing and slicing</span></a></li><li><a href="#string-methods"><span class="n">41</span><span class="t">String methods</span></a></li><li><a href="#mutable"><span class="n">42</span><span class="t">Mutable and immutable types</span></a></li><li><a href="#functions"><span class="n">43</span><span class="t">Functions: give a piece of work a name</span></a></li><li><a href="#arguments"><span class="n">44</span><span class="t">Arguments: required, default and keyword</span></a></li><li><a href="#varargs"><span class="n">45</span><span class="t"><code>*args</code> and <code>**kwargs</code>: any number of arguments</span></a></li><li><a href="#returns"><span class="n">46</span><span class="t">Return values</span></a></li><li><a href="#scope"><span class="n">47</span><span class="t">Scope: which variable does Python mean? (LEGB)</span></a></li><li><a href="#global"><span class="n">48</span><span class="t"><code>global</code>, and blocks that don't make a scope</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">05</p>
+<p class="eyebrow">Part 5 · Define</p>
+<h1>Strings, functions and scope</h1>
+<p class="lead">Work with text using string methods, package code into reusable functions, and know which variable Python means when names clash.</p>
+<p class="range">Sections 40–48 · Lecture 5</p>
+<div class="about"><p>Part 5 covers Lecture 5: string indexing, slicing and methods, mutable and immutable types, defining and calling functions, the four kinds of argument, return values, and variable scope (the LEGB rule, <code>global</code>, and blocks that don't create a scope).</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#slicing"><span class="n">40</span> Strings: indexing and slicing</a></li><li><a href="#string-methods"><span class="n">41</span> String methods</a></li><li><a href="#mutable"><span class="n">42</span> Mutable and immutable types</a></li><li><a href="#functions"><span class="n">43</span> Functions: give a piece of work a name</a></li><li><a href="#arguments"><span class="n">44</span> Arguments: required, default and keyword</a></li><li><a href="#varargs"><span class="n">45</span> <code>*args</code> and <code>**kwargs</code>: any number of arguments</a></li><li><a href="#returns"><span class="n">46</span> Return values</a></li><li><a href="#scope"><span class="n">47</span> Scope: which variable does Python mean? (LEGB)</a></li><li><a href="#global"><span class="n">48</span> <code>global</code>, and blocks that don't make a scope</a></li></ol></details><section class="topic" id="slicing" aria-labelledby="slicing-h">
+<div class="topic-meta"><a class="num" href="#slicing" title="Link to this section">40</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="slicing-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Strings: indexing and slicing</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:700px;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">c = <span style="color:#FFAE80">"linguistics"</span>
+<span style="color:#8FD8FF">print</span>(c[<span style="color:#FFD27A">2</span>])
+s1 = <span style="color:#FFAE80">"vocabulary"</span>
+<span style="color:#8FD8FF">print</span>(s1[-<span style="color:#FFD27A">1</span>], s1[-<span style="color:#FFD27A">2</span>])</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">n
+y r</pre></div>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><i style="color:#B34E06">string</i><span style="color:#666666">[</span><i style="color:#B34E06">start</i>:<i style="color:#B34E06">end</i><span style="color:#666666">]</span>     # end <b style="color:#7B2FCC">not</b> included</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Slices</h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">my_string = <span style="color:#FFAE80">"It is a sunny day!"</span>
+<span style="color:#8FD8FF">print</span>(my_string[<span style="color:#FFD27A">3</span>:<span style="color:#FFD27A">12</span>])
+<span style="color:#8FD8FF">print</span>(my_string[<span style="color:#FFD27A">1</span>:])
+<span style="color:#8FD8FF">print</span>(my_string[:])
+<span style="color:#8FD8FF">print</span>(my_string[-<span style="color:#FFD27A">50</span>:<span style="color:#FFD27A">70</span>])</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">is a sunn
+t is a sunny day!
+It is a sunny day!
+It is a sunny day!</pre></div>
+<ul style="font-size:26px;line-height:1.45"><li>Leave out <code>start</code>: from the beginning. Leave out <code>end</code>: to the end</li><li><code>[:]</code> copies the whole string</li><li>Indexes past either end are cut down to fit: no error</li></ul></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>s[a:b]</code> is from position a up to, but not including, b; <code>s[-1]</code> is the last character.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Index 12 in “It is a sunny day!” is the <code>y</code> of “sunny”, which is why <code>[3:12]</code> stops at <code>sunn</code>. Count from 0: I(0) t(1) space(2) i(3) s(4)…</p><p>A single index past the end <i>is</i> an error (<code>"abc"[5]</code> raises IndexError); only slices are forgiving.</p><p>Two variables made from the same short literal often share one object: <code>strA = "Good"; strB = "Good"</code> gives <code>strA is strB</code> → <code>True</code> and the same <code>id()</code>. That's a CPython memory optimisation (interning); compare strings with <code>==</code>.</p><p><i>Source: Lecture 5, “Strings are arrays”, “Negative indexing”, “String slicing”, “Strings representation in memory”.</i></p></div></details>
+</section>
+<section class="topic" id="string-methods" aria-labelledby="string-methods-h">
+<div class="topic-meta"><a class="num" href="#string-methods" title="Link to this section">41</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="string-methods-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">String methods</h2>
+</div>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">my_string = <span style="color:#FFAE80">" This is the end. Hold your breath and count to ten"</span></pre>
+<div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Call</th><th style="background:#F7F0FF">Returns</th><th style="background:#F7F0FF">Result here</th></tr></thead><tbody><tr><td><code>len(s)</code></td><td>number of characters</td><td><code>51</code></td></tr><tr><td><code>s.strip()</code></td><td>copy without spaces at both ends</td><td><code>'This is the end. Hold …'</code></td></tr><tr><td><code>s.upper()</code>, <code>s.lower()</code></td><td>copy in upper / lower case</td><td><code>' THIS IS THE END. …'</code></td></tr><tr><td><code>s.replace("end", "start")</code></td><td>copy with every match replaced</td><td><code>' This is the start. …'</code></td></tr><tr><td><code>s.find("breath")</code></td><td>index of first match, or <b>−1</b></td><td><code>28</code></td></tr><tr><td><code>s.find("h", 5, 13)</code></td><td>search only positions 5 to 12</td><td><code>10</code></td></tr><tr><td><code>s.find("skyfall")</code></td><td>not found</td><td><code>-1</code></td></tr><tr><td><code>s.index("skyfall")</code></td><td>like <code>find</code>, but <b>raises an error</b></td><td><code>ValueError: substring not found</code></td></tr></tbody></table></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>find</code> says −1 when it fails; <code>index</code> raises an error. Both are case-sensitive.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Every string method returns a <i>new</i> string (or a number); none changes the original, because strings are immutable. Keep the result: <code>name = name.strip()</code>.</p><p>Other methods worth knowing: <code>s.split()</code> (cut into a list of words), <code>"-".join(words)</code> (glue a list into one string), <code>s.startswith("x")</code>, <code>s.endswith("x")</code>, <code>s.count("x")</code>, <code>s.isdigit()</code>, <code>s.title()</code>. The full list is in the Python docs under “Text Sequence Type — str”.</p><p><i>Source: Lecture 5, “Some string methods”.</i></p></div></details>
+</section>
+<section class="topic" id="mutable" aria-labelledby="mutable-h">
+<div class="topic-meta"><a class="num" href="#mutable" title="Link to this section">42</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="mutable-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Mutable and immutable types</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Strings can't change</h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">st = <span style="color:#FFAE80">"Hello"</span>
+<span style="color:#8FD8FF">print</span>(st.replace(<span style="color:#FFAE80">'H'</span>, <span style="color:#FFAE80">'B'</span>))
+<span style="color:#8FD8FF">print</span>(st)
+st[<span style="color:#FFD27A">2</span>] = <span style="color:#FFAE80">'r'</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Bello
+Hello
+TypeError: 'str' object does not support item assignment</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>replace</code> made a <b>new</b> string; <code>st</code> itself never changed.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Which is which</h3><div class="tablewrap"><table style="font-size:26px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Immutable (can't change)</th><th style="background:#F7F0FF">Mutable (can change)</th></tr></thead><tbody><tr><td><code>int</code>, <code>float</code>, <code>complex</code>, <code>bool</code></td><td><code>list</code></td></tr><tr><td><code>str</code></td><td><code>dict</code></td></tr><tr><td><code>tuple</code></td><td><code>set</code></td></tr><tr><td><code>frozenset</code>, <code>bytes</code></td><td><code>bytearray</code></td></tr></tbody></table></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">Only immutable values can be dictionary keys or set items.</p></div></div>
+<div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Group</th><th style="background:#F7F0FF">Types</th></tr></thead><tbody><tr><td>Numeric</td><td><code>int</code> <code>42</code> · <code>float</code> <code>3.14</code> · <code>complex</code> <code>3+4j</code></td></tr><tr><td>Sequence</td><td><code>str</code> <code>'hello'</code> · <code>list</code> <code>[1, 2, 3]</code> · <code>tuple</code> <code>(1, 2, 3)</code></td></tr><tr><td>Mapping</td><td><code>dict</code> <code>{'name': 'Alice', 'age': 25}</code></td></tr><tr><td>Set</td><td><code>set</code> <code>{1, 2, 3}</code> · <code>frozenset</code> <code>frozenset([1, 2, 3])</code></td></tr><tr><td>Boolean · None</td><td><code>bool</code> <code>True</code>, <code>False</code> · <code>NoneType</code> <code>None</code> (no value)</td></tr><tr><td>Binary</td><td><code>bytes</code> <code>b'hello'</code> · <code>bytearray</code> · <code>memoryview</code></td></tr></tbody></table></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Immutable values are replaced, never changed: “changing” a string really makes a new one.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Why it matters: if two names refer to the same <b>list</b>, a change through one is visible through the other (<code>a = [1]; b = a; b.append(2)</code> → <code>a</code> is <code>[1, 2]</code>). With an immutable value that can't happen; you can only make a name refer to a different value.</p><p>This is also why list methods return <code>None</code> (they change the list) and string methods return a new string (they can't). See <a href="collections.html#sort-none">Methods return None</a>.</p><p><i>Source: Lecture 5, “Strings are immutable”, “Summary of Python datatypes”, “Mutable and immutable data types”.</i></p></div></details>
+</section>
+<section class="topic" id="functions" aria-labelledby="functions-h">
+<div class="topic-meta"><a class="num" href="#functions" title="Link to this section">43</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="functions-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Functions: give a piece of work a name</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:820px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">def</b> <i style="color:#B34E06">function_name</i>(<i style="color:#B34E06">parameters</i>):
+    <i style="color:#B34E06">function body</i></pre>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> my_function():
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Hello World!"</span>)
+
+my_function()      <span style="color:#B3B3B3"># call it</span>
+my_function()      <span style="color:#B3B3B3"># and again</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Hello World!
+Hello World!</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Why use functions?</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>function</b> is a named section of a program that does one specific task.</p>
+<ul style="font-size:26px;line-height:1.45"><li><b>Reusability:</b> write it once, call it whenever you need it, no copy-pasted code</li><li><b>Abstraction:</b> use a function without knowing how it works inside (you use <code>print</code> every day), and let others use yours</li></ul></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>def</code> only defines the function; nothing runs until you call it with brackets: <code>name()</code>.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Without the brackets, <code>my_function</code> is just the function object itself, which you can pass around or store (see <a href="#returns">functions as values</a>). <code>my_function()</code> runs it.</p><p>A function must be defined before the line that calls it runs, so definitions usually go at the top of the file.</p><p>Parameters are the names in the <code>def</code> line; arguments are the values you pass when you call it.</p><p><i>Source: Lecture 5, “Functions”, “Why use functions?”, “Creating a function”, “Calling a function”.</i></p></div></details>
+</section>
+<section class="topic" id="arguments" aria-labelledby="arguments-h">
+<div class="topic-meta"><a class="num" href="#arguments" title="Link to this section">44</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="arguments-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Arguments: required, default and keyword</h2>
+</div>
+<div class="row" style="display:flex;gap:24px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Required</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> my_function(name, age):
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Hello %s. Your age is %d."</span> % (name, age))
+
+my_function(<span style="color:#FFAE80">"Marge"</span>, <span style="color:#FFD27A">36</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Hello Marge. Your age is 36.</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Must be given, <b>in order</b>. Missing one is a TypeError.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Default</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> my_function(module=<span style="color:#FFAE80">"Programming"</span>):
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"I am studying "</span> + module)
+
+my_function(<span style="color:#FFAE80">"Mathematics"</span>)
+my_function()</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">I am studying Mathematics
+I am studying Programming</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Used only when the caller leaves it out.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Keyword</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> my_function(name, age, course):
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"The student is studying"</span>, course)
+
+my_function(age=<span style="color:#FFD27A">23</span>, course=<span style="color:#FFAE80">"Computing"</span>,
+            name=<span style="color:#FFAE80">"John Doe"</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">The student is studying Computing</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Named with <code>key=value</code>, so <b>order doesn't matter</b>.</p></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Data structures as arguments</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> show(books):
+    <span style="color:#D0A3FF">for</span> title <span style="color:#D0A3FF">in</span> books:
+        <span style="color:#8FD8FF">print</span>(title)
+
+show([<span style="color:#FFAE80">"Pride and Prejudice"</span>, <span style="color:#FFAE80">"1984"</span>, <span style="color:#FFAE80">"The Great Gatsby"</span>])</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Any value can be an argument, including a list, string or dictionary; the function uses it like any other value.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Required first, in order; defaults fill gaps; keywords let you name them in any order.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Parameters with defaults must come after those without: <code>def f(a, b=2)</code> is fine, <code>def f(a=1, b)</code> is a SyntaxError.</p><p>When you pass a list to a function and the function changes it (<code>books.append(...)</code>), the caller sees the change, because both names refer to the same list. Strings and numbers can't be changed that way.</p><p><i>Source: Lecture 5, “Function arguments”: required, default, keyword; “Data structures as parameters”.</i></p></div></details>
+</section>
+<section class="topic" id="varargs" aria-labelledby="varargs-h">
+<div class="topic-meta"><a class="num" href="#varargs" title="Link to this section">45</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="varargs-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>*args</code> and <code>**kwargs</code>: any number of arguments</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">*args</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> adder(*num):
+    total = <span style="color:#FFD27A">0</span>
+    <span style="color:#D0A3FF">for</span> n <span style="color:#D0A3FF">in</span> num:
+        total = total + n
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Total:"</span>, total)
+
+adder(<span style="color:#FFD27A">3</span>, <span style="color:#FFD27A">5</span>)
+adder(<span style="color:#FFD27A">4</span>, <span style="color:#FFD27A">5</span>, <span style="color:#FFD27A">6</span>, <span style="color:#FFD27A">7</span>)
+adder(<span style="color:#FFD27A">1</span>, <span style="color:#FFD27A">2</span>, <span style="color:#FFD27A">3</span>, <span style="color:#FFD27A">5</span>, <span style="color:#FFD27A">6</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Total: 8
+Total: 22
+Total: 17</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>*num</code> collects every extra <b>positional</b> argument into a <b>tuple</b>.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">**kwargs</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> my_function(**kwargs):
+    <span style="color:#D0A3FF">for</span> key, value <span style="color:#D0A3FF">in</span> kwargs.items():
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"%s == %s"</span> % (key, value))
+
+my_function(first=<span style="color:#FFAE80">"John"</span>, mid=<span style="color:#FFAE80">"Smith"</span>, last=<span style="color:#FFAE80">"Doe"</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">first == John
+mid == Smith
+last == Doe</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>**kwargs</code> collects every extra <b>keyword</b> argument into a <b>dictionary</b>.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> One star gathers a tuple of values; two stars gather a dictionary of name=value pairs.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The names <code>args</code> and <code>kwargs</code> are only conventions; the stars do the work. <code>*num</code> works just as well.</p><p>The stars also work the other way round when calling: <code>adder(*[1, 2, 3])</code> unpacks a list into separate arguments, and <code>f(**{'a': 1})</code> unpacks a dictionary into keyword arguments.</p><p>Order in a <code>def</code> line: normal parameters, then <code>*args</code>, then keyword parameters, then <code>**kwargs</code>.</p><p><i>Source: Lecture 5, “Variable-length arguments”, “*args”, “**kwargs”.</i></p></div></details>
+</section>
+<section class="topic" id="returns" aria-labelledby="returns-h">
+<div class="topic-meta"><a class="num" href="#returns" title="Link to this section">46</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="returns-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Return values</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:780px;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> add(num1, num2):
+    <span style="color:#D0A3FF">return</span> num1 + num2
+
+total = add(<span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">20</span>)
+<span style="color:#8FD8FF">print</span>(total)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">30</pre></div>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> my_function(*words):
+    word_list = []
+    <span style="color:#D0A3FF">for</span> w <span style="color:#D0A3FF">in</span> words:
+        word_list.append(w)
+    <span style="color:#D0A3FF">return</span> word_list
+
+<span style="color:#8FD8FF">print</span>(my_function(<span style="color:#FFAE80">"London"</span>, <span style="color:#FFAE80">"Paris"</span>, <span style="color:#FFAE80">"Madrid"</span>))</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">['London', 'Paris', 'Madrid']</pre></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The rules</h3><ul style="font-size:26px;line-height:1.45"><li><code>return</code> sends a value back to the caller and ends the function</li><li>Any type can be returned; several values come back as a tuple: <code>return lo, hi</code></li><li>No <code>return</code> (or a bare <code>return</code>) gives back <code>None</code></li><li><code>pass</code> is a placeholder body: <code>def todo(): pass</code></li></ul></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Functions as values</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> greet(name):
+    <span style="color:#D0A3FF">return</span> <span style="color:#FFAE80">f"Hello, {name}!"</span>
+
+actions = {<span style="color:#FFAE80">"greet"</span>: greet}
+<span style="color:#8FD8FF">print</span>(actions[<span style="color:#FFAE80">"greet"</span>](<span style="color:#FFAE80">"Sam"</span>))</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Hello, Sam!</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Functions are values too: store them in a dictionary and call them by key.</p></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>print</code> shows a value to the user; <code>return</code> hands it back to the code. Only returned values can be stored.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>In a notebook, calling <code>add(10, 20)</code> on its own line shows <code>30</code> because Jupyter displays the value of the last expression in a cell. In a normal <code>.py</code> program nothing appears unless you print it.</p><p>A common mistake: a function that prints its answer instead of returning it. <code>x = f()</code> then stores <code>None</code>.</p><p><code>f"Hello, {name}!"</code> is an f-string: the expression in braces is put into the text.</p><p><i>Source: Lecture 5, “Return values”, “The pass statement with functions”, “Using a function as dictionary value”.</i></p></div></details>
+</section>
+<section class="topic" id="scope" aria-labelledby="scope-h">
+<div class="topic-meta"><a class="num" href="#scope" title="Link to this section">47</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="scope-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Scope: which variable does Python mean? (LEGB)</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:700px;display:flex;flex-direction:column;gap:24px"><div style="background:#EEDEFF;border:2px solid #7B2FCC;padding:18px 22px;display:flex;flex-direction:column;gap:12px"><p style="font-size:26px;color:#1A1A1A"><b>B · Built-in</b> <span style="color:#666666">· print, len, abs…</span></p><div style="background:#FFFFFF;border:2px solid #7B2FCC;padding:18px 22px;display:flex;flex-direction:column;gap:12px"><p style="font-size:26px;color:#1A1A1A"><b>G · Global</b> <span style="color:#666666">· top level of the file</span></p><div style="background:#F7F0FF;border:2px solid #7B2FCC;padding:18px 22px;display:flex;flex-direction:column;gap:12px"><p style="font-size:26px;color:#1A1A1A"><b>E · Enclosing</b> <span style="color:#666666">· the function around it</span></p><div style="background:#FFFFFF;border:2px solid #7B2FCC;padding:18px 22px;display:flex;flex-direction:column;gap:12px"><p style="font-size:26px;color:#1A1A1A"><b>L · Local</b> <span style="color:#666666">· names made inside this function</span></p></div></div></div></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Python looks for a name <b>from the inside out</b> and uses the first one it finds.</p></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x = <span style="color:#FFD27A">150</span>
+y = <span style="color:#FFD27A">170</span>
+
+<span style="color:#D0A3FF">def</span> fun(x):
+    y = <span style="color:#FFD27A">100</span>        <span style="color:#B3B3B3"># a new, local y</span>
+    <span style="color:#8FD8FF">print</span>(x, y)
+
+fun(<span style="color:#FFD27A">93</span>)
+<span style="color:#8FD8FF">print</span>(x, y)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">93 100
+150 170</pre></div>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">e = <span style="color:#FFD27A">992</span>
+
+<span style="color:#D0A3FF">def</span> foo(e):
+    f = <span style="color:#FFD27A">100</span>
+    <span style="color:#D0A3FF">def</span> bar():
+        <span style="color:#8FD8FF">print</span>(e, f)   <span style="color:#B3B3B3"># found in foo: enclosing</span>
+    bar()
+
+foo(<span style="color:#FFD27A">77</span>)
+<span style="color:#8FD8FF">print</span>(e)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">77 100
+992</pre></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> LEGB: Local, Enclosing, Global, Built-in. Inside out, first match wins.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>In <code>fun</code>, both <code>x</code> (the parameter) and <code>y</code> (assigned inside) are local, so the global <code>x = 150</code> and <code>y = 170</code> are untouched. Outside the function there is no local scope, so <code>print(x, y)</code> sees the globals.</p><p><b>Built-in</b> names such as <code>print</code>, <code>len</code> and <code>abs</code> are found last. If you define your own <code>abs</code>, yours is found first and hides the built-in one. <code>print(dir(__builtins__))</code> lists every built-in name.</p><p>A name must exist before it's used: <code>print(s)</code> followed by <code>s = 15</code> raises <code>NameError</code>.</p><p><i>Source: Lecture 5, “Variable scope”, “LEGB scope rules”, “Local scope”, “Enclosing scope”, “Built-in Scope”.</i></p></div></details>
+</section>
+<section class="topic" id="global" aria-labelledby="global-h">
+<div class="topic-meta"><a class="num" href="#global" title="Link to this section">48</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 5 · Define</p>
+<h2 id="global-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>global</code>, and blocks that don't make a scope</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">global</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">def</span> fun():
+    <span style="color:#D0A3FF">global</span> z
+    z = <span style="color:#FFD27A">100</span>
+
+fun()
+<span style="color:#8FD8FF">print</span>(z)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">100</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>global z</code> makes the assignment create or change the <b>global</b> <code>z</code>. The function must be <b>called</b> first: without <code>fun()</code>, <code>print(z)</code> is a NameError.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">No new scope</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">a = -<span style="color:#FFD27A">10</span>
+<span style="color:#D0A3FF">if</span> a &gt; <span style="color:#FFD27A">0</span>:
+    b = <span style="color:#FFD27A">17</span>
+
+<span style="color:#8FD8FF">print</span>(b)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">NameError: name 'b' is not defined</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>if</code>, <code>elif</code>, <code>else</code>, <code>for</code> and <code>while</code> <b>don't</b> create a scope: a variable made inside is a normal global variable, but only if the block actually runs.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Only functions make a new scope. <code>if</code> and loops don't, but their variables exist only if the block ran.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Without <code>global</code>, assigning to a name inside a function always makes a new local variable, even if a global with that name exists. Reading a global without assigning to it works without <code>global</code>.</p><p>Use <code>global</code> sparingly: functions that change globals are hard to follow. Prefer passing values in as arguments and returning results.</p><p>In Jupyter, a variable from an earlier run of a cell stays defined, so code like the <code>if</code> example can seem to work. Restart the kernel to check.</p><p><i>Source: Lecture 5, “Keyword global”, “Must enter function scope”, “No new scope”.</i></p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="collections.html"><span>Previous</span>Collect</a><a class="next" href="errors.html"><span>Next</span>Handle</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

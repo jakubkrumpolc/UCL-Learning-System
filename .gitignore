@@ -1,1 +1,6 @@
 .DS_Store
+__pycache__/
+
+# Scribe: your xAI key and your transcripts
+.env
+.scribe/

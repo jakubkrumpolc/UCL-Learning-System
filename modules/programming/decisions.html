@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2 · Decide · Python Programming</title>
+<meta name="description" content="Decisions, input and operators: Make a program choose what to do with if, elif and else, read what the user types, and combine values with every kind of operator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-decisions">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html" aria-current="page"><span class="pn">2</span>Decide</a><a href="loops.html"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html"><span class="pn">5</span>Define</a><a href="errors.html"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html"><span class="pn">8</span>Import</a><a href="data.html"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#if"><span class="n">12</span><span class="t"><code>if</code>: run a block only when a condition is true</span></a></li><li><a href="#conditions"><span class="n">13</span><span class="t">Conditions, and combining them</span></a></li><li><a href="#elif-else"><span class="n">14</span><span class="t"><code>else</code> and <code>elif</code>: choosing one of several branches</span></a></li><li><a href="#shorthand"><span class="n">15</span><span class="t">One-line ifs, and ifs inside ifs</span></a></li><li><a href="#input"><span class="n">16</span><span class="t">Taking input from the user</span></a></li><li><a href="#arithmetic"><span class="n">17</span><span class="t">Arithmetic operators</span></a></li><li><a href="#compare-assign"><span class="n">18</span><span class="t">Comparison and assignment operators</span></a></li><li><a href="#logic"><span class="n">19</span><span class="t">Logical operators and truth tables</span></a></li><li><a href="#bitwise"><span class="n">20</span><span class="t">Bitwise operators: working on the bits</span></a></li><li><a href="#member-identity"><span class="n">21</span><span class="t">Membership and identity: <code>in</code> and <code>is</code></span></a></li><li><a href="#precedence"><span class="n">22</span><span class="t">Precedence and associativity</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">02</p>
+<p class="eyebrow">Part 2 · Decide</p>
+<h1>Decisions, input and operators</h1>
+<p class="lead">Make a program choose what to do with <code>if</code>, <code>elif</code> and <code>else</code>, read what the user types, and combine values with every kind of operator.</p>
+<p class="range">Sections 12–22 · Lecture 2</p>
+<div class="about"><p>Part 2 covers Lecture 2: branching with <code>if</code>, <code>elif</code> and <code>else</code>, one-line and nested ifs, reading input with <code>input()</code>, and Python's seven groups of operators (arithmetic, comparison, assignment, logical, bitwise, membership, identity), with their precedence and associativity.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#if"><span class="n">12</span> <code>if</code>: run a block only when a condition is true</a></li><li><a href="#conditions"><span class="n">13</span> Conditions, and combining them</a></li><li><a href="#elif-else"><span class="n">14</span> <code>else</code> and <code>elif</code>: choosing one of several branches</a></li><li><a href="#shorthand"><span class="n">15</span> One-line ifs, and ifs inside ifs</a></li><li><a href="#input"><span class="n">16</span> Taking input from the user</a></li><li><a href="#arithmetic"><span class="n">17</span> Arithmetic operators</a></li><li><a href="#compare-assign"><span class="n">18</span> Comparison and assignment operators</a></li><li><a href="#logic"><span class="n">19</span> Logical operators and truth tables</a></li><li><a href="#bitwise"><span class="n">20</span> Bitwise operators: working on the bits</a></li><li><a href="#member-identity"><span class="n">21</span> Membership and identity: <code>in</code> and <code>is</code></a></li><li><a href="#precedence"><span class="n">22</span> Precedence and associativity</a></li></ol></details><section class="topic" id="if" aria-labelledby="if-h">
+<div class="topic-meta"><a class="num" href="#if" title="Link to this section">12</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="if-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>if</code>: run a block only when a condition is true</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:820px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">if</b> <i style="color:#B34E06">condition</i>:
+    <i style="color:#B34E06">statements run only when the condition <b style="color:#7B2FCC">is</b> True</i>
+<i style="color:#B34E06">the rest of the program</i></pre>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x = <span style="color:#FFD27A">10</span>
+<span style="color:#D0A3FF">if</span> x &gt; <span style="color:#FFD27A">6</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"x is greater"</span>)
+
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Done"</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x is greater
+Done</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">How it runs</h3><div style="display:flex;flex-direction:column;gap:8px;align-items:stretch"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;">Test the condition</p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>True:</b> run the indented block</p><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:28px;height:40px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="35,0 65,0 65,62 100,62 50,100 0,62 35,62"></polygon></svg><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;">Carry on after the block</p></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">If the condition is False, the block is skipped and the program carries straight on.</p></div></div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Common error</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">if</span> x &gt; y:
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Done."</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">IndentationError: expected an indented block</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">The colon promises a block. Every <code>if</code> needs at least one indented line after it.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Scope</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The indented lines are <b>inside the scope</b> of the <code>if</code>. The first line back at the left edge ends the block.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Colon, then indent: everything indented under the <code>if</code> runs only when the condition is True.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A condition is any expression that is True or False. Python also accepts other values: <code>0</code>, <code>0.0</code>, <code>""</code>, empty lists and <code>None</code> count as False, and almost everything else as True. So <code>if name:</code> means “if name is not empty”.</p><p>If you need an <code>if</code> that does nothing yet, write <code>pass</code> as its block.</p><p><i>Source: Lecture 2, “if keyword”, “Indentation block”.</i></p></div></details>
+</section>
+<section class="topic" id="conditions" aria-labelledby="conditions-h">
+<div class="topic-meta"><a class="num" href="#conditions" title="Link to this section">13</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="conditions-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Conditions, and combining them</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">1 · Comparisons</p><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Write</th><th style="background:#F7F0FF">True when</th></tr></thead><tbody><tr><td><code>x == y</code></td><td>x equals y</td></tr><tr><td><code>x != y</code></td><td>x is not equal to y</td></tr><tr><td><code>x &lt; y</code>  <code>x &lt;= y</code></td><td>less (or equal)</td></tr><tr><td><code>x &gt; y</code>  <code>x &gt;= y</code></td><td>greater (or equal)</td></tr></tbody></table></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">2 · Logical operators</p><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Write</th><th style="background:#F7F0FF">True when</th></tr></thead><tbody><tr><td><code>a and b</code></td><td>both are True</td></tr><tr><td><code>a or b</code></td><td>at least one is True</td></tr><tr><td><code>not a</code></td><td>a is False</td></tr></tbody></table></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">3 · A function that returns True or False, such as <code>"abc".isalpha()</code>, also works as a condition.</p></div></div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x, y, z = <span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">11</span>, <span style="color:#FFD27A">12</span>
+
+<span style="color:#D0A3FF">if</span> z &gt; x <span style="color:#D0A3FF">and</span> z &gt; y:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'z is greater'</span>)
+
+<span style="color:#D0A3FF">if</span> z &gt; x <span style="color:#D0A3FF">or</span> z &gt; y:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'z is greater than x or y'</span>)
+
+<span style="color:#D0A3FF">if</span> <span style="color:#D0A3FF">not</span> (x &gt; y):
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'x is not greater than y'</span>)</pre>
+<div style="display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Output</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">z is greater
+z is greater than x or y
+x is not greater than y</pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>==</code> compares, <code>=</code> assigns. Join conditions with <code>and</code>, <code>or</code>, <code>not</code>.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>and</code> and <code>or</code> stop as soon as the answer is known (“short-circuit”): in <code>x != 0 and 10 / x &gt; 1</code> the division never runs when <code>x</code> is 0, so there's no error.</p><p>You can chain comparisons like in maths: <code>0 &lt;= mark &lt;= 100</code> means <code>0 &lt;= mark and mark &lt;= 100</code>.</p><p><i>Source: Lecture 2, “Conditions”, “Multiple conditions”.</i></p></div></details>
+</section>
+<section class="topic" id="elif-else" aria-labelledby="elif-else-h">
+<div class="topic-meta"><a class="num" href="#elif-else" title="Link to this section">14</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="elif-else-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>else</code> and <code>elif</code>: choosing one of several branches</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:900px;display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">continent = <span style="color:#FFAE80">"Australia"</span>
+
+<span style="color:#D0A3FF">if</span> continent == <span style="color:#FFAE80">"Africa"</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"The most spoken language is Arabic."</span>)
+<span style="color:#D0A3FF">elif</span> continent == <span style="color:#FFAE80">"Europe"</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"The most spoken language is Russian."</span>)
+<span style="color:#D0A3FF">elif</span> continent == <span style="color:#FFAE80">"Asia"</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"The most spoken language is Mandarin."</span>)
+<span style="color:#D0A3FF">elif</span> continent == <span style="color:#FFAE80">"Australia"</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"The most spoken language is English."</span>)
+<span style="color:#D0A3FF">else</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"You entered a wrong continent name."</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">The most spoken language is English.</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The rules</h3><ul style="font-size:26px;line-height:1.45"><li>Conditions are tested <b>top to bottom</b></li><li>The <b>first</b> True branch runs; the rest are skipped</li><li><code>else</code> catches everything not caught above</li><li><code>elif</code> means “else if”: only tested if everything above was False</li></ul>
+<div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">In one if-block</th><th style="background:#F7F0FF">How many?</th></tr></thead><tbody><tr><td><code>if</code></td><td>exactly 1</td></tr><tr><td><code>elif</code></td><td>0 or more</td></tr><tr><td><code>else</code></td><td>0 or 1, last</td></tr></tbody></table></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> One <code>if</code>, any number of <code>elif</code>s, at most one <code>else</code>, and only the first True branch runs.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Order matters when conditions overlap. Testing <code>mark &gt;= 40</code> before <code>mark &gt;= 70</code> would label every distinction as a pass, because the first True branch wins. Put the narrowest condition first.</p><p><code>else</code> has no condition of its own. Writing <code>else x &gt; 3:</code> is a syntax error; use <code>elif</code>.</p><p><i>Source: Lecture 2, “else keyword”, “elif keyword”, “Summary of if-elif-else”.</i></p></div></details>
+</section>
+<section class="topic" id="shorthand" aria-labelledby="shorthand-h">
+<div class="topic-meta"><a class="num" href="#shorthand" title="Link to this section">15</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="shorthand-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">One-line ifs, and ifs inside ifs</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Short hand</p><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">One line</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">if</span> x == y: <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"x and y are equal"</span>)</pre>
+<p style="font-size:24px;line-height:1.4;color:#666666">A one-line <code>if</code>, only when there's no <code>elif</code> or <code>else</code>.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"X"</span>) <span style="color:#D0A3FF">if</span> x &gt; y <span style="color:#D0A3FF">else</span> <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Y"</span>)</pre>
+<p style="font-size:24px;line-height:1.4;color:#666666">A one-line <code>if</code>/<code>else</code>. Neater: <code>print("X" if x &gt; y else "Y")</code>.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Nested</p><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">An if inside an if</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:21px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x = <span style="color:#FFD27A">15</span>
+<span style="color:#D0A3FF">if</span> x % <span style="color:#FFD27A">2</span> == <span style="color:#FFD27A">0</span>:
+    <span style="color:#D0A3FF">if</span> x % <span style="color:#FFD27A">5</span> == <span style="color:#FFD27A">0</span>:
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"divisible by 5 and 2"</span>)
+    <span style="color:#D0A3FF">else</span>:
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"divisible by 2 not divisible by 5"</span>)
+<span style="color:#D0A3FF">else</span>:
+    <span style="color:#D0A3FF">if</span> x % <span style="color:#FFD27A">5</span> == <span style="color:#FFD27A">0</span>:
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"divisible by 5 not divisible by 2"</span>)
+    <span style="color:#D0A3FF">else</span>:
+        <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"not divisible by 2 not divisible by 5"</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:21px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">divisible by 5 not divisible by 2</pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Watch out:</b> deep nesting is hard to read and maintain. Often <code>and</code> flattens it: <code>if x % 2 == 0 and x % 5 == 0:</code>.</p>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>A if condition else B</code> picks a value in one line; keep nesting shallow.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The one-line form <code>value_if_true if condition else value_if_false</code> is called a conditional expression. It produces a value, so it fits inside other code: <code>grade = "pass" if mark &gt;= 40 else "fail"</code>.</p><p><code>x % 2 == 0</code> tests whether <code>x</code> is even: <code>%</code> gives the remainder after division (see <a href="#arithmetic">Arithmetic operators</a>).</p><p><i>Source: Lecture 2, “Short hand if”, “Short hand if-else”, “Nested if-elif-else”.</i></p></div></details>
+</section>
+<section class="topic" id="input" aria-labelledby="input-h">
+<div class="topic-meta"><a class="num" href="#input" title="Link to this section">16</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="input-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Taking input from the user</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:760px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">user_input = <span style="color:#8FD8FF">input</span>(<span style="color:#FFAE80">"Enter a value: "</span>)
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"You entered"</span>, user_input)</pre>
+<div style="display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Output</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Enter a value: 42
+You entered 42</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">The program <b>waits</b> until the user types and presses Enter. The prompt text is optional but helpful.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Convert before you calculate</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>input()</code> <b>always returns a string</b>, even if the user types a number.</p>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">my_value = <span style="color:#8FD8FF">int</span>(<span style="color:#8FD8FF">input</span>())
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Total ="</span>, <span style="color:#FFD27A">10</span> + my_value)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">5
+Total = 15</pre></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">Without <code>int(...)</code>, <code>10 + "5"</code> would raise a TypeError.</p></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Several inputs at once</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x, y, z = <span style="color:#8FD8FF">input</span>(<span style="color:#FFAE80">"Enter the three values: "</span>).split()
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Total number of students:"</span>, x)
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Number of MScs is:"</span>, y)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>split()</code> cuts the typed text at the spaces, so three values typed on one line go into three variables (still strings).</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>input()</code> gives text. Wrap it in <code>int()</code> or <code>float()</code> to get a number.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>If the user types something that isn't a number, <code>int(input())</code> raises <code>ValueError</code>. You'll handle that with <code>try</code>/<code>except</code> in <a href="errors.html#try-except">Part 6</a>.</p><p><code>split()</code> needs exactly as many values as there are names on the left, or Python raises <code>ValueError: not enough values to unpack</code>. To convert them all: <code>a, b = map(int, input().split())</code>.</p><p><i>Source: Lecture 2, “Taking input from the user”.</i></p></div></details>
+</section>
+<section class="topic" id="arithmetic" aria-labelledby="arithmetic-h">
+<div class="topic-meta"><a class="num" href="#arithmetic" title="Link to this section">17</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="arithmetic-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Arithmetic operators</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:860px;display:flex;flex-direction:column;gap:24px"><div class="tablewrap"><table style="font-size:26px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Operator</th><th style="background:#F7F0FF">Name</th><th style="background:#F7F0FF"><code>x = 15, y = 10</code></th></tr></thead><tbody><tr><td><code>+</code></td><td>addition</td><td><code>25</code></td></tr><tr><td><code>-</code></td><td>subtraction</td><td><code>5</code></td></tr><tr><td><code>*</code></td><td>multiplication</td><td><code>150</code></td></tr><tr><td><code>/</code></td><td>division (always a float)</td><td><code>1.5</code></td></tr><tr><td><code>%</code></td><td>modulus: the remainder</td><td><code>5</code></td></tr><tr><td><code>**</code></td><td>exponent: <code>2 ** 3</code></td><td><code>8</code></td></tr><tr><td><code>//</code></td><td>floor division: round down</td><td><code>1</code></td></tr></tbody></table></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Floor division with negatives</h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#8FD8FF">print</span>(-<span style="color:#FFD27A">22</span> // <span style="color:#FFD27A">5</span>)
+<span style="color:#8FD8FF">print</span>(-<span style="color:#FFD27A">22</span> % <span style="color:#FFD27A">5</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">-5
+3</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>//</code> rounds <b>down</b> (towards minus infinity), not towards zero: −22 / 5 = −4.4, which floors to −5.</p>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>%</code> matches it, so that <code>(x // y) * y + x % y == x</code> always holds: −5 × 5 + 3 = −22.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>/</code> always gives a float; <code>//</code> rounds down; <code>%</code> is what's left over.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>%</code> is useful far beyond arithmetic: <code>n % 2 == 0</code> tests for even numbers, and <code>n % 10</code> gives the last digit.</p><p><code>/</code> returns a float even when the division is exact: <code>10 / 2</code> is <code>5.0</code>. Use <code>//</code> when you need a whole number.</p><p><i>Source: Lecture 2, “Arithmetic Operators”, “Examples”.</i></p></div></details>
+</section>
+<section class="topic" id="compare-assign" aria-labelledby="compare-assign-h">
+<div class="topic-meta"><a class="num" href="#compare-assign" title="Link to this section">18</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="compare-assign-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Comparison and assignment operators</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Comparison: the answer is a bool</h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x = <span style="color:#FFD27A">15</span>
+y = <span style="color:#FFD27A">5</span>
+<span style="color:#8FD8FF">print</span>(x == y, x != y, x &lt; y, x &gt; y, x &lt;= y, x &gt;= y)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">False True False True False True</pre></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Watch out:</b> values of different types are not equal: <code>"10" == 10</code> is <code>False</code>, because one is a string and one is an int.</p>
+</div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Assignment: update in place</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Write</th><th style="background:#F7F0FF">Same as</th></tr></thead><tbody><tr><td><code>z += x</code></td><td><code>z = z + x</code></td></tr><tr><td><code>z -= x</code></td><td><code>z = z - x</code></td></tr><tr><td><code>z *= x</code></td><td><code>z = z * x</code></td></tr><tr><td><code>z /= x</code></td><td><code>z = z / x</code></td></tr><tr><td><code>z %= x</code></td><td><code>z = z % x</code></td></tr><tr><td><code>z **= x</code></td><td><code>z = z ** x</code></td></tr><tr><td><code>z //= x</code></td><td><code>z = z // x</code></td></tr></tbody></table></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>x += 1</code> is short for <code>x = x + 1</code>. A string never equals a number.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>In the lecture's example the value of <code>z</code> changes on every line, so each result builds on the one before: starting from <code>z = 16</code> with <code>x = 11</code>, the lines give 27, 297, 27.0 and so on. Trace the values step by step rather than starting again from <code>z = 0</code>.</p><p>Python has no <code>++</code> or <code>--</code> operators. Write <code>count += 1</code>.</p><p><i>Source: Lecture 2, “Comparison operators”, “Common pitfall!”, “Assignment operators”.</i></p></div></details>
+</section>
+<section class="topic" id="logic" aria-labelledby="logic-h">
+<div class="topic-meta"><a class="num" href="#logic" title="Link to this section">19</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="logic-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Logical operators and truth tables</h2>
+</div>
+<div class="row" style="display:flex;gap:24px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">not</p><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">a</th><th style="background:#F7F0FF">not a</th></tr></thead><tbody><tr><td>T</td><td>F</td></tr><tr><td>F</td><td>T</td></tr></tbody></table></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">and</p><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">a</th><th style="background:#F7F0FF">b</th><th style="background:#F7F0FF">a and b</th></tr></thead><tbody><tr><td>T</td><td>T</td><td><b>T</b></td></tr><tr><td>T</td><td>F</td><td>F</td></tr><tr><td>F</td><td>T</td><td>F</td></tr><tr><td>F</td><td>F</td><td>F</td></tr></tbody></table></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">or</p><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">a</th><th style="background:#F7F0FF">b</th><th style="background:#F7F0FF">a or b</th></tr></thead><tbody><tr><td>T</td><td>T</td><td>T</td></tr><tr><td>T</td><td>F</td><td>T</td></tr><tr><td>F</td><td>T</td><td>T</td></tr><tr><td>F</td><td>F</td><td><b>F</b></td></tr></tbody></table></div></div></div>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">x = <span style="color:#D0A3FF">True</span>
+y = <span style="color:#D0A3FF">False</span>
+<span style="color:#8FD8FF">print</span>(x <span style="color:#D0A3FF">and</span> y, x <span style="color:#D0A3FF">or</span> y, <span style="color:#D0A3FF">not</span> x, <span style="color:#D0A3FF">not</span> (x <span style="color:#D0A3FF">and</span> y))</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">False True False True</pre></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>and</code> needs both, <code>or</code> needs either, <code>not</code> flips it.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The two bold rows are the ones to learn: <code>and</code> is only True when both are True, <code>or</code> is only False when both are False. Everything else follows.</p><p>De Morgan's laws flip combined conditions: <code>not (a and b)</code> equals <code>(not a) or (not b)</code>, and <code>not (a or b)</code> equals <code>(not a) and (not b)</code>.</p><p><i>Source: Lecture 2, “Logical operators – Truth tables”, “Logical operators”.</i></p></div></details>
+</section>
+<section class="topic" id="bitwise" aria-labelledby="bitwise-h">
+<div class="topic-meta"><a class="num" href="#bitwise" title="Link to this section">20</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="bitwise-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Bitwise operators: working on the bits</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:980px;display:flex;flex-direction:column;gap:24px"><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Operator</th><th style="background:#F7F0FF">Does</th><th style="background:#F7F0FF"><code>x = 20</code>, <code>y = 10</code></th><th style="background:#F7F0FF">Result</th></tr></thead><tbody><tr><td><code>&amp;</code></td><td>AND each pair of bits</td><td><code>10100 &amp; 01010</code></td><td><code>0</code></td></tr><tr><td><code>|</code></td><td>OR each pair</td><td><code>10100 | 01010</code></td><td><code>30</code></td></tr><tr><td><code>^</code></td><td>XOR: 1 if the bits differ</td><td><code>10100 ^ 01010</code></td><td><code>30</code></td></tr><tr><td><code>~</code></td><td>flip every bit</td><td><code>~x</code> = −x − 1</td><td><code>-21</code></td></tr><tr><td><code>&lt;&lt;</code></td><td>shift left (× 2 each step)</td><td><code>x &lt;&lt; 2</code> = <code>1010000</code></td><td><code>80</code></td></tr><tr><td><code>&gt;&gt;</code></td><td>shift right (÷ 2 each step)</td><td><code>x &gt;&gt; 2</code> = <code>101</code></td><td><code>5</code></td></tr></tbody></table></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Seeing the bits</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Python converts to binary, works bit by bit, and shows the answer in decimal.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#8FD8FF">print</span>(bin(<span style="color:#FFD27A">20</span>))        <span style="color:#B3B3B3"># '0b10100'</span>
+<span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">int</span>(<span style="color:#FFAE80">'0b11110'</span>, <span style="color:#FFD27A">2</span>))   <span style="color:#B3B3B3"># 30</span></pre>
+<p style="font-size:24px;line-height:1.4;color:#666666"><code>bin()</code> shows the bits; <code>int(text, 2)</code> reads binary.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Shifting left by n multiplies by 2ⁿ; shifting right by n divides by 2ⁿ (rounding down).</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>20 is <code>10100</code> and 10 is <code>01010</code>: they have no 1-bits in the same place, so <code>&amp;</code> gives 0 and both <code>|</code> and <code>^</code> give <code>11110</code>, which is 30.</p><p><code>~x</code> is <code>-x - 1</code> because Python stores negative integers in two's complement: flipping every bit of <code>x</code> gives the pattern for <code>-(x + 1)</code>. So <code>~20</code> is <code>-21</code>.</p><p>XOR truth table: 0^0 = 0, 0^1 = 1, 1^0 = 1, 1^1 = 0.</p><p><i>Source: Lecture 2, “Bitwise operators”.</i></p></div></details>
+</section>
+<section class="topic" id="member-identity" aria-labelledby="member-identity-h">
+<div class="topic-meta"><a class="num" href="#member-identity" title="Link to this section">21</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="member-identity-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Membership and identity: <code>in</code> and <code>is</code></h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Membership: <code>in</code>, <code>not in</code></h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">my_string = <span style="color:#FFAE80">"fortunately"</span>
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"for"</span> <span style="color:#D0A3FF">in</span> my_string)
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"bal"</span> <span style="color:#D0A3FF">not</span> <span style="color:#D0A3FF">in</span> my_string)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">True
+True</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>in</code> and <code>not in</code> ask whether a value is <b>inside</b> a string, list, tuple, set or dictionary (its keys).</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Identity: <code>is</code>, <code>is not</code></h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">a = <span style="color:#FFD27A">10</span>
+b = <span style="color:#FFD27A">10</span>
+c = <span style="color:#FFD27A">20</span>
+<span style="color:#8FD8FF">print</span>(a <span style="color:#D0A3FF">is</span> b)
+<span style="color:#8FD8FF">print</span>(a <span style="color:#D0A3FF">is</span> <span style="color:#D0A3FF">not</span> c)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">True
+True</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>is</code> and <code>is not</code> ask whether two names refer to <b>the same object</b> (the same <code>id()</code>), not just equal values.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Watch out:</b> use <code>==</code> to compare values. <code>a is b</code> happens to be True for small numbers because Python shares those objects, but it's False for two separate lists with the same contents. Keep <code>is</code> for <code>x is None</code>.</p>
+</div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>in</code> asks “is it inside?”; <code>is</code> asks “is it the very same object?”.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>[1, 2] == [1, 2]</code> is True (same contents) but <code>[1, 2] is [1, 2]</code> is False (two different list objects).</p><p>The one place you should always use <code>is</code> is comparing with <code>None</code>: <code>if result is None:</code>.</p><p><i>Source: Lecture 2, “Membership operators”, “Identity operators”.</i></p></div></details>
+</section>
+<section class="topic" id="precedence" aria-labelledby="precedence-h">
+<div class="topic-meta"><a class="num" href="#precedence" title="Link to this section">22</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Decide</p>
+<h2 id="precedence-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Precedence and associativity</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:700px;display:flex;flex-direction:column;gap:24px"><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Priority</th><th style="background:#F7F0FF">Operators</th></tr></thead><tbody><tr><td>1 (first)</td><td><code>( )</code> parentheses</td></tr><tr><td>2</td><td><code>**</code></td></tr><tr><td>3</td><td><code>+x</code>  <code>-x</code>  <code>~x</code> (unary)</td></tr><tr><td>4</td><td><code>*</code>  <code>/</code>  <code>//</code>  <code>%</code></td></tr><tr><td>5</td><td><code>+</code>  <code>-</code></td></tr><tr><td>6</td><td><code>&lt;&lt;</code>  <code>&gt;&gt;</code></td></tr><tr><td>7</td><td><code>&amp;</code></td></tr><tr><td>8</td><td><code>^</code></td></tr><tr><td>9</td><td><code>|</code></td></tr><tr><td>10</td><td>comparisons, <code>in</code>, <code>is</code></td></tr><tr><td>11</td><td><code>not</code></td></tr><tr><td>12</td><td><code>and</code></td></tr><tr><td>13 (last)</td><td><code>or</code></td></tr></tbody></table></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">a, b, c, d = <span style="color:#FFD27A">20</span>, <span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">15</span>, <span style="color:#FFD27A">5</span>
+<span style="color:#8FD8FF">print</span>(a + b * c)         <span style="color:#B3B3B3"># 20 + (10 * 15)</span>
+<span style="color:#8FD8FF">print</span>((a + b) * c / d)   <span style="color:#B3B3B3"># (30 * 15) / 5</span>
+<span style="color:#8FD8FF">print</span>(a + (b * c) / d)   <span style="color:#B3B3B3"># 20 + (150 / 5)</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">170
+90.0
+50.0</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Associativity</h3><ul style="font-size:26px;line-height:1.45"><li>Same priority: <b>left to right</b>: <code>5 * 2 // 3</code> is <code>(5 * 2) // 3</code> = 3</li><li>Except <code>**</code>: <b>right to left</b>: <code>2 ** 3 ** 2</code> is <code>2 ** 9</code> = 512</li><li>Comparisons chain: <code>a &lt; b &lt; c</code> means <code>a &lt; b and b &lt; c</code></li></ul></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Brackets first, then <code>**</code>, then <code>* /</code>, then <code>+ -</code>. When in doubt, add brackets.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Because <code>**</code> binds tighter than a minus sign on its left, <code>-2 ** 2</code> is <code>-(2 ** 2)</code> = −4. Write <code>(-2) ** 2</code> for 4.</p><p>Assignment and comparison operators have no associativity in the usual sense: <code>a &lt; b &lt; c</code> is neither <code>(a &lt; b) &lt; c</code> nor <code>a &lt; (b &lt; c)</code>, but a chain evaluated left to right, stopping at the first False.</p><p><i>Source: Lecture 2, “Operators precedence”, “Associativity”, “Non associative operators”.</i></p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="values.html"><span>Previous</span>Values</a><a class="next" href="loops.html"><span>Next</span>Repeat</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

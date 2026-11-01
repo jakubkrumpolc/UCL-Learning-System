@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Serve the study site on this computer and open it in a browser.
+"""Serve the study portal on this computer and open it in a browser.
 
-The Linux, macOS, and Windows files in this folder call this script.
+start.py, in the portal folder, calls this script.
+Requests for Scribe, the live-transcription page, go on to scribe.py.
 """
 
 from __future__ import annotations
@@ -18,7 +19,9 @@ import threading
 import urllib.parse
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+import scribe
+
+ROOT =Path(__file__).resolve().parent.parent
 HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
 SERVER_HEADER = "X-UCL-Learning-System"
@@ -33,10 +36,49 @@ def fail(message: str) -> None:
 
 
 class StudySiteHandler(http.server.SimpleHTTPRequestHandler):
-    """Serve the site files, and refuse hidden paths such as .git."""
+    """Serve the site files, refuse hidden paths such as .git, and pass
+    Scribe's /api/ and /ws/ requests to scribe.py."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
+
+    def do_GET(self):
+        if scribe.handles(self.path):
+            self.send_scribe()
+        else:
+            super().do_GET()
+
+    def do_POST(self):
+        if scribe.handles(self.path):
+            self.send_scribe()
+        else:
+            self.send_error(http.HTTPStatus.NOT_IMPLEMENTED, "Unsupported method")
+
+    do_PUT = do_PATCH = do_DELETE = do_POST
+
+    def send_scribe(self) -> None:
+        try:
+            length = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            length = -1
+        if not 0 <= length <= scribe.MAX_BODY:
+            self.send_error(http.HTTPStatus.BAD_REQUEST, "Bad request body")
+            return
+        response = scribe.handle(
+            self.command, self.path, self.headers, self.rfile.read(length)
+        )
+        if response.upgrade:
+            # WebSocket handshakes are answered in HTTP/1.1, and the
+            # connection then belongs to the socket until it closes.
+            self.protocol_version = "HTTP/1.1"
+            self.close_connection = True
+        self.send_response(response.status)
+        for name, value in response.headers:
+            self.send_header(name, value)
+        self.end_headers()
+        self.wfile.write(response.body)
+        if response.upgrade:
+            response.upgrade(self.connection)
 
     def send_head(self):
         if requests_hidden_path(self.path):
@@ -166,8 +208,8 @@ def serve(port: int) -> int:
         if (state in {"http", "busy"}):
             fail(f"Port {port} is already in use on this computer.")
             fail(
-                "Stop the other program, or run the startup file again with "
-                "another port, for example 8081."
+                "Stop the other program, or start the portal on another port, "
+                "for example: python3 start.py 8081"
             )
             return 1
         fail(f"Could not listen on {url} ({exc}).")
@@ -187,7 +229,7 @@ def serve(port: int) -> int:
             daemon=True,
         ).start()
 
-    say(f"UCL Learning System is available at {url}")
+    say(f"UCL CS Learning System is available at {url}")
     if extras:
         say(f"localhost points here too: http://localhost:{port}/")
     say("Leave this window open while you study. Press Ctrl+C to stop.")
@@ -215,7 +257,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     parser = argparse.ArgumentParser(
-        description="Serve the UCL Learning System on localhost."
+        description="Serve the UCL CS Learning System on localhost."
     )
     parser.add_argument(
         "port",

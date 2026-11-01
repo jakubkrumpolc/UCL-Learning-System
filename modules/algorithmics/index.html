@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Algorithms &amp;amp;amp; Data Structures · COMP0070</title>
+<meta name="description" content="Algorithms and Data Structures study guide for COMP0070 Algorithmics: efficiency, data structures, greedy algorithms, divide and conquer, dynamic programming and graph search, with Problem sheet 1 answers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-index">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">AL</span><span class="brand-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span><span class="mm-here">This module</span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Algorithms and data structures</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="analysis.html"><span class="pn">1</span>Measure</a><a href="structures.html"><span class="pn">2</span>Structure</a><a href="greedy.html"><span class="pn">3</span>Greedy</a><a href="divide.html"><span class="pn">4</span>Divide</a><a href="dynamic.html"><span class="pn">5</span>Dynamic</a><a href="search.html"><span class="pn">6</span>Traverse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout">
+
+<main id="main">
+<header class="home-hero">
+<div class="home-hero-in">
+<div class="hh-text">
+<p class="eyebrow">COMP0070 · Algorithmics · Anthony Hunter's half</p>
+<h1>Algorithms,<br/>step by step</h1>
+<p class="lead">The lecture notes rebuilt into one clear path: how to measure an algorithm, the data structures they use, and the four big techniques: greedy, divide and conquer, dynamic programming and graph search. Every trace is worked through, and Problem sheet 1 has full answers.</p>
+<div class="hh-actions"><a class="btn primary" href="analysis.html">Start with Part 1</a><a class="btn" href="greedy.html">Jump to greedy</a><a class="btn" href="revision.html">Cheat sheet</a></div>
+</div>
+<svg aria-label="A small graph of five nodes" height="320" class="hero-art" viewbox="0 0 420 320" width="420"><g stroke="#BA82FF" stroke-width="8"><line x1="80" y1="70" x2="250" y2="50"></line><line x1="80" y1="70" x2="140" y2="250"></line><line x1="250" y1="50" x2="350" y2="200"></line><line x1="140" y1="250" x2="350" y2="200"></line><line x1="250" y1="50" x2="140" y2="250"></line></g><g stroke="#9A3BFF" stroke-width="12"><line x1="80" y1="70" x2="250" y2="50"></line><line x1="250" y1="50" x2="350" y2="200"></line></g><circle cx="80" cy="70" r="34" fill="#9A3BFF"></circle><circle cx="250" cy="50" r="34" fill="#9A3BFF"></circle><circle cx="350" cy="200" r="34" fill="#9A3BFF"></circle><circle cx="140" cy="250" r="34" fill="#BA82FF"></circle><circle cx="250" cy="50" r="14" fill="#361A54"></circle></svg>
+</div>
+</header>
+<section class="home-sec" id="roadmap">
+<h2>Six parts, in the order of the notes</h2>
+<p class="sub">Measure → Structure → Greedy → Divide → Dynamic → Traverse. Each part is one section of the notes; the problem sheet answers are on the revision page, marked <span class="badge lab">Lab</span>.</p>
+<div class="part-grid"><article class="part-card">
+<a class="part-link" href="analysis.html"><span class="pc-num">1</span><span class="pc-name">Measure</span></a>
+<p class="pc-desc">Pseudocode, running time, orders of growth, insertion sort.</p>
+<p class="pc-range">Sections 1–10 · Notes, section 2</p>
+<details class="pc-topics"><summary>All 10 sections</summary><ol><li><a href="analysis.html#algorithm"><span class="n">1</span>What is an algorithm, and why study them?</a></li><li><a href="analysis.html#pseudocode"><span class="n">2</span>Pseudocode</a></li><li><a href="analysis.html#multiply"><span class="n">3</span>Two ways to multiply</a></li><li><a href="analysis.html#efficiency"><span class="n">4</span>Measuring efficiency</a></li><li><a href="analysis.html#growth"><span class="n">5</span>Orders of growth</a></li><li><a href="analysis.html#gcd"><span class="n">6</span>Greatest common divisor: obvious versus Euclid</a></li><li><a href="analysis.html#fibonacci"><span class="n">7</span>Fibonacci: recursion versus iteration</a></li><li><a href="analysis.html#insertion-sort"><span class="n">8</span>Insertion sort</a></li><li><a href="analysis.html#insertion-analysis"><span class="n">9</span>Insertion sort: best and worst case</a></li><li><a href="analysis.html#optimisation"><span class="n">10</span>Optimisation problems</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="structures.html"><span class="pc-num">2</span><span class="pc-name">Structure</span></a>
+<p class="pc-desc">Stacks, queues, graphs, trees, traversals and heaps.</p>
+<p class="pc-range">Sections 11–16 · Notes, section 3</p>
+<details class="pc-topics"><summary>All 6 sections</summary><ol><li><a href="structures.html#basic-structures"><span class="n">11</span>Lists, arrays, linked lists, stacks and queues</a></li><li><a href="structures.html#graphs"><span class="n">12</span>Graphs: nodes and arcs</a></li><li><a href="structures.html#paths"><span class="n">13</span>Paths, subgraphs and connected graphs</a></li><li><a href="structures.html#trees"><span class="n">14</span>Trees, binary trees and complete binary trees</a></li><li><a href="structures.html#traversal"><span class="n">15</span>Tree traversal: preorder, inorder, postorder</a></li><li><a href="structures.html#heaps"><span class="n">16</span>Heaps: a complete binary tree stored in an array</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="greedy.html"><span class="pc-num">3</span><span class="pc-name">Greedy</span></a>
+<p class="pc-desc">Greedy choice, Kruskal, Prim, Dijkstra, and its limits.</p>
+<p class="pc-range">Sections 17–23 · Notes, section 4</p>
+<details class="pc-topics"><summary>All 7 sections</summary><ol><li><a href="greedy.html#greedy-idea"><span class="n">17</span>The greedy approach</a></li><li><a href="greedy.html#change"><span class="n">18</span>Giving change</a></li><li><a href="greedy.html#mst"><span class="n">19</span>Minimum spanning trees</a></li><li><a href="greedy.html#kruskal"><span class="n">20</span>Kruskal's algorithm</a></li><li><a href="greedy.html#prim"><span class="n">21</span>Prim's algorithm</a></li><li><a href="greedy.html#dijkstra"><span class="n">22</span>Dijkstra's algorithm: shortest paths from one node</a></li><li><a href="greedy.html#tsp"><span class="n">23</span>Where greedy fails: the travelling salesperson</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="divide.html"><span class="pc-num">4</span><span class="pc-name">Divide</span></a>
+<p class="pc-desc">Binary search, MergeSort, QuickSort and the pivot.</p>
+<p class="pc-range">Sections 24–28 · Notes, section 5</p>
+<details class="pc-topics"><summary>All 5 sections</summary><ol><li><a href="divide.html#divide-idea"><span class="n">24</span>Divide and conquer</a></li><li><a href="divide.html#search"><span class="n">25</span>Sequential search versus binary search</a></li><li><a href="divide.html#mergesort"><span class="n">26</span>MergeSort</a></li><li><a href="divide.html#quicksort"><span class="n">27</span>QuickSort</a></li><li><a href="divide.html#pivot"><span class="n">28</span>The Pivot procedure, step by step</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="dynamic.html"><span class="pc-num">5</span><span class="pc-name">Dynamic</span></a>
+<p class="pc-desc">Optimal substructure, Pascal's triangle, Floyd, FloydPath, Warshall.</p>
+<p class="pc-range">Sections 29–35 · Notes, section 6</p>
+<details class="pc-topics"><summary>All 7 sections</summary><ol><li><a href="dynamic.html#dp-idea"><span class="n">29</span>Dynamic programming</a></li><li><a href="dynamic.html#substructure"><span class="n">30</span>Optimal substructure</a></li><li><a href="dynamic.html#binomial"><span class="n">31</span>Binomial coefficients: Pascal's triangle</a></li><li><a href="dynamic.html#floyd"><span class="n">32</span>Floyd's algorithm: shortest paths between every pair</a></li><li><a href="dynamic.html#floyd-steps"><span class="n">33</span>Floyd's algorithm step by step</a></li><li><a href="dynamic.html#floydpath"><span class="n">34</span>FloydPath: recovering the route</a></li><li><a href="dynamic.html#warshall"><span class="n">35</span>Warshall's algorithm: is there a path at all?</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="search.html"><span class="pc-num">6</span><span class="pc-name">Traverse</span></a>
+<p class="pc-desc">Depth-first search with a stack, breadth-first with a queue.</p>
+<p class="pc-range">Sections 36–39 · Notes, section 7</p>
+<details class="pc-topics"><summary>All 4 sections</summary><ol><li><a href="search.html#graph-search"><span class="n">36</span>Visiting every node: two strategies</a></li><li><a href="search.html#dfs"><span class="n">37</span>Depth-first search</a></li><li><a href="search.html#dfs-stack"><span class="n">38</span>Depth-first search with a stack</a></li><li><a href="search.html#bfs"><span class="n">39</span>Breadth-first search with a queue</a></li></ol></details>
+</article><article class="part-card rev">
+<a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
+<p class="pc-desc">All algorithms in one table, memory hooks, Problem sheet 1.</p>
+<p class="pc-range">Sections 40–48 · <b>Lab: 42–48</b></p>
+<details class="pc-topics"><summary>All 9 sections</summary><ol><li><a href="revision.html#al-cheat"><span class="n">40</span>Algorithms on one page</a></li><li><a href="revision.html#al-hooks"><span class="n">41</span>Every memory hook</a></li><li><a href="revision.html#ps1-q1"><span class="n">42</span>Problem sheet 1, question 1: a graph</a></li><li><a href="revision.html#ps1-q1-trees"><span class="n">43</span>Question 1: the two search trees</a></li><li><a href="revision.html#ps1-q2"><span class="n">44</span>Question 2: traversals of a heap</a></li><li><a href="revision.html#ps1-q2-tree"><span class="n">45</span>Question 2: the heap as a tree</a></li><li><a href="revision.html#ps1-q3"><span class="n">46</span>Question 3: the height of a heap</a></li><li><a href="revision.html#ps1-q4"><span class="n">47</span>Question 4: the height of a binary tree, recursively</a></li><li><a href="revision.html#ps1-q5"><span class="n">48</span>Question 5: depth-first search on a binary tree</a></li></ol></details>
+</article></div>
+<aside class="cta" aria-label="Revision">
+<div><h2>Revising for the exam?</h2><p>Every algorithm in one table, every memory hook, and Problem sheet 1 worked through.</p></div>
+<a class="btn" href="revision.html">Open the cheat sheet</a>
+</aside>
+</section>
+<section class="home-sec how-band" id="how">
+<h2>How to use this module</h2>
+<div class="how-grid">
+<div class="how"><p class="eyebrow">Tip 1</p><h3>Trace it by hand</h3><p>Every algorithm comes with a worked example. Cover the trace, run the pseudocode on paper, then check.</p></div><div class="how"><p class="eyebrow">Tip 2</p><h3>Open “More detail”</h3><p>Under each section: the finer points from the notes and the reasoning behind each step. The button in the sidebar opens them all.</p></div><div class="how"><p class="eyebrow">Tip 3</p><h3>Light box = pseudocode</h3><p>Purple words are keywords. Arrays are numbered from 1, as in the notes; code them in Python (which counts from 0) to see them run.</p></div><div class="how"><p class="eyebrow">Tip 4</p><h3>Learn the “Remember” lines</h3><p>Every section ends with a memory hook. They're all collected on the <a href="revision.html#al-hooks">revision page</a>.</p></div>
+</div>
+</section>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="analysis.html">1 · Measure</a></li><li><a href="structures.html">2 · Structure</a></li><li><a href="greedy.html">3 · Greedy</a></li><li><a href="divide.html">4 · Divide</a></li><li><a href="dynamic.html">5 · Dynamic</a></li><li><a href="search.html">6 · Traverse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#al-cheat">Algorithms on one page</a></li><li><a href="revision.html#al-hooks">Memory hooks</a></li><li><a href="revision.html#ps1-q1">Problem sheet 1</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">AL</span>Algorithms &amp; Data Structures</p>
+<p>Built from your COMP0070 lecture notes, “Algorithms and Data Structures” (sections 2–7), and Problem sheet 1. “More detail” gives the pages of the notes each section comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0070 · Algorithmics · Algorithms and data structures</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

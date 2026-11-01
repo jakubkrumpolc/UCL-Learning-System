@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6 · Handle · Python Programming</title>
+<meta name="description" content="Exceptions and files: Stop errors from crashing your program with try and except, then make data outlive the program by reading and writing files.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-errors">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html"><span class="pn">2</span>Decide</a><a href="loops.html"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html"><span class="pn">5</span>Define</a><a href="errors.html" aria-current="page"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html"><span class="pn">8</span>Import</a><a href="data.html"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#exceptions"><span class="n">49</span><span class="t">Exceptions: errors while the program runs</span></a></li><li><a href="#try-except"><span class="n">50</span><span class="t"><code>try</code> and <code>except</code>: catch the error, carry on</span></a></li><li><a href="#specific"><span class="n">51</span><span class="t">Catch specific exceptions, generic last</span></a></li><li><a href="#else-finally"><span class="n">52</span><span class="t"><code>else</code> and <code>finally</code></span></a></li><li><a href="#files"><span class="n">53</span><span class="t">Files: open, use, close</span></a></li><li><a href="#modes"><span class="n">54</span><span class="t">Access modes</span></a></li><li><a href="#reading"><span class="n">55</span><span class="t">Four ways to read a file</span></a></li><li><a href="#writing"><span class="n">56</span><span class="t">Writing and appending</span></a></li><li><a href="#binary"><span class="n">57</span><span class="t">Text files and binary files</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">06</p>
+<p class="eyebrow">Part 6 · Handle</p>
+<h1>Exceptions and files</h1>
+<p class="lead">Stop errors from crashing your program with <code>try</code> and <code>except</code>, then make data outlive the program by reading and writing files.</p>
+<p class="range">Sections 49–57 · Lecture 6</p>
+<div class="about"><p>Part 6 covers Lecture 6: what exceptions are, catching them with <code>try</code>/<code>except</code> (generic and specific), <code>else</code> and <code>finally</code>, then files: opening and closing them (best with <code>with</code>), access modes, four ways to read, three ways to write, appending, and binary files.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#exceptions"><span class="n">49</span> Exceptions: errors while the program runs</a></li><li><a href="#try-except"><span class="n">50</span> <code>try</code> and <code>except</code>: catch the error, carry on</a></li><li><a href="#specific"><span class="n">51</span> Catch specific exceptions, generic last</a></li><li><a href="#else-finally"><span class="n">52</span> <code>else</code> and <code>finally</code></a></li><li><a href="#files"><span class="n">53</span> Files: open, use, close</a></li><li><a href="#modes"><span class="n">54</span> Access modes</a></li><li><a href="#reading"><span class="n">55</span> Four ways to read a file</a></li><li><a href="#writing"><span class="n">56</span> Writing and appending</a></li><li><a href="#binary"><span class="n">57</span> Text files and binary files</a></li></ol></details><section class="topic" id="exceptions" aria-labelledby="exceptions-h">
+<div class="topic-meta"><a class="num" href="#exceptions" title="Link to this section">49</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="exceptions-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Exceptions: errors while the program runs</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:820px;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">myList = [<span style="color:#FFAE80">"Red"</span>, <span style="color:#FFAE80">"Green"</span>, <span style="color:#FFAE80">"Blue"</span>]
+<span style="color:#8FD8FF">print</span>(myList[<span style="color:#FFD27A">4</span>])
+
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Done"</span>)   <span style="color:#B3B3B3"># never reached</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">IndexError: list index out of range</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">An <b>exception</b> is an unusual condition that needs special handling. If nothing handles it, Python stops the program and prints the error, so the lines after it never run.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Common built-in exceptions</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Exception</th><th style="background:#F7F0FF">Raised by</th></tr></thead><tbody><tr><td><code>ZeroDivisionError</code></td><td><code>12 / 0</code></td></tr><tr><td><code>ValueError</code></td><td><code>int("abc")</code></td></tr><tr><td><code>IndexError</code></td><td><code>myList[4]</code> on 3 items</td></tr><tr><td><code>KeyError</code></td><td><code>d["missing"]</code></td></tr><tr><td><code>TypeError</code></td><td><code>100 + "200"</code></td></tr><tr><td><code>NameError</code></td><td>an undefined name</td></tr><tr><td><code>FileNotFoundError</code></td><td><code>open("nope.txt")</code></td></tr></tbody></table></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> An unhandled exception ends the program on the spot. Handling it lets the program carry on.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Every exception type is a class, and they form a hierarchy: <code>ZeroDivisionError</code> is a kind of <code>ArithmeticError</code>, which is a kind of <code>Exception</code>. The full tree is in the Python docs, “Built-in Exceptions → Exception hierarchy”. Catching a parent catches all its children.</p><p>Exceptions are different from syntax errors: a SyntaxError or IndentationError is found before the program starts, and no <code>try</code> can catch it in the same file.</p><p><i>Source: Lecture 6, “What is an exception?”, “Built-in exception types”.</i></p></div></details>
+</section>
+<section class="topic" id="try-except" aria-labelledby="try-except-h">
+<div class="topic-meta"><a class="num" href="#try-except" title="Link to this section">50</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="try-except-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>try</code> and <code>except</code>: catch the error, carry on</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:900px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">try</b>:
+    <i style="color:#B34E06">code that might <b style="color:#7B2FCC">raise</b> an error</i>
+<b style="color:#7B2FCC">except</b> Exception <b style="color:#7B2FCC">as</b> e:
+    <i style="color:#B34E06">runs only <b style="color:#7B2FCC">if</b> an error happened</i></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">try</span>:
+    v = <span style="color:#8FD8FF">int</span>(<span style="color:#8FD8FF">input</span>(<span style="color:#FFAE80">"Enter a numeric value: "</span>))
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"12 divided by your input value is"</span>, <span style="color:#FFD27A">12</span> / v)
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">Exception</span> <span style="color:#D0A3FF">as</span> e:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"You entered an invalid value."</span>)
+    <span style="color:#8FD8FF">print</span>(e)
+
+<span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Done"</span>)   <span style="color:#B3B3B3"># reached either way</span></pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Three runs</h3><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">User types</th><th style="background:#F7F0FF">Prints</th></tr></thead><tbody><tr><td><code>4</code></td><td><code>12 divided by your input value is 3.0</code>  <code>Done</code></td></tr><tr><td><code>0</code></td><td><code>You entered an invalid value.</code>  <code>division by zero</code>  <code>Done</code></td></tr><tr><td><code>abc</code></td><td><code>You entered an invalid value.</code>  <code>invalid literal for int() with base 10: 'abc'</code>  <code>Done</code></td></tr></tbody></table></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">As soon as a line in <code>try</code> raises, Python jumps to <code>except</code>; the rest of <code>try</code> is skipped.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Put only the risky lines in <code>try</code>; <code>except</code> is the plan B; the program continues after both.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>except:</code> with nothing after it also catches everything, but it gives you no details and even catches Ctrl+C. <code>except Exception as e:</code> is better: <code>e</code> holds the exception, and <code>print(e)</code> shows its message.</p><p>Catching an exception is also called <i>handling</i> it. The aim is to fail gracefully, for example by asking again, instead of letting the program crash.</p><p><i>Source: Lecture 6, “Handling an exception”, “Using except with or without the generic exception”.</i></p></div></details>
+</section>
+<section class="topic" id="specific" aria-labelledby="specific-h">
+<div class="topic-meta"><a class="num" href="#specific" title="Link to this section">51</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="specific-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Catch specific exceptions, generic last</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Right</p><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Specific first, generic last</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:21px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">try</span>:
+    myList = [<span style="color:#FFAE80">"Red"</span>, <span style="color:#FFAE80">"Green"</span>, <span style="color:#FFAE80">"Blue"</span>]
+    v = <span style="color:#8FD8FF">int</span>(<span style="color:#8FD8FF">input</span>(<span style="color:#FFAE80">"Enter a numeric value: "</span>))
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"12 divided by your input value is"</span>, <span style="color:#FFD27A">12</span> / v)
+    <span style="color:#8FD8FF">print</span>(myList[v])
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">ZeroDivisionError</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"You entered a 0. Cannot divide by 0."</span>)
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">ValueError</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"You entered a non-numeric value."</span>)
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">Exception</span> <span style="color:#D0A3FF">as</span> e:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"An exception occurred."</span>, e)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Each <code>except</code> names the error it handles. Python tries them <b>top to bottom</b> and runs only the first that matches.</p></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Wrong</p><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Generic first hides the rest</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">try</span>:
+    ...
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">Exception</span> <span style="color:#D0A3FF">as</span> e:      <span style="color:#B3B3B3"># catches everything…</span>
+    ...
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">ZeroDivisionError</span>:   <span style="color:#B3B3B3"># …so this never runs</span>
+    ...</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Unmatched errors</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">An error that matches <b>no</b> <code>except</code> is not handled: with only <code>except ValueError</code>, typing 0 still crashes with ZeroDivisionError.</p></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Most specific <code>except</code> first, <code>except Exception</code> last, because the first match wins.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>In the right-hand example, typing 5 gets past the division (12 / 5) but then <code>myList[5]</code> raises IndexError, which only the generic handler catches: “An exception occurred. list index out of range”.</p><p>Catch what you expect and know how to handle. Catching everything can hide real bugs.</p><p>One <code>except</code> can name several types in a tuple: <code>except (ValueError, ZeroDivisionError) as e:</code>.</p><p><i>Source: Lecture 6, “Using specific exceptions”, “Handling several types of exceptions”, “Difference between generic and specific exceptions”.</i></p></div></details>
+</section>
+<section class="topic" id="else-finally" aria-labelledby="else-finally-h">
+<div class="topic-meta"><a class="num" href="#else-finally" title="Link to this section">52</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="else-finally-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>else</code> and <code>finally</code></h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:760px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;line-height:1.5;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><b style="color:#7B2FCC">try</b>:
+    <i style="color:#B34E06"><b style="color:#7B2FCC">try</b> block</i>
+<b style="color:#7B2FCC">except</b> <i style="color:#B34E06">SpecificExceptionA</i>:
+    <i style="color:#B34E06">handler A</i>
+<b style="color:#7B2FCC">except</b> Exception:
+    <i style="color:#B34E06">generic handler</i>
+<b style="color:#7B2FCC">else</b>:
+    <i style="color:#B34E06">runs only <b style="color:#7B2FCC">if</b> no exception</i>
+<b style="color:#7B2FCC">finally</b>:
+    <i style="color:#B34E06">runs always: clean-up</i></pre></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">a, b = <span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">0</span>
+<span style="color:#D0A3FF">try</span>:
+    result = a / b
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">f"The result is {result}"</span>)
+<span style="color:#D0A3FF">except</span> <span style="color:#8FD8FF">ZeroDivisionError</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Error: Division by zero is not allowed."</span>)
+<span style="color:#D0A3FF">else</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Thank you. Bye!"</span>)
+<span style="color:#D0A3FF">finally</span>:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Execution of the try block is complete."</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">Error: Division by zero is not allowed.
+Execution of the try block is complete.</pre></div>
+<p style="font-size:24px;line-height:1.4;color:#666666">With <code>b = 5</code>: “The result is 2.0”, “Thank you. Bye!”, then the <code>finally</code> line.</p></div></div>
+<div class="tablewrap"><table style="font-size:26px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Block</th><th style="background:#F7F0FF">Runs when</th></tr></thead><tbody><tr><td><code>try</code></td><td>always, until a line raises</td></tr><tr><td><code>except</code></td><td>a matching exception was raised</td></tr><tr><td><code>else</code></td><td>the <code>try</code> block finished with no exception</td></tr><tr><td><code>finally</code></td><td>always, error or not: closing files, connections</td></tr></tbody></table></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>else</code> = it worked; <code>finally</code> = no matter what.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Code in <code>else</code> and <code>finally</code> can raise exceptions too, and those aren't caught by the <code>except</code> blocks above them, so be careful what you put there.</p><p><code>try</code>, <code>except</code>, <code>else</code> and <code>finally</code> don't create a new scope: a variable set in <code>try</code> is visible after the whole statement, but one set in <code>except</code> exists only if that <code>except</code> ran.</p><p>Why use <code>else</code> rather than putting the code at the end of <code>try</code>? So that errors from that code aren't accidentally caught by the <code>except</code> meant for the risky line.</p><p><i>Source: Lecture 6, “The else keyword”, “The finally keyword”, “Unified try/except/else/finally”.</i></p></div></details>
+</section>
+<section class="topic" id="files" aria-labelledby="files-h">
+<div class="topic-meta"><a class="num" href="#files" title="Link to this section">53</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="files-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Files: open, use, close</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The old way</p><div class="row" style="display:flex;gap:12px;flex-direction:row;align-items:center"><div class="grow" style="flex:1"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>1</b> Open the file</p></div><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg><div class="grow" style="flex:1"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>2</b> Read, write or append</p></div><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg><div class="grow" style="flex:1"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>3</b> Close it</p></div></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Files <b>persist</b>: the data stays on disk after the program ends.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">file = <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">'example.txt'</span>, <span style="color:#FFAE80">'r'</span>)
+content = file.read()
+file.close()          <span style="color:#B3B3B3"># easy to forget!</span></pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Best practice: with</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">'example.txt'</span>, <span style="color:#FFAE80">'r'</span>) <span style="color:#D0A3FF">as</span> file:
+    content = file.read()
+<span style="color:#B3B3B3"># closed automatically here, even after an error</span></pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>with</code> closes the file for you when the block ends. <b>Always prefer it.</b></p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#8FD8FF">print</span>(file.name, file.mode, file.closed)</pre>
+<p style="font-size:24px;line-height:1.4;color:#666666">A file object knows its <code>name</code>, its <code>mode</code>, and whether it's <code>closed</code>.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Open with <code>with</code>, and the file closes itself.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Why closing matters: changes may not be written to disk until the file is closed; every open file uses memory; and the operating system limits how many files one program can have open (often 1024). Hit that limit and <code>open</code> fails with <code>OSError: [Errno 24] Too many open files</code>.</p><p><code>open(name, mode)</code> takes the file name (a path, relative to the folder the program runs in) and an optional mode, <code>'r'</code> by default. A missing file in read mode raises <code>FileNotFoundError</code>.</p><p><i>Source: Lecture 6, “Why use files?”, “open() method”, “Opening Files”, “File attributes”, “close() method”.</i></p></div></details>
+</section>
+<section class="topic" id="modes" aria-labelledby="modes-h">
+<div class="topic-meta"><a class="num" href="#modes" title="Link to this section">54</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="modes-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Access modes</h2>
+</div>
+<div class="tablewrap"><table style="font-size:26px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Mode</th><th style="background:#F7F0FF">Read?</th><th style="background:#F7F0FF">Write?</th><th style="background:#F7F0FF">If the file exists</th><th style="background:#F7F0FF">If it doesn't</th></tr></thead><tbody><tr><td><code>'r'</code> (default)</td><td>yes</td><td>no</td><td>read from the start</td><td><code>FileNotFoundError</code></td></tr><tr><td><code>'w'</code></td><td>no</td><td>yes</td><td><b>erased</b> first</td><td>created</td></tr><tr><td><code>'a'</code></td><td>no</td><td>yes</td><td>new text added <b>at the end</b></td><td>created</td></tr><tr><td><code>'r+'</code></td><td>yes</td><td>yes</td><td>kept; read and write from the start</td><td><code>FileNotFoundError</code></td></tr><tr><td><code>'w+'</code></td><td>yes</td><td>yes</td><td><b>erased</b> first</td><td>created</td></tr><tr><td><code>'a+'</code></td><td>yes</td><td>yes</td><td>kept; writes go at the end</td><td>created</td></tr></tbody></table></div>
+<div class="row" style="display:flex;gap:24px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Binary</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Add **<code>b</code>** for binary files: <code>'rb'</code>, <code>'wb'</code>, <code>'ab'</code>, <code>'rb+'</code>, <code>'wb+'</code>, <code>'ab+'</code>.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">r+ versus w+</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>'r+'</code> keeps the contents; <code>'w+'</code> wipes them. Both let you read and write.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>w</code> wipes, <code>a</code> adds, <code>r</code> reads. Add <code>+</code> to do both, <code>b</code> for bytes.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>'w'</code> erasing the file is the classic data-loss bug: opening your only copy of some data in <code>'w'</code> mode to “update” it deletes everything before you've written a byte. Use <code>'a'</code> to add, or read everything first.</p><p><code>open</code> also takes optional <code>buffering</code> and <code>encoding</code> arguments. For text files, <code>encoding="utf-8"</code> avoids surprises with accented characters on Windows.</p><p><i>Source: Lecture 6, “File access modes”, “Difference between r+ and w+”.</i></p></div></details>
+</section>
+<section class="topic" id="reading" aria-labelledby="reading-h">
+<div class="topic-meta"><a class="num" href="#reading" title="Link to this section">55</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="reading-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Four ways to read a file</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:780px;display:flex;flex-direction:column;gap:8px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">"mydata.txt"</span>, <span style="color:#FFAE80">"r"</span>) <span style="color:#D0A3FF">as</span> f:
+    <span style="color:#D0A3FF">for</span> line <span style="color:#D0A3FF">in</span> f:          <span style="color:#B3B3B3"># the iterator: best for big files</span>
+        <span style="color:#8FD8FF">print</span>(line.strip())</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">This is my FIRST line.
+This is my SECOND line.
+This is my THIRD line.</pre>
+<p style="font-size:24px;line-height:1.4;color:#666666">Without <code>.strip()</code>, each line's own <code>\n</code> plus <code>print</code>'s new line gives a blank line between lines.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Which one?</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Method</th><th style="background:#F7F0FF">Gives</th><th style="background:#F7F0FF">Memory</th></tr></thead><tbody><tr><td><code>f.read()</code></td><td>the whole file as one string</td><td>high: all of it</td></tr><tr><td><code>f.readline()</code></td><td>the next line (<code>''</code> at the end)</td><td>low, but you loop by hand</td></tr><tr><td><code>f.readlines()</code></td><td>a list of every line</td><td>high: all of it</td></tr><tr><td><code>for line in f:</code></td><td>one line per loop</td><td>low: one line at a time</td></tr></tbody></table></div></div></div>
+<div style="display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;line-height:1.4;color:#666666">readline() needs its own loop:</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">"example.txt"</span>, <span style="color:#FFAE80">"r"</span>) <span style="color:#D0A3FF">as</span> file:
+    line = file.readline()
+    <span style="color:#D0A3FF">while</span> line:                 <span style="color:#B3B3B3"># "" (end of file) is False</span>
+        <span style="color:#8FD8FF">print</span>(line.strip())
+        line = file.readline()</pre></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> For line-by-line work, loop over the file: <code>for line in f:</code>. It's short, fast and uses little memory.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>read()</code> and <code>readlines()</code> suit small files, or when you need all the lines at once (to sort them, or jump to line 500). On a huge file they can run out of memory.</p><p><code>readline()</code> gives you precise control, such as reading a header line before the loop, but it's longer and slightly slower than the iterator.</p><p>Each line keeps its newline character <code>\n</code> at the end. <code>line.strip()</code> removes it (and any other surrounding spaces); <code>line.rstrip("\n")</code> removes only the newline.</p><p><i>Source: Lecture 6, “Reading Files”: read(), readline(), readlines(), iterator approach.</i></p></div></details>
+</section>
+<section class="topic" id="writing" aria-labelledby="writing-h">
+<div class="topic-meta"><a class="num" href="#writing" title="Link to this section">56</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="writing-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Writing and appending</h2>
+</div>
+<div class="row" style="display:flex;gap:24px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">write()</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">'output.txt'</span>, <span style="color:#FFAE80">'w'</span>) <span style="color:#D0A3FF">as</span> file:
+    file.write(<span style="color:#FFAE80">'This is line 1\n'</span>)
+    file.write(<span style="color:#FFAE80">'This is line 2\n'</span>)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">You add the <code>\n</code> yourself. Good for strings you build as you go.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">writelines()</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">lines = [<span style="color:#FFAE80">'Line 1\n'</span>, <span style="color:#FFAE80">'Line 2\n'</span>, <span style="color:#FFAE80">'Line 3\n'</span>]
+<span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">'output.txt'</span>, <span style="color:#FFAE80">'w'</span>) <span style="color:#D0A3FF">as</span> file:
+    file.writelines(lines)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">A list of ready-made lines in one call. Fastest for lots of data.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">print(file=)</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">'output.txt'</span>, <span style="color:#FFAE80">'w'</span>) <span style="color:#D0A3FF">as</span> file:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'This goes to the file'</span>, file=file)
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">'So does this!'</span>, file=file)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Adds the new line for you, and <code>sep</code>/<code>end</code> work as usual.</p></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Appending</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">"output.txt"</span>, <span style="color:#FFAE80">"a"</span>) <span style="color:#D0A3FF">as</span> file:     <span style="color:#B3B3B3"># "a": keep what's there</span>
+    file.write(<span style="color:#FFAE80">"New content\n"</span>)</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>'w'</code> replaces the file's contents; <code>'a'</code> adds to the end.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>write</code> needs your own <code>\n</code>; <code>writelines</code> doesn't add any; <code>print(…, file=f)</code> does it for you.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Despite its name, <code>writelines</code> doesn't add newlines between items: each string in the list must already end with <code>\n</code>.</p><p><code>write</code> only accepts strings. Convert numbers first: <code>file.write(str(total) + "\n")</code>, or use an f-string.</p><p><i>Source: Lecture 6, “Writing Files”, “Appending to Files”.</i></p></div></details>
+</section>
+<section class="topic" id="binary" aria-labelledby="binary-h">
+<div class="topic-meta"><a class="num" href="#binary" title="Link to this section">57</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 6 · Handle</p>
+<h2 id="binary-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Text files and binary files</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Two kinds of file</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Text files</th><th style="background:#F7F0FF">Binary files</th></tr></thead><tbody><tr><td>html, XML, CSS, JSON</td><td>pdf, doc, xls</td></tr><tr><td>py, c, java</td><td>png, jpg, gif</td></tr><tr><td>txt, tex, RTF</td><td>mp4, mkv, mp3, wav</td></tr><tr><td>csv, tsv</td><td>sqlite, mdb</td></tr><tr><td>ini, cfg</td><td>zip, exe, dll</td></tr></tbody></table></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Both are just 0s and 1s on disk. A text file is <b>decoded</b> into characters with an encoding such as UTF-8; a binary file is read as raw bytes.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Writing and reading bytes</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">"mybin_file.bin"</span>, <span style="color:#FFAE80">"wb"</span>) <span style="color:#D0A3FF">as</span> f:
+    f.write(bytearray([<span style="color:#FFD27A">3</span>, <span style="color:#FFD27A">15</span>, <span style="color:#FFD27A">21</span>, <span style="color:#FFD27A">37</span>, <span style="color:#FFD27A">45</span>]))
+
+<span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">"mybin_file.bin"</span>, <span style="color:#FFAE80">"ab"</span>) <span style="color:#D0A3FF">as</span> f:
+    f.write(bytearray([<span style="color:#FFD27A">100</span>, <span style="color:#FFD27A">100</span>, <span style="color:#FFD27A">100</span>]))
+
+<span style="color:#D0A3FF">with</span> <span style="color:#8FD8FF">open</span>(<span style="color:#FFAE80">"mybin_file.bin"</span>, <span style="color:#FFAE80">"rb"</span>) <span style="color:#D0A3FF">as</span> f:
+    <span style="color:#8FD8FF">print</span>(<span style="color:#8FD8FF">list</span>(f.read()))</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">[3, 15, 21, 37, 45, 100, 100, 100]</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>bytearray</code> turns a list of numbers from 0 to 255 into bytes.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Text mode gives you strings; binary mode (<code>'b'</code>) gives you bytes, numbers from 0 to 255.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>bytearray([300])</code> raises <code>ValueError: byte must be in range(0, 256)</code>: one byte holds 8 bits.</p><p><code>f.read()</code> in binary mode returns a <code>bytes</code> object; <code>list()</code> turns it into a list of integers so you can see the values.</p><p><i>Source: Lecture 6, “File types”, “Writing to binary files”, “Reading a binary file”, “Appending to a binary file”.</i></p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="functions.html"><span>Previous</span>Define</a><a class="next" href="objects.html"><span>Next</span>Objects</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

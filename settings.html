@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings · UCL CS Learning System</title>
+<meta name="description" content="Settings for the UCL CS Learning System: the theme, your xAI key and model for Scribe, and where recordings are saved.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/portal.js"></script>
+</head>
+<body id="top" class="pg-settings">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="index.html#modules">Modules</a><a href="scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="settings.html" aria-current="page"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">CS</span><span class="brand-text"><b>UCL CS Learning System</b><span>Computer Science study portal</span></span></a>
+<p class="mast-tag">Modules, revision and lecture transcripts</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Portal sections">
+<div class="topbar-in parts"><a href="index.html">Home</a><a href="modules/databases/index.html"><span class="pn">DB</span>Database Fundamentals</a><a href="modules/programming/index.html"><span class="pn">PY</span>Python Programming</a><a href="modules/algorithmics/index.html"><span class="pn">AL</span>Algorithmics</a><a href="scribe.html"><span class="pn"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span>Scribe</a></div>
+</nav>
+<div class="layout">
+
+<main id="main">
+<header class="part-hero st-hero">
+<p class="eyebrow">Settings · Whole portal</p>
+<h1>Settings</h1>
+<p class="lead">How the portal looks, how Scribe connects to xAI, and where your recordings are saved.</p>
+<p class="range">The theme is kept in this browser. Everything else is saved in the <code>.env</code> file in the portal folder.</p>
+</header>
+
+<aside id="ps-offline" class="sc-note" hidden>
+<h2>Start the portal’s server to change Scribe’s settings</h2>
+<p>Pages opened as files can switch the theme, but can’t reach your xAI key or the saving options.</p>
+<p>Start the portal with <code>start.py</code> in the portal folder (double-click it, or run <code>python3 start.py</code>), then open <a href="http://127.0.0.1:8000/settings.html">127.0.0.1:8000/settings.html</a>.</p>
+</aside>
+
+<form id="ps-form" novalidate>
+<section class="st-sec" id="appearance" aria-labelledby="appearance-h">
+<div class="st-about">
+<h2 id="appearance-h">Appearance</h2>
+<p>Changes every page of the portal straight away, in every open tab. It doesn’t need saving.</p>
+</div>
+<div class="st-fields">
+<div class="ui-field">
+<span id="ps-theme-l">Theme</span>
+<div class="ui-choice" role="radiogroup" aria-labelledby="ps-theme-l">
+<label><input type="radio" name="ps-theme" value="system"><span>System</span></label>
+<label><input type="radio" name="ps-theme" value="light"><span>Light</span></label>
+<label><input type="radio" name="ps-theme" value="dark"><span>Dark</span></label>
+</div>
+<span class="ui-hint">System follows your computer’s setting. The moon and sun button in the top bar switches between light and dark on any page.</span>
+</div>
+</div>
+</section>
+
+<section class="st-sec" id="xai" aria-labelledby="xai-h" hidden>
+<div class="st-about">
+<h2 id="xai-h">xAI speech-to-text</h2>
+<p>Scribe sends what your microphone hears to xAI, which writes it down as it’s spoken. These settings are used by Scribe.</p>
+</div>
+<div class="st-fields">
+<p id="ps-intro" class="ui-note" hidden>Paste your xAI API key to start transcribing with Scribe.</p>
+<label class="ui-field">
+<span>xAI API key</span>
+<input id="ps-key" class="ui-input" type="password" autocomplete="off" spellcheck="false" placeholder="xai-…">
+<span class="ui-hint">Create one at <a href="https://console.x.ai" target="_blank" rel="noopener">console.x.ai</a> → API Keys. It’s saved only in the <code>.env</code> file in the portal folder on this computer.</span>
+</label>
+<label class="ui-field">
+<span>Transcription model</span>
+<select id="ps-model" class="ui-select"></select>
+<input id="ps-model-custom" class="ui-input" placeholder="Model name, e.g. grok-voice-transcribe-2.0" spellcheck="false" hidden>
+<span class="ui-hint">Latest lets xAI pick its current default, so you get new versions automatically. Pick a model to keep it fixed. <span id="ps-models-note"></span></span>
+</label>
+<div class="ui-row">
+<label class="ui-field">
+<span>Price per hour (USD)</span>
+<input id="ps-price" class="ui-input" type="number" min="0" max="100" step="0.01" inputmode="decimal">
+</label>
+<label class="ui-field">
+<span>Monthly budget (USD)</span>
+<input id="ps-budget" class="ui-input" type="number" min="0" step="1" inputmode="decimal" placeholder="None">
+</label>
+</div>
+<p class="ui-hint">Used for Scribe’s spend estimate. Check the current streaming price on xAI’s pricing page. With a budget set, you’re asked to confirm before recording once you’ve reached it.</p>
+<div class="ui-actions st-test">
+<button type="button" id="ps-test" class="ui-btn">Test connection</button>
+<p id="ps-test-result" class="ui-result" role="status"></p>
+</div>
+</div>
+</section>
+
+<section class="st-sec" id="saving" aria-labelledby="saving-h" hidden>
+<div class="st-about">
+<h2 id="saving-h">Saving recordings</h2>
+<p>Scribe can also save each recording as files in a folder on this computer. Turn it on or off for each recording with <b>Save to folder</b> on the Scribe page.</p>
+<p>Files are written while you record, so stopping early keeps what was saved. Scribe’s own copy, for its Recordings list and search, is kept either way.</p>
+</div>
+<div class="st-fields">
+<div class="ui-field">
+<label for="ps-folder">Folder</label>
+<div class="ui-inline"><input id="ps-folder" class="ui-input" spellcheck="false" autocomplete="off"><button type="button" id="ps-choose" class="ui-btn">Choose…</button></div>
+<span class="ui-hint">Each saved recording gets its own files here, named by date and title. The folder is created if it doesn’t exist.</span>
+<p id="ps-folder-result" class="ui-result" role="status"></p>
+</div>
+<div class="ui-field" role="group" aria-labelledby="ps-save-what">
+<span id="ps-save-what">Save</span>
+<div class="ui-checks"><label class="ui-check"><input id="ps-save-transcript" type="checkbox">Transcript</label><label class="ui-check"><input id="ps-save-audio" type="checkbox">Audio recording</label></div>
+</div>
+<div class="ui-row">
+<label class="ui-field">
+<span>Transcript format</span>
+<select id="ps-transcript-format" class="ui-select"><option value="md">Markdown (.md)</option><option value="txt">Plain text (.txt)</option></select>
+</label>
+<label class="ui-field">
+<span>Audio format</span>
+<select id="ps-audio-format" class="ui-select"><option value="compressed">Compressed, about 15 MB an hour</option><option value="wav">WAV, about 350 MB an hour</option></select>
+</label>
+</div>
+<p class="ui-hint">Compressed audio is recorded by the browser: WebM in Chrome, Edge and Firefox, M4A in Safari. WAV plays and seeks in every player.</p>
+</div>
+</section>
+
+<div class="st-bar" id="ps-bar" hidden>
+<p id="ps-status" class="ui-result" role="status"></p>
+<div class="ui-actions">
+<a id="ps-back" class="ui-btn plain" href="scribe.html" hidden>Back to Scribe</a>
+<button type="button" id="ps-discard" class="ui-btn plain" hidden>Discard changes</button>
+<button type="submit" id="ps-save" class="ui-btn primary" disabled>Save changes</button>
+</div>
+</div>
+</form>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Modules</p>
+<ul><li><a href="modules/databases/index.html">Database Fundamentals</a></li><li><a href="modules/programming/index.html">Python Programming</a></li><li><a href="modules/algorithmics/index.html">Algorithmics</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Tools</p>
+<ul><li><a href="scribe.html">Scribe · live transcription</a></li><li><a href="settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">CS</span>UCL CS Learning System</p>
+<p>Personal study notes for UCL Computer Science modules, built from the lecture slides and lab sheets. Not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>UCL CS Learning System · Computer Science study portal</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/settings.js"></script>
+</body>
+</html>

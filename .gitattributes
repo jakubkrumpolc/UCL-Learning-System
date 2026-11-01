@@ -1,6 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-*.bat text eol=crlf
-*.sh text eol=lf
-*.command text eol=lf
+# LF keeps the #! line of start.py working on macOS and Linux
 *.py text eol=lf

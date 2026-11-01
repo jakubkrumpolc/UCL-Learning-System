@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python Programming · COMP0066</title>
+<meta name="description" content="Python Programming study guide for COMP0066 Introductory Programming: types, decisions, loops, collections, functions, exceptions and files, object-oriented programming, modules, NumPy and pandas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-index">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html"><span class="pn">2</span>Decide</a><a href="loops.html"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html"><span class="pn">5</span>Define</a><a href="errors.html"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html"><span class="pn">8</span>Import</a><a href="data.html"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout">
+
+<main id="main">
+<header class="home-hero">
+<div class="home-hero-in">
+<div class="hh-text">
+<p class="eyebrow">COMP0066 · Introductory Programming · Weeks 1–5</p>
+<h1>Python,<br/>from zero</h1>
+<p class="lead">The nine lecture notebooks rebuilt into one clear path: values and types, decisions, loops, collections, functions, errors and files, objects, modules, and a first look at NumPy and pandas.</p>
+<div class="hh-actions"><a class="btn primary" href="values.html">Start with Part 1</a><a class="btn" href="functions.html">Jump to functions</a><a class="btn" href="revision.html">Cheat sheet</a></div>
+</div>
+<svg aria-label="A terminal window with a Python prompt" height="300" class="hero-art" viewbox="0 0 420 300" width="420"><rect fill="#9A3BFF" height="280" width="400" x="10" y="10"></rect><rect fill="#361A54" height="40" width="400" x="10" y="10"></rect><circle cx="42" cy="30" r="8" fill="#BA82FF"></circle><circle cx="70" cy="30" r="8" fill="#BA82FF"></circle><circle cx="98" cy="30" r="8" fill="#BA82FF"></circle><text x="40" y="130" fill="#361A54" font-family="JetBrains Mono, monospace" font-size="56" font-weight="700">&gt;&gt;&gt;</text><rect fill="#FFFFFF" height="10" width="160" x="40" y="180"></rect><rect fill="#BA82FF" height="10" width="240" x="40" y="214"></rect><rect fill="#BA82FF" height="10" width="120" x="40" y="248"></rect></svg>
+</div>
+</header>
+<section class="home-sec" id="roadmap">
+<h2>Nine steps, in lecture order</h2>
+<p class="sub">Values → Decide → Repeat → Collect → Define → Handle → Objects → Import → Analyse. Each part is one lecture; every example is real Python you can paste into an editor and run.</p>
+<div class="part-grid"><article class="part-card">
+<a class="part-link" href="values.html"><span class="pc-num">1</span><span class="pc-name">Values</span></a>
+<p class="pc-desc">Print, store and name values, and the five basic types.</p>
+<p class="pc-range">Sections 1–11 · Lecture 1</p>
+<details class="pc-topics"><summary>All 11 sections</summary><ol><li><a href="values.html#hello"><span class="n">1</span>Your first program: <code>print()</code></a></li><li><a href="values.html#variables"><span class="n">2</span>Variables: names for values</a></li><li><a href="values.html#naming"><span class="n">3</span>Naming rules and naming style</a></li><li><a href="values.html#typing"><span class="n">4</span>Dynamically typed, strongly typed</a></li><li><a href="values.html#comments"><span class="n">5</span>Comments and indentation</a></li><li><a href="values.html#numbers"><span class="n">6</span>Numbers: <code>int</code>, <code>float</code> and <code>complex</code></a></li><li><a href="values.html#float-trap"><span class="n">7</span>Never compare floats with <code>==</code></a></li><li><a href="values.html#bools-strings"><span class="n">8</span>Booleans and strings</a></li><li><a href="values.html#string-ops"><span class="n">9</span>String operators and <code>%</code> formatting</a></li><li><a href="values.html#type-id"><span class="n">10</span><code>type()</code> and <code>id()</code></a></li><li><a href="values.html#casting"><span class="n">11</span>Type conversion: implicit and explicit</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="decisions.html"><span class="pc-num">2</span><span class="pc-name">Decide</span></a>
+<p class="pc-desc">Branch with if/elif/else, read input, and use every operator.</p>
+<p class="pc-range">Sections 12–22 · Lecture 2</p>
+<details class="pc-topics"><summary>All 11 sections</summary><ol><li><a href="decisions.html#if"><span class="n">12</span><code>if</code>: run a block only when a condition is true</a></li><li><a href="decisions.html#conditions"><span class="n">13</span>Conditions, and combining them</a></li><li><a href="decisions.html#elif-else"><span class="n">14</span><code>else</code> and <code>elif</code>: choosing one of several branches</a></li><li><a href="decisions.html#shorthand"><span class="n">15</span>One-line ifs, and ifs inside ifs</a></li><li><a href="decisions.html#input"><span class="n">16</span>Taking input from the user</a></li><li><a href="decisions.html#arithmetic"><span class="n">17</span>Arithmetic operators</a></li><li><a href="decisions.html#compare-assign"><span class="n">18</span>Comparison and assignment operators</a></li><li><a href="decisions.html#logic"><span class="n">19</span>Logical operators and truth tables</a></li><li><a href="decisions.html#bitwise"><span class="n">20</span>Bitwise operators: working on the bits</a></li><li><a href="decisions.html#member-identity"><span class="n">21</span>Membership and identity: <code>in</code> and <code>is</code></a></li><li><a href="decisions.html#precedence"><span class="n">22</span>Precedence and associativity</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="loops.html"><span class="pc-num">3</span><span class="pc-name">Repeat</span></a>
+<p class="pc-desc">for and while loops, range(), break, continue and loop-else.</p>
+<p class="pc-range">Sections 23–30 · Lecture 3</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="loops.html#loops"><span class="n">23</span>Loops: run a block many times</a></li><li><a href="loops.html#for"><span class="n">24</span><code>for</code>: once for every item</a></li><li><a href="loops.html#range"><span class="n">25</span><code>range()</code>: a sequence of numbers</a></li><li><a href="loops.html#while"><span class="n">26</span><code>while</code>: repeat while a condition holds</a></li><li><a href="loops.html#infinite"><span class="n">27</span>Infinite loops, on purpose and by mistake</a></li><li><a href="loops.html#break-continue"><span class="n">28</span><code>break</code>, <code>continue</code> and <code>pass</code></a></li><li><a href="loops.html#loop-else"><span class="n">29</span><code>else</code> on a loop: “finished without <code>break</code>”</a></li><li><a href="loops.html#nested"><span class="n">30</span>Nested loops: a loop inside a loop</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="collections.html"><span class="pc-num">4</span><span class="pc-name">Collect</span></a>
+<p class="pc-desc">Lists, tuples, sets and dictionaries, and when to use each.</p>
+<p class="pc-range">Sections 31–39 · Lecture 4</p>
+<details class="pc-topics"><summary>All 9 sections</summary><ol><li><a href="collections.html#structures"><span class="n">31</span>Data structures: four built-in collections</a></li><li><a href="collections.html#lists"><span class="n">32</span>Lists: ordered and changeable</a></li><li><a href="collections.html#negative-nested"><span class="n">33</span>Negative indexes and nested lists</a></li><li><a href="collections.html#list-methods"><span class="n">34</span>List methods</a></li><li><a href="collections.html#sort-none"><span class="n">35</span>Methods that change a list return <code>None</code></a></li><li><a href="collections.html#comprehensions"><span class="n">36</span>List comprehensions: build a list in one line</a></li><li><a href="collections.html#tuples"><span class="n">37</span>Tuples: lists that can't change</a></li><li><a href="collections.html#sets"><span class="n">38</span>Sets: no duplicates, no order</a></li><li><a href="collections.html#dicts"><span class="n">39</span>Dictionaries: look a value up by its key</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="functions.html"><span class="pc-num">5</span><span class="pc-name">Define</span></a>
+<p class="pc-desc">String methods, functions, arguments, return values and scope.</p>
+<p class="pc-range">Sections 40–48 · Lecture 5</p>
+<details class="pc-topics"><summary>All 9 sections</summary><ol><li><a href="functions.html#slicing"><span class="n">40</span>Strings: indexing and slicing</a></li><li><a href="functions.html#string-methods"><span class="n">41</span>String methods</a></li><li><a href="functions.html#mutable"><span class="n">42</span>Mutable and immutable types</a></li><li><a href="functions.html#functions"><span class="n">43</span>Functions: give a piece of work a name</a></li><li><a href="functions.html#arguments"><span class="n">44</span>Arguments: required, default and keyword</a></li><li><a href="functions.html#varargs"><span class="n">45</span><code>*args</code> and <code>**kwargs</code>: any number of arguments</a></li><li><a href="functions.html#returns"><span class="n">46</span>Return values</a></li><li><a href="functions.html#scope"><span class="n">47</span>Scope: which variable does Python mean? (LEGB)</a></li><li><a href="functions.html#global"><span class="n">48</span><code>global</code>, and blocks that don't make a scope</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="errors.html"><span class="pc-num">6</span><span class="pc-name">Handle</span></a>
+<p class="pc-desc">try/except/else/finally, then reading and writing files.</p>
+<p class="pc-range">Sections 49–57 · Lecture 6</p>
+<details class="pc-topics"><summary>All 9 sections</summary><ol><li><a href="errors.html#exceptions"><span class="n">49</span>Exceptions: errors while the program runs</a></li><li><a href="errors.html#try-except"><span class="n">50</span><code>try</code> and <code>except</code>: catch the error, carry on</a></li><li><a href="errors.html#specific"><span class="n">51</span>Catch specific exceptions, generic last</a></li><li><a href="errors.html#else-finally"><span class="n">52</span><code>else</code> and <code>finally</code></a></li><li><a href="errors.html#files"><span class="n">53</span>Files: open, use, close</a></li><li><a href="errors.html#modes"><span class="n">54</span>Access modes</a></li><li><a href="errors.html#reading"><span class="n">55</span>Four ways to read a file</a></li><li><a href="errors.html#writing"><span class="n">56</span>Writing and appending</a></li><li><a href="errors.html#binary"><span class="n">57</span>Text files and binary files</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="objects.html"><span class="pc-num">7</span><span class="pc-name">Objects</span></a>
+<p class="pc-desc">Classes, objects, self and __init__, method kinds, inheritance.</p>
+<p class="pc-range">Sections 58–65 · Lecture 7</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="objects.html#paradigms"><span class="n">58</span>From machine code to objects</a></li><li><a href="objects.html#classes"><span class="n">59</span>Classes and objects</a></li><li><a href="objects.html#init-self"><span class="n">60</span>Methods, <code>self</code> and <code>__init__</code></a></li><li><a href="objects.html#class-vars"><span class="n">61</span>Class variables and object variables</a></li><li><a href="objects.html#method-kinds"><span class="n">62</span>Instance, class and static methods</a></li><li><a href="objects.html#access"><span class="n">63</span>Public, protected and private</a></li><li><a href="objects.html#inheritance"><span class="n">64</span>Inheritance: build a class on top of another</a></li><li><a href="objects.html#overriding"><span class="n">65</span>Overriding methods</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="modules.html"><span class="pc-num">8</span><span class="pc-name">Import</span></a>
+<p class="pc-desc">Modules, imports, the standard library, packages and logging.</p>
+<p class="pc-range">Sections 66–73 · Lecture 8</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="modules.html#modules"><span class="n">66</span>Modules: code in another file</a></li><li><a href="modules.html#import-forms"><span class="n">67</span>Four ways to import</a></li><li><a href="modules.html#search-path"><span class="n">68</span>Where Python looks for a module</a></li><li><a href="modules.html#main-guard"><span class="n">69</span><code>if __name__ == "__main__":</code></a></li><li><a href="modules.html#stdlib"><span class="n">70</span>The standard library: <code>math</code>, <code>random</code>, <code>datetime</code>, <code>os</code></a></li><li><a href="modules.html#packages"><span class="n">71</span>Packages: folders of modules</a></li><li><a href="modules.html#logging"><span class="n">72</span>Logging: a record of what happened</a></li><li><a href="modules.html#logging-config"><span class="n">73</span>Configuring logging with <code>basicConfig</code></a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="data.html"><span class="pc-num">9</span><span class="pc-name">Analyse</span></a>
+<p class="pc-desc">NumPy arrays, pandas Series and DataFrames.</p>
+<p class="pc-range">Sections 74–79 · Lecture 9</p>
+<details class="pc-topics"><summary>All 6 sections</summary><ol><li><a href="data.html#data-science"><span class="n">74</span>Data science, NumPy and pandas</a></li><li><a href="data.html#arrays"><span class="n">75</span>NumPy arrays</a></li><li><a href="data.html#creating"><span class="n">76</span>Creating arrays</a></li><li><a href="data.html#shape"><span class="n">77</span>Shape, indexing, and saving arrays</a></li><li><a href="data.html#series"><span class="n">78</span>pandas Series: a labelled column</a></li><li><a href="data.html#dataframe"><span class="n">79</span>pandas DataFrame: a labelled table</a></li></ol></details>
+</article><article class="part-card rev">
+<a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
+<p class="pc-desc">A one-page Python cheat sheet and every memory hook.</p>
+<p class="pc-range">Sections 80–81</p>
+<details class="pc-topics"><summary>All 2 sections</summary><ol><li><a href="revision.html#py-cheat"><span class="n">80</span>Python on one page</a></li><li><a href="revision.html#py-hooks"><span class="n">81</span>Every memory hook</a></li></ol></details>
+</article></div>
+<aside class="cta" aria-label="Revision">
+<div><h2>Revising for the exam?</h2><p>The whole language on one page, plus the memory hook from every section.</p></div>
+<a class="btn" href="revision.html">Open the cheat sheet</a>
+</aside>
+</section>
+<section class="home-sec how-band" id="how">
+<h2>How to use this module</h2>
+<div class="how-grid">
+<div class="how"><p class="eyebrow">Tip 1</p><h3>Read one section at a time</h3><p>Each numbered section teaches one idea, with the code and what it prints side by side.</p></div><div class="how"><p class="eyebrow">Tip 2</p><h3>Open “More detail”</h3><p>Under each section: the finer points, common mistakes and links to related sections. The button in the sidebar opens them all.</p></div><div class="how"><p class="eyebrow">Tip 3</p><h3>Dark box = code, grey box = output</h3><p>Purple-tinted boxes are patterns to fill in: orange words in them are placeholders, grey brackets mark optional parts.</p></div><div class="how"><p class="eyebrow">Tip 4</p><h3>Run it yourself</h3><p>Type the examples into PyCharm or a notebook and change them. Predict the output first, then check.</p></div>
+</div>
+</section>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

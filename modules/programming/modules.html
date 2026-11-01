@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8 · Import · Python Programming</title>
+<meta name="description" content="Modules, packages and logging: Split a program across files, reuse Python&#x27;s standard library, organise modules into packages, and record what your program does with logging.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-modules">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html"><span class="pn">2</span>Decide</a><a href="loops.html"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html"><span class="pn">5</span>Define</a><a href="errors.html"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html" aria-current="page"><span class="pn">8</span>Import</a><a href="data.html"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#modules"><span class="n">66</span><span class="t">Modules: code in another file</span></a></li><li><a href="#import-forms"><span class="n">67</span><span class="t">Four ways to import</span></a></li><li><a href="#search-path"><span class="n">68</span><span class="t">Where Python looks for a module</span></a></li><li><a href="#main-guard"><span class="n">69</span><span class="t"><code>if __name__ == "__main__":</code></span></a></li><li><a href="#stdlib"><span class="n">70</span><span class="t">The standard library: <code>math</code>, <code>random</code>, <code>datetime</code>, <code>os</code></span></a></li><li><a href="#packages"><span class="n">71</span><span class="t">Packages: folders of modules</span></a></li><li><a href="#logging"><span class="n">72</span><span class="t">Logging: a record of what happened</span></a></li><li><a href="#logging-config"><span class="n">73</span><span class="t">Configuring logging with <code>basicConfig</code></span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">08</p>
+<p class="eyebrow">Part 8 · Import</p>
+<h1>Modules, packages and logging</h1>
+<p class="lead">Split a program across files, reuse Python's standard library, organise modules into packages, and record what your program does with logging.</p>
+<p class="range">Sections 66–73 · Lecture 8</p>
+<div class="about"><p>Part 8 covers Lecture 8: modules and the four forms of <code>import</code>, where Python searches for modules, the <code>if __name__ == "__main__":</code> idiom, the standard modules <code>math</code>, <code>random</code>, <code>datetime</code> and <code>os</code>, packages and <code>__init__.py</code>, and the <code>logging</code> module with its levels and <code>basicConfig</code>.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#modules"><span class="n">66</span> Modules: code in another file</a></li><li><a href="#import-forms"><span class="n">67</span> Four ways to import</a></li><li><a href="#search-path"><span class="n">68</span> Where Python looks for a module</a></li><li><a href="#main-guard"><span class="n">69</span> <code>if __name__ == "__main__":</code></a></li><li><a href="#stdlib"><span class="n">70</span> The standard library: <code>math</code>, <code>random</code>, <code>datetime</code>, <code>os</code></a></li><li><a href="#packages"><span class="n">71</span> Packages: folders of modules</a></li><li><a href="#logging"><span class="n">72</span> Logging: a record of what happened</a></li><li><a href="#logging-config"><span class="n">73</span> Configuring logging with <code>basicConfig</code></a></li></ol></details><section class="topic" id="modules" aria-labelledby="modules-h">
+<div class="topic-meta"><a class="num" href="#modules" title="Link to this section">66</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="modules-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Modules: code in another file</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The module</p><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">support.py</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#B3B3B3"># support.py</span>
+myString = <span style="color:#FFAE80">"it is Monday!"</span>
+myList = [<span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">20</span>, <span style="color:#FFD27A">30</span>]
+
+<span style="color:#D0A3FF">def</span> myFunc(name):
+    <span style="color:#8FD8FF">print</span>(<span style="color:#FFAE80">"Hello"</span>, name)
+
+<span style="color:#D0A3FF">class</span> someClass:
+    <span style="color:#D0A3FF">pass</span></pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The program</p><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">usemodule.py</h3><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#B3B3B3"># usemodule.py, in the same folder</span>
+<span style="color:#D0A3FF">import</span> support
+
+<span style="color:#8FD8FF">print</span>(support.myString)
+<span style="color:#8FD8FF">print</span>(support.myList)
+support.myFunc(<span style="color:#FFAE80">"Lisa"</span>)
+o = support.someClass()</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">it is Monday!
+[10, 20, 30]
+Hello Lisa</pre></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A module is just a <code>.py</code> file. <code>import name</code> (no <code>.py</code>) runs it once and gives you its contents as <code>name.thing</code>.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A module groups related functions, classes and variables so several programs can share them. Every <code>.py</code> file you write is already a module.</p><p>Run module examples as normal <code>.py</code> files in an editor such as PyCharm rather than in Jupyter, so Python finds <code>support.py</code> in the same folder.</p><p>A module's code runs the first time it's imported; importing it again in the same program reuses the already-loaded module.</p><p><i>Source: Lecture 8, “Modules”, “Importing and using a module”.</i></p></div></details>
+</section>
+<section class="topic" id="import-forms" aria-labelledby="import-forms-h">
+<div class="topic-meta"><a class="num" href="#import-forms" title="Link to this section">67</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="import-forms-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Four ways to import</h2>
+</div>
+<div class="tablewrap"><table style="font-size:26px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Write</th><th style="background:#F7F0FF">Then use</th><th style="background:#F7F0FF">Note</th></tr></thead><tbody><tr><td><code>import support</code></td><td><code>support.myString</code></td><td>safest: every name keeps its module prefix</td></tr><tr><td><code>from support import myString, myList</code></td><td><code>myString</code></td><td>shorter, but may clash with your own names</td></tr><tr><td><code>from support import myString as s</code></td><td><code>s</code></td><td>rename to avoid a clash, or to shorten</td></tr><tr><td><code>from support import *</code></td><td><code>myString</code>, <code>myList</code>, …</td><td><b>not recommended</b>: imports everything blindly</td></tr></tbody></table></div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Examples</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> math
+<span style="color:#8FD8FF">print</span>(math.sqrt(<span style="color:#FFD27A">81</span>))
+
+<span style="color:#D0A3FF">from</span> math <span style="color:#D0A3FF">import</span> sqrt
+<span style="color:#8FD8FF">print</span>(sqrt(<span style="color:#FFD27A">81</span>))
+
+<span style="color:#D0A3FF">import</span> numpy <span style="color:#D0A3FF">as</span> np     <span style="color:#B3B3B3"># a common shorthand</span></pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Why not *</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>from module import *</code> can silently replace names you already have, such as your own <code>myList</code>, and makes it hard to tell where a name came from.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>import m</code> → write <code>m.x</code>; <code>from m import x</code> → write <code>x</code>; <code>as</code> renames; avoid <code>*</code>.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>import module as alias</code> also works for whole modules; <code>import numpy as np</code> and <code>import pandas as pd</code> are conventions you'll meet in <a href="data.html">Part 9</a>.</p><p><i>Source: Lecture 8, “The import statement”.</i></p></div></details>
+</section>
+<section class="topic" id="search-path" aria-labelledby="search-path-h">
+<div class="topic-meta"><a class="num" href="#search-path" title="Link to this section">68</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="search-path-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Where Python looks for a module</h2>
+</div>
+<div class="row" style="display:flex;gap:12px;flex-direction:row;align-items:center"><div class="grow" style="flex:1"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>1</b> The folder of the program being run</p></div><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg><div class="grow" style="flex:1"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>2</b> Each folder in the <code>PYTHONPATH</code> environment variable, if set</p></div><svg aria-hidden="true" class="shape free" preserveaspectratio="none" style="width:40px;height:28px;flex-shrink:0;align-self:center" viewbox="0 0 100 100"><polygon fill="#666666" points="0,35 62,35 62,0 100,50 62,100 62,65 0,65"></polygon></svg><div class="grow" style="flex:1"><p style="font-size:26px;line-height:1.35;color:#1A1A1A;background:#EEDEFF;padding:14px 18px;text-align:center;"><b>3</b> The folders set up when Python was installed (standard library, installed packages)</p></div></div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:640px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> sys
+
+<span style="color:#D0A3FF">for</span> path <span style="color:#D0A3FF">in</span> sys.path:
+    <span style="color:#8FD8FF">print</span>(path)</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The first match wins</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The final search list is <code>sys.path</code>. Python takes the <b>first</b> match, so a file of your own called <code>random.py</code> or <code>math.py</code> will hide the real module.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Python searches the program's own folder first: never name your files after standard modules.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>If an import fails with <code>ModuleNotFoundError</code>, check the module is in the program's folder or installed for the same Python you're running (<code>pip install</code> puts packages in step 3's folders).</p><p><code>sys.path</code> is an ordinary list, so a program can add a folder to it before importing.</p><p><i>Source: Lecture 8, “Module search order”.</i></p></div></details>
+</section>
+<section class="topic" id="main-guard" aria-labelledby="main-guard-h">
+<div class="topic-meta"><a class="num" href="#main-guard" title="Link to this section">69</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="main-guard-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A"><code>if __name__ == "__main__":</code></h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">A module that can also run</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#B3B3B3"># mymathutils.py</span>
+<span style="color:#D0A3FF">def</span> squareit(n):
+    <span style="color:#D0A3FF">return</span> n * n
+
+<span style="color:#D0A3FF">def</span> cubeit(n):
+    <span style="color:#D0A3FF">return</span> n * n * n
+
+<span style="color:#D0A3FF">def</span> main():
+    anum = <span style="color:#8FD8FF">int</span>(<span style="color:#8FD8FF">input</span>(<span style="color:#FFAE80">"Please enter a number: "</span>))
+    <span style="color:#8FD8FF">print</span>(squareit(anum))
+    <span style="color:#8FD8FF">print</span>(cubeit(anum))
+
+<span style="color:#D0A3FF">if</span> __name__ == <span style="color:#FFAE80">"__main__"</span>:
+    main()</pre></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Imported</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#B3B3B3"># usemymathutils.py</span>
+<span style="color:#D0A3FF">import</span> mymathutils
+
+x = mymathutils.squareit(<span style="color:#FFD27A">10</span>)
+<span style="color:#8FD8FF">print</span>(x)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">100</pre></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">No number is asked for: <code>main()</code> didn't run, because the module was imported.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Why it works</p><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">How the file runs</th><th style="background:#F7F0FF"><code>__name__</code> is</th><th style="background:#F7F0FF"><code>main()</code> runs?</th></tr></thead><tbody><tr><td>run directly</td><td><code>"__main__"</code></td><td>yes</td></tr><tr><td>imported</td><td><code>"mymathutils"</code></td><td>no</td></tr></tbody></table></div></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>__name__</code> is <code>"__main__"</code> only in the file you ran. Put code that should run only then under the guard.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>This lets one file be both a library (other programs import its functions) and a program (run it to try them, often as a test).</p><p>Without the guard, importing <code>mymathutils</code> would immediately ask the user for a number, which the importing program almost certainly doesn't want.</p><p><i>Source: Lecture 8, “if __name__ == "__main__":”.</i></p></div></details>
+</section>
+<section class="topic" id="stdlib" aria-labelledby="stdlib-h">
+<div class="topic-meta"><a class="num" href="#stdlib" title="Link to this section">70</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="stdlib-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The standard library: <code>math</code>, <code>random</code>, <code>datetime</code>, <code>os</code></h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">math</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> math
+<span style="color:#8FD8FF">print</span>(math.pi)
+<span style="color:#8FD8FF">print</span>(math.sqrt(<span style="color:#FFD27A">81</span>))
+<span style="color:#8FD8FF">print</span>(math.pow(<span style="color:#FFD27A">2</span>, <span style="color:#FFD27A">3</span>))
+<span style="color:#8FD8FF">print</span>(math.factorial(<span style="color:#FFD27A">5</span>))
+<span style="color:#8FD8FF">print</span>(math.sin(<span style="color:#FFD27A">1.57</span>))   <span style="color:#B3B3B3"># radians</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">3.141592653589793
+9.0
+8.0
+120
+0.9999996829318346</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">random</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> random
+<span style="color:#8FD8FF">print</span>(random.choice([<span style="color:#FFAE80">'iron'</span>, <span style="color:#FFAE80">'silver'</span>, <span style="color:#FFAE80">'gold'</span>]))
+<span style="color:#8FD8FF">print</span>(random.randrange(<span style="color:#FFD27A">7</span>))   <span style="color:#B3B3B3"># 0 to 6</span></pre>
+<p style="font-size:24px;line-height:1.4;color:#666666">Different every run.</p></div></div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">datetime</p><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> datetime
+now = datetime.datetime.today()
+<span style="color:#8FD8FF">print</span>(now.year, now.month, now.day)
+dto = datetime.datetime(<span style="color:#FFD27A">2031</span>, <span style="color:#FFD27A">5</span>, <span style="color:#FFD27A">17</span>, <span style="color:#FFD27A">12</span>, <span style="color:#FFD27A">30</span>, <span style="color:#FFD27A">25</span>)
+<span style="color:#8FD8FF">print</span>(dto)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">2026 11 1
+2031-05-17 12:30:25</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">os</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> os
+<span style="color:#8FD8FF">print</span>(os.getcwd())          <span style="color:#B3B3B3"># current folder</span>
+<span style="color:#8FD8FF">print</span>(os.listdir(<span style="color:#FFAE80">'.'</span>))      <span style="color:#B3B3B3"># its contents</span>
+<span style="color:#8FD8FF">print</span>(os.uname())           <span style="color:#B3B3B3"># macOS / Linux only</span></pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Before writing it yourself, check the standard library: maths, randomness, dates and files are all there.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>math.pow</code> always returns a float (<code>8.0</code>), while <code>2 ** 3</code> gives the int <code>8</code>. Trigonometric functions take radians: degrees × π / 180.</p><p><code>os.uname()</code> doesn't exist on Windows; use <code>platform.system()</code> or <code>platform.uname()</code> from the <code>platform</code> module instead, which work everywhere.</p><p>Full documentation for each module is at docs.python.org/3/library/ (math, random, datetime, os).</p><p><i>Source: Lecture 8, “Python standard modules”: math, random, datetime, os.</i></p></div></details>
+</section>
+<section class="topic" id="packages" aria-labelledby="packages-h">
+<div class="topic-meta"><a class="num" href="#packages" title="Link to this section">71</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="packages-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Packages: folders of modules</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:700px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">pkg0/
+├── __init__.py
+├── mod0.py
+└── pkg1/
+    ├── __init__.py
+    ├── mod1.py      # defines foo()
+    └── mod2.py      # defines someClass</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>package</b> is a folder of modules (and sub-packages). A folder needs an <code>__init__.py</code> file for Python to treat it as a package.</p></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Importing from a package</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> pkg0.pkg1.mod1
+pkg0.pkg1.mod1.foo()
+
+<span style="color:#D0A3FF">from</span> pkg0.pkg1.mod1 <span style="color:#D0A3FF">import</span> foo
+foo()
+
+<span style="color:#D0A3FF">from</span> pkg0.pkg1.mod2 <span style="color:#D0A3FF">import</span> someClass <span style="color:#D0A3FF">as</span> Bar
+b = Bar()</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Dots follow the folders down to the module.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Package = folder with <code>__init__.py</code>; dots in an import follow the folder path.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Packages give modules a hierarchy and prevent name collisions: two packages can each have a module called <code>utils</code> without clashing.</p><p><code>__init__.py</code> can be empty; it can also run set-up code or choose what <code>from package import *</code> exposes. Without it, Python won't look for submodules inside the folder in the classic way the lecture describes.</p><p>Further reading from the lecture: the Python tutorial on modules, and Nick Coghlan's “Traps for the Unwary in Python's Import System”.</p><p><i>Source: Lecture 8, “Packages”, “The __init__.py”.</i></p></div></details>
+</section>
+<section class="topic" id="logging" aria-labelledby="logging-h">
+<div class="topic-meta"><a class="num" href="#logging" title="Link to this section">72</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="logging-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Logging: a record of what happened</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:900px;display:flex;flex-direction:column;gap:24px"><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Maintenance is the most expensive phase of software. <b>Logging</b> records events while the program runs, so you can see what it did, and when, after the fact.</p>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> logging
+
+logging.debug(<span style="color:#FFAE80">"This is a debug message"</span>)
+logging.info(<span style="color:#FFAE80">"This is an info message"</span>)
+logging.warning(<span style="color:#FFAE80">"This is a warning message"</span>)
+logging.error(<span style="color:#FFAE80">"This is an error message"</span>)
+logging.critical(<span style="color:#FFAE80">"This is a critical message"</span>)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">WARNING:root:This is a warning message
+ERROR:root:This is an error message
+CRITICAL:root:This is a critical message</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Severity levels</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Level</th><th style="background:#F7F0FF">Value</th><th style="background:#F7F0FF">For</th></tr></thead><tbody><tr><td><code>DEBUG</code></td><td>10</td><td>detailed diagnosis</td></tr><tr><td><code>INFO</code></td><td>20</td><td>things working as expected</td></tr><tr><td><code>WARNING</code></td><td>30</td><td>something unexpected; <b>default</b></td></tr><tr><td><code>ERROR</code></td><td>40</td><td>a function failed</td></tr><tr><td><code>CRITICAL</code></td><td>50</td><td>the program may not continue</td></tr></tbody></table></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Only messages at or above the set level are shown.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Logging shows messages at the set level and above; the default level is WARNING, so debug and info stay hidden.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>root</code> in the output is the name of the default logger. Libraries use the same <code>logging</code> module, so their messages and yours can end up in one consistent log.</p><p>Unlike <code>print</code>, logging can be switched to a quieter level or redirected to a file without changing every line that logs.</p><p><i>Source: Lecture 8, “Logging”, “Logging levels”.</i></p></div></details>
+</section>
+<section class="topic" id="logging-config" aria-labelledby="logging-config-h">
+<div class="topic-meta"><a class="num" href="#logging-config" title="Link to this section">73</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 8 · Import</p>
+<h2 id="logging-config-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Configuring logging with <code>basicConfig</code></h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:900px;display:flex;flex-direction:column;gap:24px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    filename=<span style="color:#FFAE80">'output.log'</span>,
+                    filemode=<span style="color:#FFAE80">'w'</span>,
+                    format=<span style="color:#FFAE80">'%(module)s - %(levelname)s - %(message)s'</span>)
+
+logging.warning(<span style="color:#FFAE80">"This is a warning message"</span>)</pre>
+<div style="display:flex;flex-direction:column;gap:8px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">In output.log</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">loggingFormatExample - WARNING - This is a warning message</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The options</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Parameter</th><th style="background:#F7F0FF">Sets</th></tr></thead><tbody><tr><td><code>level</code></td><td>the lowest severity shown</td></tr><tr><td><code>filename</code></td><td>a file to log to</td></tr><tr><td><code>filemode</code></td><td><code>'a'</code> (append, default) or <code>'w'</code></td></tr><tr><td><code>format</code></td><td>the layout of each line</td></tr></tbody></table></div>
+<div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">In <code>format</code></th><th style="background:#F7F0FF">Inserts</th></tr></thead><tbody><tr><td><code>%(asctime)s</code></td><td>time of the event</td></tr><tr><td><code>%(levelname)s</code></td><td><code>WARNING</code>, <code>ERROR</code>…</td></tr><tr><td><code>%(message)s</code></td><td>the message</td></tr><tr><td><code>%(module)s</code></td><td>module name</td></tr><tr><td><code>%(funcName)s</code></td><td>function name</td></tr><tr><td><code>%(levelno)d</code></td><td>10, 20, 30…</td></tr></tbody></table></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Call <code>basicConfig</code> once, before the first log message, to set the level, the file and the format.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>basicConfig</code> only takes effect the first time logging is configured. In Jupyter, after any earlier logging call it does nothing; restart the kernel or run the example as a <code>.py</code> file.</p><p>Why is it <code>basicConfig</code> and not <code>basic_config</code>, as PEP 8 recommends for function names? The module was adapted from a Java logging library, and Java uses camelCase. By the time it joined the standard library, too much code used the name to change it. PEP 8 allows mixedCase “where that's already the prevailing style … to retain backwards compatibility”.</p><p>The full list of format attributes is under “LogRecord attributes” in the logging documentation.</p><p><i>Source: Lecture 8, “Customising the logging level”, “basicConfig() parameters”, “A historical note”.</i></p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="objects.html"><span>Previous</span>Objects</a><a class="next" href="data.html"><span>Next</span>Analyse</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

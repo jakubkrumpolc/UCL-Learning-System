@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9 · Analyse · Python Programming</title>
+<meta name="description" content="Data science with NumPy and pandas: Two libraries that turn Python into a data tool: NumPy for fast arrays of numbers, pandas for labelled columns and tables.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-data">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">PY</span><span class="brand-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span><span class="mm-here">This module</span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Weeks 1–5 study guide</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="values.html"><span class="pn">1</span>Values</a><a href="decisions.html"><span class="pn">2</span>Decide</a><a href="loops.html"><span class="pn">3</span>Repeat</a><a href="collections.html"><span class="pn">4</span>Collect</a><a href="functions.html"><span class="pn">5</span>Define</a><a href="errors.html"><span class="pn">6</span>Handle</a><a href="objects.html"><span class="pn">7</span>Objects</a><a href="modules.html"><span class="pn">8</span>Import</a><a href="data.html" aria-current="page"><span class="pn">9</span>Analyse</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#data-science"><span class="n">74</span><span class="t">Data science, NumPy and pandas</span></a></li><li><a href="#arrays"><span class="n">75</span><span class="t">NumPy arrays</span></a></li><li><a href="#creating"><span class="n">76</span><span class="t">Creating arrays</span></a></li><li><a href="#shape"><span class="n">77</span><span class="t">Shape, indexing, and saving arrays</span></a></li><li><a href="#series"><span class="n">78</span><span class="t">pandas Series: a labelled column</span></a></li><li><a href="#dataframe"><span class="n">79</span><span class="t">pandas DataFrame: a labelled table</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">09</p>
+<p class="eyebrow">Part 9 · Analyse</p>
+<h1>Data science with NumPy and pandas</h1>
+<p class="lead">Two libraries that turn Python into a data tool: NumPy for fast arrays of numbers, pandas for labelled columns and tables.</p>
+<p class="range">Sections 74–79 · Lecture 9</p>
+<div class="about"><p>Part 9 covers Lecture 9: why data science matters, NumPy arrays (data types, creating arrays, dimensions and shape, reading and changing elements, saving and loading), and pandas Series and DataFrames.</p></div>
+</header><details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#data-science"><span class="n">74</span> Data science, NumPy and pandas</a></li><li><a href="#arrays"><span class="n">75</span> NumPy arrays</a></li><li><a href="#creating"><span class="n">76</span> Creating arrays</a></li><li><a href="#shape"><span class="n">77</span> Shape, indexing, and saving arrays</a></li><li><a href="#series"><span class="n">78</span> pandas Series: a labelled column</a></li><li><a href="#dataframe"><span class="n">79</span> pandas DataFrame: a labelled table</a></li></ol></details><section class="topic" id="data-science" aria-labelledby="data-science-h">
+<div class="topic-meta"><a class="num" href="#data-science" title="Link to this section">74</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 9 · Analyse</p>
+<h2 id="data-science-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Data science, NumPy and pandas</h2>
+</div>
+<div class="grow" style="flex:1;background:#F7F0FF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:28px;line-height:1.4;color:#1A1A1A">“The ability to take data — to be able to understand it, to process it, to extract value from it, to visualize it, to communicate it — that's going to be a hugely important skill in the next decades.”</p>
+<p style="font-size:24px;line-height:1.4;color:#666666">Hal Varian, chief economist at Google, 2009</p></div>
+<div class="row" style="display:flex;gap:24px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">NumPy</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Num</b>erical <b>Py</b>thon: large multi-dimensional arrays and matrices, plus fast maths on them.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> numpy <span style="color:#D0A3FF">as</span> np</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">pandas</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">From “panel data” and “Python data analysis”: labelled columns (Series) and tables (DataFrames), like a spreadsheet in Python.</p>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> pandas <span style="color:#D0A3FF">as</span> pd</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Install</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">pip install numpy pandas</pre>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Neither comes with Python. Install them once from a terminal (in Jupyter: <code>!pip install numpy</code>).</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> NumPy = fast arrays of numbers; pandas = labelled tables built on top of NumPy. Import them as <code>np</code> and <code>pd</code>.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Both libraries are written in Python and C. The C parts do the heavy number crunching, which is why they're so much faster than loops over Python lists.</p><p><code>np</code> and <code>pd</code> are conventions, not rules, but every tutorial and answer online uses them.</p><p><i>Source: Lecture 9, “Data science”, “NumPy”, “Pandas”.</i></p></div></details>
+</section>
+<section class="topic" id="arrays" aria-labelledby="arrays-h">
+<div class="topic-meta"><a class="num" href="#arrays" title="Link to this section">75</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 9 · Analyse</p>
+<h2 id="arrays-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">NumPy arrays</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:840px;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> numpy <span style="color:#D0A3FF">as</span> np
+
+arrA = np.array([<span style="color:#FFD27A">30</span>, <span style="color:#FFD27A">40</span>, <span style="color:#FFD27A">50</span>])               <span style="color:#B3B3B3"># rank 1</span>
+<span style="color:#8FD8FF">print</span>(arrA)
+
+arrB = np.array([[<span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">20</span>, <span style="color:#FFD27A">30</span>], [<span style="color:#FFD27A">40</span>, <span style="color:#FFD27A">50</span>, <span style="color:#FFD27A">60</span>]])  <span style="color:#B3B3B3"># rank 2</span>
+<span style="color:#8FD8FF">print</span>(arrB)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">[30 40 50]
+[[10 20 30]
+ [40 50 60]]</pre></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Lists versus arrays</h3><div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF"></th><th style="background:#F7F0FF">Python list</th><th style="background:#F7F0FF">NumPy array</th></tr></thead><tbody><tr><td>Items</td><td>any mix of types</td><td><b>one type</b>, all the same size</td></tr><tr><td>Memory</td><td>scattered objects</td><td>side by side</td></tr><tr><td>Speed</td><td>slower</td><td>much faster for maths</td></tr><tr><td>Flexibility</td><td>high</td><td>lower</td></tr></tbody></table></div></div></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Data types</p><div class="row" style="display:flex;gap:12px;flex-direction:row;flex-wrap:wrap"><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px"><code>np.int8</code> … <code>np.int64</code></p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px"><code>np.uint8</code> … <code>np.uint64</code></p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px"><code>np.float32</code>, <code>np.float64</code></p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px"><code>np.complex64</code></p><p style="font-size:24px;background:#EEDEFF;color:#1A1A1A;padding:6px 14px"><code>np.bool_</code></p></div>
+<p style="font-size:26px;line-height:1.4;color:#1A1A1A">Every array has a <b>dtype</b> (data type). Because all items share it, NumPy can pack them tightly and work on them quickly.</p></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> An array is a grid of same-typed values packed side by side: less flexible than a list, far faster.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Arrays print without commas: <code>[30 40 50]</code>. That's how to tell an array from a list in output.</p><p>The big win, not shown in the lecture, is vectorised maths: <code>arrA * 2</code> gives <code>[60 80 100]</code> and <code>arrA + arrA</code> adds item by item, with no loop. On a list, <code>* 2</code> would repeat the list instead.</p><p>“Rank” or “dimension” is the number of axes: a row of values is rank 1, a table is rank 2.</p><p><i>Source: Lecture 9, “NumPy”, “NumPy Datatypes”, “NumPy array data type”.</i></p></div></details>
+</section>
+<section class="topic" id="creating" aria-labelledby="creating-h">
+<div class="topic-meta"><a class="num" href="#creating" title="Link to this section">76</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 9 · Analyse</p>
+<h2 id="creating-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Creating arrays</h2>
+</div>
+<div class="tablewrap"><table style="font-size:24px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Call</th><th style="background:#F7F0FF">Makes</th><th style="background:#F7F0FF">Prints</th></tr></thead><tbody><tr><td><code>np.array([1, 2, 3])</code></td><td>from a list (or tuple)</td><td><code>[1 2 3]</code></td></tr><tr><td><code>np.zeros((2, 2))</code></td><td>all zeros, given shape</td><td><code>[[0. 0.] [0. 0.]]</code></td></tr><tr><td><code>np.ones((3, 2))</code></td><td>all ones, 3 rows × 2 columns</td><td><code>[[1. 1.] [1. 1.] [1. 1.]]</code></td></tr><tr><td><code>np.full((2, 2), 13)</code></td><td>every item 13</td><td><code>[[13 13] [13 13]]</code></td></tr><tr><td><code>np.eye(2)</code></td><td>identity matrix</td><td><code>[[1. 0.] [0. 1.]]</code></td></tr><tr><td><code>np.linspace(0, 2, 9)</code></td><td>9 evenly spaced values from 0 to 2</td><td><code>[0. 0.25 0.5 … 1.75 2.]</code></td></tr><tr><td><code>np.arange(2, 7)</code></td><td>like <code>range</code>, as an array</td><td><code>[2 3 4 5 6]</code></td></tr><tr><td><code>np.arange(2, 3, 0.1)</code></td><td>float steps allowed</td><td><code>[2. 2.1 2.2 … 2.9]</code></td></tr><tr><td><code>np.random.random((2, 3))</code></td><td>random floats from 0 to 1</td><td>different every time</td></tr></tbody></table></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Shapes are tuples: <code>(rows, columns)</code>. <code>linspace</code> takes a count; <code>arange</code> takes a step and excludes the end.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>zeros</code>, <code>ones</code> and <code>eye</code> make floats by default, which is why they print as <code>0.</code> and <code>1.</code>; <code>full</code> keeps the type of the value you give it.</p><p><code>np.arange</code> accepts a float step, unlike <code>range</code>, but rounding can make the number of items surprising. When you need an exact count of points, use <code>linspace</code>.</p><p><i>Source: Lecture 9, “Creating arrays”: conversion, NumPy functions, random.</i></p></div></details>
+</section>
+<section class="topic" id="shape" aria-labelledby="shape-h">
+<div class="topic-meta"><a class="num" href="#shape" title="Link to this section">77</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 9 · Analyse</p>
+<h2 id="shape-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Shape, indexing, and saving arrays</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:820px;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">arrA = np.zeros((<span style="color:#FFD27A">2</span>, <span style="color:#FFD27A">2</span>))
+arrB = np.ones((<span style="color:#FFD27A">3</span>, <span style="color:#FFD27A">2</span>))
+<span style="color:#8FD8FF">print</span>(arrA.ndim, arrB.ndim)     <span style="color:#B3B3B3"># number of axes</span>
+<span style="color:#8FD8FF">print</span>(arrA.shape, arrB.shape)   <span style="color:#B3B3B3"># size along each axis</span></pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">2 2
+(2, 2) (3, 2)</pre></div>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">arrA[<span style="color:#FFD27A">0</span>][<span style="color:#FFD27A">1</span>] = <span style="color:#FFD27A">12</span>        <span style="color:#B3B3B3"># row 0, column 1</span>
+<span style="color:#8FD8FF">print</span>(arrA)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">[[ 0. 12.]
+ [ 0.  0.]]</pre></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Save to a file and load it back</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">values_out = np.array([<span style="color:#FFD27A">102</span>, <span style="color:#FFD27A">754</span>, <span style="color:#FFD27A">387</span>])
+np.savetxt(<span style="color:#FFAE80">'data.out'</span>, values_out, fmt=<span style="color:#FFAE80">'%d'</span>)</pre>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">values_in = np.loadtxt(<span style="color:#FFAE80">'data.out'</span>, dtype=<span style="color:#8FD8FF">int</span>)
+<span style="color:#8FD8FF">print</span>(values_in)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">[102 754 387]</pre></div></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> <code>ndim</code> counts the axes; <code>shape</code> gives the size of each. Index a table with <code>[row][column]</code>.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>NumPy also accepts <code>arrA[0, 1]</code> for the same element; it's the more common form and works with slices across both axes: <code>arrB[:, 0]</code> is the whole first column.</p><p><code>print(arrA[0])</code> prints the first row, <code>[0. 0.]</code>.</p><p><code>savetxt</code> writes one value per line by default; <code>fmt='%d'</code> writes them as whole numbers. <code>loadtxt</code> reads them back, and <code>dtype=int</code> makes them integers again.</p><p><i>Source: Lecture 9, “Dimension of an array”, “Shape of an array”, “Change an element”, “Saving NumPy arrays to a file”.</i></p></div></details>
+</section>
+<section class="topic" id="series" aria-labelledby="series-h">
+<div class="topic-meta"><a class="num" href="#series" title="Link to this section">78</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 9 · Analyse</p>
+<h2 id="series-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">pandas Series: a labelled column</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:780px;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#D0A3FF">import</span> pandas <span style="color:#D0A3FF">as</span> pd
+
+serieA = pd.Series([<span style="color:#FFD27A">87</span>, <span style="color:#FFD27A">34</span>, <span style="color:#FFD27A">90</span>, <span style="color:#FFD27A">7</span>, <span style="color:#FFD27A">11</span>, <span style="color:#FFD27A">6</span>])
+<span style="color:#8FD8FF">print</span>(serieA)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">0    87
+1    34
+2    90
+3     7
+4    11
+5     6
+dtype: int64</pre></div>
+<div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none"><span style="color:#8FD8FF">print</span>(serieA.index)
+<span style="color:#8FD8FF">print</span>(serieA.values)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">RangeIndex(start=0, stop=6, step=1)
+[87 34 90  7 11  6]</pre></div></div>
+<div class="grow" style="flex:1;display:flex;flex-direction:column;gap:24px"><div style="display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">capitals = [<span style="color:#FFAE80">'Nigeria'</span>, <span style="color:#FFAE80">'Japan'</span>, <span style="color:#FFAE80">'Jordan'</span>, <span style="color:#FFAE80">'UK'</span>]
+population = [<span style="color:#FFD27A">211.4</span>, <span style="color:#FFD27A">125.7</span>, <span style="color:#FFD27A">10.27</span>, <span style="color:#FFD27A">67.33</span>]
+serieB = pd.Series(population, index=capitals)
+
+<span style="color:#8FD8FF">print</span>(serieB[<span style="color:#FFAE80">'UK'</span>])
+<span style="color:#8FD8FF">print</span>(serieB[[<span style="color:#FFAE80">'UK'</span>, <span style="color:#FFAE80">'Nigeria'</span>]])</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">67.33
+UK          67.33
+Nigeria    211.40
+dtype: float64</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">How to see it</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A Series is <b>two arrays</b>: the index (labels) and the values. Without labels you get 0, 1, 2…</p></div></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A Series is an array with labels: one value per label, read with <code>s['label']</code>, or <code>s[['a', 'b']]</code> for several.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The left-hand column in the printout is the index, not part of the data. <code>dtype: int64</code> tells you the type of the values.</p><p>Note the double brackets for several values: the inner brackets are a list of labels.</p><p><i>Source: Lecture 9, “Series”, “Getting the index and the values”, “Defining Series objects with individual indices”, “Accessing values”.</i></p></div></details>
+</section>
+<section class="topic" id="dataframe" aria-labelledby="dataframe-h">
+<div class="topic-meta"><a class="num" href="#dataframe" title="Link to this section">79</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 9 · Analyse</p>
+<h2 id="dataframe-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">pandas DataFrame: a labelled table</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="fw" style="width:900px;display:flex;flex-direction:column;gap:0px"><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">my_data = [[<span style="color:#FFAE80">'Italy'</span>, <span style="color:#FFD27A">61</span>, <span style="color:#FFD27A">0.83</span>], [<span style="color:#FFAE80">'Spain'</span>, <span style="color:#FFD27A">46</span>, <span style="color:#FFD27A">0.63</span>], [<span style="color:#FFAE80">'Greece'</span>, <span style="color:#FFD27A">11</span>, <span style="color:#FFD27A">0.15</span>],
+           [<span style="color:#FFAE80">'France'</span>, <span style="color:#FFD27A">65</span>, <span style="color:#FFD27A">0.88</span>], [<span style="color:#FFAE80">'Portugal'</span>, <span style="color:#FFD27A">10</span>, <span style="color:#FFD27A">0.14</span>]]
+
+df = pd.DataFrame(my_data,
+                  index=[<span style="color:#FFAE80">'IT'</span>, <span style="color:#FFAE80">'ES'</span>, <span style="color:#FFAE80">'GR'</span>, <span style="color:#FFAE80">'FR'</span>, <span style="color:#FFAE80">'PO'</span>],
+                  columns=[<span style="color:#FFAE80">'Country'</span>, <span style="color:#FFAE80">'Popu'</span>, <span style="color:#FFAE80">'Percent'</span>])
+<span style="color:#8FD8FF">print</span>(df)</pre>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#F2F2F2;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">     Country  Popu  Percent
+IT     Italy    61     0.83
+ES     Spain    46     0.63
+GR    Greece    11     0.15
+FR    France    65     0.88
+PO  Portugal    10     0.14</pre></div>
+<div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">What you get</h3><ul style="font-size:26px;line-height:1.45"><li><b>2-dimensional</b> and labelled: row labels (the index) and column names</li><li>Each column can have its own type: text, whole numbers, decimals</li><li>Each column is a Series</li></ul>
+<pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px;white-space:pre;overflow-x:auto;font-variant-ligatures:none">df[<span style="color:#FFAE80">'Popu'</span>]          <span style="color:#B3B3B3"># one column</span>
+df.loc[<span style="color:#FFAE80">'IT'</span>]        <span style="color:#B3B3B3"># one row by label</span>
+df[<span style="color:#FFAE80">'Popu'</span>].mean()   <span style="color:#B3B3B3"># 38.6</span></pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> DataFrame = a table of Series sharing one index: columns by name, rows by label.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>pandas can load tables straight from files: <code>pd.read_csv('data.csv')</code> gives a DataFrame, which is far easier than parsing the file yourself with the tools from <a href="errors.html#reading">Part 6</a>.</p><p>The lecture's useful links: tutorialspoint's NumPy and pandas tutorials, and LinkedIn Learning's “Python: Data Analysis”.</p><p><i>Source: Lecture 9, “DataFrame”, “Useful links”.</i></p></div></details>
+</section><nav class="pager" aria-label="Pages"><a class="prev" href="modules.html"><span>Previous</span>Import</a><a class="next" href="revision.html"><span>Next</span>Revision</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="values.html">1 · Values</a></li><li><a href="decisions.html">2 · Decide</a></li><li><a href="loops.html">3 · Repeat</a></li><li><a href="collections.html">4 · Collect</a></li><li><a href="functions.html">5 · Define</a></li><li><a href="errors.html">6 · Handle</a></li><li><a href="objects.html">7 · Objects</a></li><li><a href="modules.html">8 · Import</a></li><li><a href="data.html">9 · Analyse</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#py-cheat">Python on one page</a></li><li><a href="revision.html#py-hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">PY</span>Python Programming</p>
+<p>Built from your COMP0066 lecture notebooks (Lectures 1–9). Sections are numbered in order through the module; “More detail” names the lecture slides each one comes from.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0066 · Introductory Programming · Weeks 1–5</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
