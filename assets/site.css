@@ -556,14 +556,25 @@ code, pre, textarea, .canvas [style*="JetBrains Mono"] { font-variant-ligatures:
 .mm-grid > * { min-width: 0; }
 .mm-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
 .mm-toolbar .mm-aside { margin-left: auto; }
-.mm-editor { display: block; width: 100%; min-height: 460px; resize: vertical; margin: 0; padding: 16px 18px; border: 1px solid var(--line-brand); border-left: 8px solid var(--brand); background: var(--field); color: var(--ink); font-family: var(--mono); font-size: 14.5px; line-height: 1.5; tab-size: 8; }
+.mm-code { display: flex; align-items: stretch; height: 480px; min-height: 220px; resize: vertical; overflow: hidden; border: 1px solid var(--line-brand); border-left: 8px solid var(--brand); background: var(--field); }
+.mm-gutter { flex: 0 0 auto; height: 100%; min-height: 0; margin: 0; padding: 16px 8px 16px 12px; overflow: hidden; text-align: right; color: var(--muted); background: var(--sand); font-family: var(--mono); font-size: 14.5px; line-height: 1.5; white-space: pre; user-select: none; }
+.mm-editor { display: block; flex: 1 1 0; width: 0; height: 100%; min-width: 0; min-height: 0; resize: none; margin: 0; padding: 16px 18px; border: 0; border-left: 1px solid var(--line); background: var(--field); color: var(--ink); font-family: var(--mono); font-size: 14.5px; line-height: 1.5; tab-size: 8; white-space: pre; overflow: auto; }
 .mm-message { margin: 0 0 12px; padding: 12px 16px; background: var(--brand-wash); border-left: 4px solid var(--brand); font-size: 15px; font-weight: 500; }
 .mm-message.error, .mm-message.wait { background: var(--orange-l); border-left-color: var(--orange); }
 .mm-model { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
-.mm-help { margin-top: 10px; }
-.mm-help summary { cursor: pointer; font-weight: 600; color: var(--brand-text); }
-.mm-help p { margin: 8px 0 0; font-size: 15px; color: var(--muted); }
-.mm-help code { font-family: var(--mono); font-size: .92em; }
+.mm-regn { margin-left: 6px; color: var(--muted); }
+.mm-ref { margin-top: 12px; }
+.mm-ref h2 { margin: 28px 0 8px; font-size: 22px; font-weight: 600; color: var(--ink); }
+.mm-ref h2:first-child { margin-top: 4px; }
+.mm-ref p { margin: 0 0 12px; }
+.mm-ref code, .mm-ref td code { font-family: var(--mono); font-size: .92em; }
+.mm-ref-wrap { overflow-x: auto; border: 1px solid var(--line); margin: 0 0 8px; }
+.mm-ref table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.mm-ref th { position: sticky; top: 0; padding: 8px 12px; background: var(--dark); color: #fff; font-weight: 600; text-align: left; }
+.mm-ref td { padding: 7px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+.mm-ref tbody tr:nth-child(even) { background: var(--sand); }
+.mm-ref ul { margin: 0; padding-left: 1.2em; }
+.mm-ref li { margin: 0 0 6px; }
 .mm-panel { background: var(--card); border: 1px solid var(--line-brand); padding: 14px 16px 16px; margin: 0 0 16px; }
 .mm-panel h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; color: var(--ink); }
 .mm-pc-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; margin: 0; }
@@ -590,7 +601,7 @@ code, pre, textarea, .canvas [style*="JetBrains Mono"] { font-variant-ligatures:
 }
 @media (max-width: 700px) {
   .part-hero.mm-hero { padding: 32px 22px 24px; }
-  .mm-editor { min-height: 320px; border-left-width: 6px; }
+  .mm-code { height: 360px; border-left-width: 6px; }
 }
 
 /* dark mode for the slide content: its colours are written inline, so each one is mapped here.

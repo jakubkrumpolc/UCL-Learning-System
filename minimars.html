@@ -49,18 +49,23 @@
 <button type="button" id="mm-sample" class="ui-btn plain mm-aside">Restore sample</button>
 </div>
 <p id="mm-message" class="mm-message" role="status" aria-live="polite" hidden></p>
-<textarea id="mm-editor" class="mm-editor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="MIPS assembly"></textarea>
+<div class="mm-code">
+<pre id="mm-gutter" class="mm-gutter" aria-hidden="true">1</pre>
+<textarea id="mm-editor" class="mm-editor" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-label="MIPS assembly"></textarea>
+</div>
 <p class="mm-model">Branches and jumps take effect immediately. MiniMARS does not use MIPS delay slots.</p>
-<details class="mm-help">
-<summary>Instructions and syscalls</summary>
-<p><code>add</code>, <code>sub</code>, <code>and</code>, <code>or</code>, <code>slt</code>, and the immediate forms <code>addi</code>, <code>subi</code>, <code>andi</code>, <code>ori</code>, <code>slti</code>. Also <code>lui</code>, <code>lw</code>, <code>sw</code>, <code>beq</code>, <code>bne</code>, <code>j</code>, <code>jal</code>, <code>jr</code>, <code>syscall</code> and <code>nop</code>.</p>
-<p>Pseudos: <code>li</code>, <code>la</code> and <code>move</code>. Directives: <code>.text</code>, <code>.data</code>, <code>.word</code>, <code>.asciiz</code>, and <code>.globl</code> (accepted and ignored). Labels and <code>#</code> comments work. Write registers as <code>$t0</code> or <code>$8</code>. <code>$zero</code> stays zero, and <code>$sp</code> starts at <code>0x7fffeffc</code>.</p>
-<p>Syscalls, with the number in <code>$v0</code>: <b>1</b> print the integer in <code>$a0</code>, <b>4</b> print the string at <code>$a0</code>, <b>5</b> read an integer into <code>$v0</code> from Console input, <b>10</b> exit. A run stops after 10,000 steps. Ctrl+Enter runs the program.</p>
-<p>Not in this version: multiply and divide, shifts other than <code>lui</code>, byte loads and stores, floating point, overflow traps, and any syscall other than those four.</p>
-</details>
 </section>
 
 <section aria-label="Machine">
+<div class="mm-panel">
+<h2>Console</h2>
+<pre id="mm-console" class="mm-console" data-empty="true" aria-live="polite"></pre>
+<label class="ui-field">
+<span>Console input</span>
+<span class="mm-inputrow"><input id="mm-input" class="ui-input" spellcheck="false" autocomplete="off" aria-label="Console input"><button type="button" id="mm-enter" class="ui-btn">Enter</button></span>
+<span class="ui-hint mm-hint">Syscall 5 reads one integer from here. Several integers can be separated by spaces.</span>
+</label>
+</div>
 <div class="mm-panel">
 <h2>PC</h2>
 <p class="mm-pc-line"><span id="mm-pc" class="mm-pc">—</span><span id="mm-next" class="mm-next"></span></p>
@@ -69,7 +74,7 @@
 <h2>Registers</h2>
 <div class="mm-regwrap">
 <table class="mm-regs">
-<thead><tr><th>Name</th><th>Hex</th><th>Signed</th><th>Name</th><th>Hex</th><th>Signed</th></tr></thead>
+<thead><tr><th>Register</th><th>Hex</th><th>Signed</th><th>Register</th><th>Hex</th><th>Signed</th></tr></thead>
 <tbody id="mm-regs"></tbody>
 </table>
 </div>
@@ -78,7 +83,7 @@
 <h2>Text</h2>
 <div class="mm-scroll" id="mm-text-scroll">
 <table class="mm-text">
-<thead><tr><th>Address</th><th>Instruction</th></tr></thead>
+<thead><tr><th>Line</th><th>Address</th><th>Instruction</th></tr></thead>
 <tbody id="mm-text"></tbody>
 </table>
 </div>
@@ -92,17 +97,68 @@
 </table>
 </div>
 </div>
-<div class="mm-panel">
-<h2>Console</h2>
-<pre id="mm-console" class="mm-console" data-empty="true" aria-live="polite"></pre>
-<label class="ui-field">
-<span>Console input</span>
-<span class="mm-inputrow"><input id="mm-input" class="ui-input" spellcheck="false" autocomplete="off" aria-label="Console input"><button type="button" id="mm-enter" class="ui-btn">Enter</button></span>
-<span class="ui-hint mm-hint">Syscall 5 reads one integer from here. Several integers can be separated by spaces.</span>
-</label>
-</div>
 </section>
 </div>
+
+<section class="mm-ref" aria-labelledby="mm-ref-h">
+<h2 id="mm-ref-h">Supported instructions</h2>
+<p>Registers can be written by name or number, such as <code>$t0</code> or <code>$8</code>. <code>$zero</code> stays zero. Labels and <code>#</code> comments work. <code>.text</code> and <code>.data</code> switch sections; <code>.word</code> and <code>.asciiz</code> fill the data segment. <code>.globl</code> is accepted and ignored.</p>
+<div class="mm-ref-wrap">
+<table>
+<thead><tr><th>Instruction</th><th>Form</th><th>What it does</th></tr></thead>
+<tbody>
+<tr><td><code>add</code></td><td><code>add $t0, $t1, $t2</code></td><td>Signed sum. Wraps; it does not trap.</td></tr>
+<tr><td><code>sub</code></td><td><code>sub $t0, $t1, $t2</code></td><td>Subtract. Wraps; it does not trap.</td></tr>
+<tr><td><code>and</code></td><td><code>and $t0, $t1, $t2</code></td><td>Bitwise and.</td></tr>
+<tr><td><code>or</code></td><td><code>or $t0, $t1, $t2</code></td><td>Bitwise or.</td></tr>
+<tr><td><code>slt</code></td><td><code>slt $t0, $t1, $t2</code></td><td>1 if <code>$t1</code> is signed-less than <code>$t2</code>, otherwise 0.</td></tr>
+<tr><td><code>addi</code></td><td><code>addi $t0, $t1, -4</code></td><td>Add a signed 16-bit immediate.</td></tr>
+<tr><td><code>subi</code></td><td><code>subi $t0, $t1, 4</code></td><td>Pseudo. Assembles as <code>addi</code> with the immediate negated.</td></tr>
+<tr><td><code>andi</code></td><td><code>andi $t0, $t1, 0xff</code></td><td>And with a 16-bit immediate, zero-extended.</td></tr>
+<tr><td><code>ori</code></td><td><code>ori $t0, $t1, 0xff</code></td><td>Or with a 16-bit immediate, zero-extended.</td></tr>
+<tr><td><code>slti</code></td><td><code>slti $t0, $t1, 10</code></td><td>1 if <code>$t1</code> is signed-less than the immediate.</td></tr>
+<tr><td><code>lui</code></td><td><code>lui $t0, 0x1001</code></td><td>Load the immediate into the upper 16 bits.</td></tr>
+<tr><td><code>lw</code></td><td><code>lw $t0, 4($sp)</code></td><td>Load the word at <code>$sp + 4</code>. The address must be a multiple of 4.</td></tr>
+<tr><td><code>sw</code></td><td><code>sw $t0, 0($t1)</code></td><td>Store the word in <code>$t0</code>. The address must be a multiple of 4.</td></tr>
+<tr><td><code>beq</code></td><td><code>beq $t0, $t1, loop</code></td><td>Branch if equal. No delay slot.</td></tr>
+<tr><td><code>bne</code></td><td><code>bne $t0, $zero, loop</code></td><td>Branch if not equal. No delay slot.</td></tr>
+<tr><td><code>j</code></td><td><code>j loop</code></td><td>Jump. No delay slot.</td></tr>
+<tr><td><code>jal</code></td><td><code>jal func</code></td><td>Jump and save the next instruction’s address in <code>$ra</code>.</td></tr>
+<tr><td><code>jr</code></td><td><code>jr $ra</code></td><td>Jump to the address in a register.</td></tr>
+<tr><td><code>syscall</code></td><td><code>syscall</code></td><td>Do the service numbered in <code>$v0</code>. See the table below.</td></tr>
+<tr><td><code>nop</code></td><td><code>nop</code></td><td>Do nothing.</td></tr>
+<tr><td><code>li</code></td><td><code>li $t0, 5</code></td><td>Pseudo. Load a number. A large value is <code>lui</code> then <code>ori</code>, and Step walks both.</td></tr>
+<tr><td><code>la</code></td><td><code>la $a0, msg</code></td><td>Pseudo. Load a label’s address with <code>lui</code> and <code>ori</code>.</td></tr>
+<tr><td><code>move</code></td><td><code>move $a0, $t0</code></td><td>Pseudo. Copy a register (<code>add</code> with <code>$zero</code>).</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Syscalls</h2>
+<p>Put the service number in <code>$v0</code> (<code>$2</code>) before <code>syscall</code>. Any other number stops the program. A run also stops after 10,000 steps. Ctrl+Enter runs the program.</p>
+<div class="mm-ref-wrap">
+<table>
+<thead><tr><th><code>$v0</code></th><th>Uses</th><th>Effect</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>$a0</code></td><td>Print the signed integer in <code>$a0</code> to the console.</td></tr>
+<tr><td>4</td><td><code>$a0</code></td><td>Print the null-terminated string at the address in <code>$a0</code>.</td></tr>
+<tr><td>5</td><td>result in <code>$v0</code></td><td>Read one integer from Console input into <code>$v0</code>.</td></tr>
+<tr><td>10</td><td></td><td>Exit.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Not supported yet</h2>
+<ul>
+<li>Shifts other than <code>lui</code>: <code>sll</code>, <code>srl</code>, <code>sra</code>, <code>sllv</code>, <code>srlv</code>, <code>srav</code>.</li>
+<li>Multiply and divide: <code>mul</code>, <code>mult</code>, <code>multu</code>, <code>div</code>, <code>divu</code>, <code>mfhi</code>, <code>mflo</code>.</li>
+<li>Other logic: <code>nor</code>, <code>xor</code>, <code>xori</code>, and the <code>not</code> pseudo.</li>
+<li>The unsigned names <code>addu</code>, <code>subu</code> and <code>addiu</code>. Use <code>add</code>, <code>sub</code> and <code>addi</code>; the result wraps and does not trap.</li>
+<li>Byte and halfword memory: <code>lb</code>, <code>lbu</code>, <code>lh</code>, <code>lhu</code>, <code>sb</code>, <code>sh</code>.</li>
+<li>Branch pseudos: <code>beqz</code>, <code>bnez</code>, <code>blt</code>, <code>ble</code>, <code>bgt</code>, <code>bge</code>.</li>
+<li>Floating-point instructions, and every syscall other than 1, 4, 5 and 10.</li>
+</ul>
+</section>
 </main>
 </div>
 <footer class="sitefoot">

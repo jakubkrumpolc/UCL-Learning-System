@@ -803,7 +803,16 @@
     var assembledSource = null;
     var shownRegs = null;
 
+    var gutter = document.getElementById('mm-gutter');
     editor.value = SAMPLE;
+
+    function syncLines() {
+      var count = editor.value.split('\n').length || 1;
+      var nums = '';
+      for (var i = 1; i <= count; i++) nums += (i === 1 ? '' : '\n') + i;
+      if (gutter.textContent !== nums) gutter.textContent = nums;
+      gutter.scrollTop = editor.scrollTop;
+    }
 
     function show(kind, text) {
       message.hidden = !text;
@@ -903,7 +912,7 @@
         html += '<tr>';
         [row, row + 16].forEach(function (i) {
           var changed = shownRegs && shownRegs[i] !== machine.regs[i];
-          html += '<td class="' + (changed ? 'changed' : '') + '">$' + REG_DISPLAY[i] + '</td>';
+          html += '<td class="' + (changed ? 'changed' : '') + '">$' + REG_DISPLAY[i] + ' <span class="mm-regn">$' + i + '</span></td>';
           html += '<td class="' + (changed ? 'changed' : '') + '">' + hex8(machine.regs[i]) + '</td>';
           html += '<td class="' + (changed ? 'changed' : '') + '">' + (machine.regs[i] | 0) + '</td>';
         });
@@ -916,7 +925,7 @@
         var current = item.addr === (machine.pc >>> 0) && !machine.halted;
         var origin = item.origin !== item.asm ? '<span class="mm-origin">' + escapeHtml(item.origin) + '</span>' : '';
         textHtml += '<tr' + (current ? ' class="current"' : '') + ' data-addr="' + item.addr + '">';
-        textHtml += '<td>' + hex8(item.addr) + '</td><td>' + escapeHtml(item.asm) + origin + '</td></tr>';
+        textHtml += '<td>' + item.line + '</td><td>' + hex8(item.addr) + '</td><td>' + escapeHtml(item.asm) + origin + '</td></tr>';
       });
       textEl.innerHTML = textHtml;
       var currentRow = textEl.querySelector('.current');
@@ -1014,6 +1023,7 @@
     document.getElementById('mm-reset').addEventListener('click', onAssemble);
     document.getElementById('mm-sample').addEventListener('click', function () {
       editor.value = SAMPLE;
+      syncLines();
       onAssemble();
     });
     document.getElementById('mm-enter').addEventListener('click', onEnter);
@@ -1023,6 +1033,9 @@
         onEnter();
       }
     });
+    editor.addEventListener('input', syncLines);
+    editor.addEventListener('scroll', function () { gutter.scrollTop = editor.scrollTop; });
+    syncLines();
     editor.addEventListener('keydown', function (event) {
       if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
