@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Computer Architecture · COMP0068</title>
+<meta name="description" content="Computer Architecture study guide for COMP0068: binary and two&#x27;s complement, the MIPS instruction set, assembly, boot, processes, scheduling, memory and disks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-index">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">AR</span><span class="brand-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">AR</span><span class="mm-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><span class="mm-here">This module</span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Architecture and operating systems</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="machine.html"><span class="pn">1</span>Machine</a><a href="numbers.html"><span class="pn">2</span>Numbers</a><a href="mips.html"><span class="pn">3</span>MIPS</a><a href="languages.html"><span class="pn">4</span>Languages</a><a href="boot.html"><span class="pn">5</span>Boot</a><a href="systems.html"><span class="pn">6</span>Systems</a><a href="schedule.html"><span class="pn">7</span>Schedule</a><a href="memory.html"><span class="pn">8</span>Memory</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout">
+<main id="main">
+<header class="home-hero">
+<div class="home-hero-in">
+<div class="hh-text">
+<p class="eyebrow">COMP0068 · Computer Architecture &amp; Operating Systems</p>
+<h1>From bits<br/>to processes</h1>
+<p class="lead">The lecture decks rebuilt into one path: how a machine represents numbers, how MIPS runs an instruction, how C and Python constructs become assembly, then the operating system that boots, schedules and pages. Every worked example uses the lecture’s own numbers.</p>
+<div class="hh-actions"><a class="btn primary" href="machine.html">Start with Part 1</a><a class="btn" href="mips.html">Jump to MIPS</a><a class="btn" href="revision.html">Cheat sheet</a></div>
+</div>
+<svg aria-label="CPU, memory and devices joined by a bus" class="hero-art" height="280" viewBox="0 0 420 280" width="420"><rect fill="#9A3BFF" height="72" width="150" x="135" y="24"></rect><text fill="#FFFFFF" font-family="'DM Sans', Arial, sans-serif" font-size="28" font-weight="700" text-anchor="middle" x="210" y="68">CPU</text><rect fill="#BA82FF" height="16" width="300" x="60" y="132"></rect><rect fill="#9A3BFF" height="72" width="120" x="40" y="180"></rect><text fill="#FFFFFF" font-family="'DM Sans', Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle" x="100" y="222">Memory</text><rect fill="#BA82FF" height="72" width="120" x="260" y="180"></rect><text fill="#361A54" font-family="'DM Sans', Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle" x="320" y="222">I/O</text></svg>
+</div>
+</header>
+<section class="home-sec" id="roadmap">
+<h2>Eight parts, in the order of the lectures</h2>
+<p class="sub">Machine → Numbers → MIPS → Languages → Boot → Systems → Schedule → Memory. The rover coursework rules, with the sample mission traced, are on the revision page.</p>
+<div class="part-grid"><article class="part-card">
+<a class="part-link" href="machine.html"><span class="pc-num">1</span><span class="pc-name">Machine</span></a>
+<p class="pc-desc">The instruction set, the Little Man Computer, and the hardware he stands in for.</p>
+<p class="pc-range">Sections 1–8 · Lectures 1–3</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="machine.html#isa"><span class="n">1</span>Architecture is the programmer’s view</a></li><li><a href="machine.html#history"><span class="n">2</span>Same ideas, very different machines</a></li><li><a href="machine.html#levels"><span class="n">3</span>One addition, six levels</a></li><li><a href="machine.html#vonneumann"><span class="n">4</span>One memory holds the program and the data</a></li><li><a href="machine.html#lmc"><span class="n">5</span>The Little Man and his mailboxes</a></li><li><a href="machine.html#lmc-add"><span class="n">6</span>The instruction set, and adding two inputs</a></li><li><a href="machine.html#lmc-branch"><span class="n">7</span>A branch is what makes it a computer</a></li><li><a href="machine.html#hardware"><span class="n">8</span>Fetch, decode, execute, then the real box</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="numbers.html"><span class="pc-num">2</span><span class="pc-name">Numbers</span></a>
+<p class="pc-desc">Bases, two’s complement, overflow, endianness and widening a value.</p>
+<p class="pc-range">Sections 9–16 · Lectures 4–5</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="numbers.html#bases"><span class="n">9</span>A digit times a power of the base</a></li><li><a href="numbers.html#hex"><span class="n">10</span>Hex is binary, in groups of four</a></li><li><a href="numbers.html#units"><span class="n">11</span>Kilo sometimes means 1024</a></li><li><a href="numbers.html#columns"><span class="n">12</span>Add a column, in whatever base</a></li><li><a href="numbers.html#twos"><span class="n">13</span>Negative numbers, without a minus sign</a></li><li><a href="numbers.html#width"><span class="n">14</span>A fixed number of bits</a></li><li><a href="numbers.html#overflow"><span class="n">15</span>Carry out is not the same as overflow</a></li><li><a href="numbers.html#endian"><span class="n">16</span>Words, byte order, and widening</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="mips.html"><span class="pc-num">3</span><span class="pc-name">MIPS</span></a>
+<p class="pc-desc">R-type and I-type, addressing modes, shifts, branches, and the MARS memory map.</p>
+<p class="pc-range">Sections 17–25 · Lectures 6–8</p>
+<details class="pc-topics"><summary>All 9 sections</summary><ol><li><a href="mips.html#loadstore"><span class="n">17</span>Arithmetic stays in the registers</a></li><li><a href="mips.html#rtype"><span class="n">18</span>R-type: six fields, two registers in, one out</a></li><li><a href="mips.html#logic"><span class="n">19</span>The same adder, two overflow rules, and bitwise logic</a></li><li><a href="mips.html#itype"><span class="n">20</span>I-type: a 16-bit immediate in the instruction</a></li><li><a href="mips.html#branchconst"><span class="n">21</span>A branch counts instructions, and lui builds a constant</a></li><li><a href="mips.html#modes"><span class="n">22</span>Five ways to name an operand</a></li><li><a href="mips.html#shifts"><span class="n">23</span>Shifts, and pulling one field out of an instruction</a></li><li><a href="mips.html#absdiff"><span class="n">24</span>Compare, then take the positive difference</a></li><li><a href="mips.html#layout"><span class="n">25</span>Where the assembler puts a program</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="languages.html"><span class="pc-num">4</span><span class="pc-name">Languages</span></a>
+<p class="pc-desc">Register names, calls, the stack, system calls, strings and floating point.</p>
+<p class="pc-range">Sections 26–33 · Lectures 9–10</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="languages.html#names"><span class="n">26</span>The registers have jobs</a></li><li><a href="languages.html#control"><span class="n">27</span>if, while and for</a></li><li><a href="languages.html#jumps"><span class="n">28</span>jal saves the way home</a></li><li><a href="languages.html#calling"><span class="n">29</span>Who is allowed to smash which register</a></li><li><a href="languages.html#stack"><span class="n">30</span>The frame the lecture actually builds</a></li><li><a href="languages.html#syscall"><span class="n">31</span>Asking MARS to read and print</a></li><li><a href="languages.html#chars"><span class="n">32</span>Characters, strings, and a fixed binary point</a></li><li><a href="languages.html#float"><span class="n">33</span>IEEE 754, and the floating-point calculator</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="boot.html"><span class="pc-num">5</span><span class="pc-name">Boot</span></a>
+<p class="pc-desc">BIOS, UEFI, POST, and the hand-off from firmware to the kernel.</p>
+<p class="pc-range">Sections 34–37 · Lecture 11</p>
+<details class="pc-topics"><summary>All 4 sections</summary><ol><li><a href="boot.html#power"><span class="n">34</span>Three residents of memory, in order</a></li><li><a href="boot.html#bios"><span class="n">35</span>BIOS: the original firmware</a></li><li><a href="boot.html#uefi"><span class="n">36</span>UEFI does the same job with fewer limits</a></li><li><a href="boot.html#firmware"><span class="n">37</span>What actually changed, and what did not</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="systems.html"><span class="pc-num">6</span><span class="pc-name">Systems</span></a>
+<p class="pc-desc">The kernel, interrupts, storage, dual mode, and system calls.</p>
+<p class="pc-range">Sections 38–45 · Lectures 12–13</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="systems.html#osrole"><span class="n">38</span>Between the user and the hardware</a></li><li><a href="systems.html#interrupts"><span class="n">39</span>Polling asks; an interrupt rings</a></li><li><a href="systems.html#storage"><span class="n">40</span>A ladder of faster and smaller</a></li><li><a href="systems.html#multi"><span class="n">41</span>More than one processor</a></li><li><a href="systems.html#modes"><span class="n">42</span>User mode and kernel mode</a></li><li><a href="systems.html#manages"><span class="n">43</span>Processes, memory, files, devices</a></li><li><a href="systems.html#calls"><span class="n">44</span>Services, and the calls that ask for them</a></li><li><a href="systems.html#policy"><span class="n">45</span>Policy, mechanism, and how a kernel is built</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="schedule.html"><span class="pc-num">7</span><span class="pc-name">Schedule</span></a>
+<p class="pc-desc">PCBs, critical sections, and FCFS, SJF, priority and round robin by hand.</p>
+<p class="pc-range">Sections 46–53 · Lectures 14–16</p>
+<details class="pc-topics"><summary>All 8 sections</summary><ol><li><a href="schedule.html#process"><span class="n">46</span>A program in execution</a></li><li><a href="schedule.html#switch"><span class="n">47</span>The context switch is pure overhead</a></li><li><a href="schedule.html#ipc"><span class="n">48</span>Processes that need to talk</a></li><li><a href="schedule.html#critical"><span class="n">49</span>One process at a time in the critical section</a></li><li><a href="schedule.html#locks"><span class="n">50</span>Locks, and a semaphore that can sleep</a></li><li><a href="schedule.html#sjf"><span class="n">51</span>First come, and shortest job</a></li><li><a href="schedule.html#rr"><span class="n">52</span>Priority, and a slice of the CPU</a></li><li><a href="schedule.html#queues"><span class="n">53</span>A queue for each kind of job</a></li></ol></details>
+</article><article class="part-card">
+<a class="part-link" href="memory.html"><span class="pc-num">8</span><span class="pc-name">Memory</span></a>
+<p class="pc-desc">Addresses, pages, the three replacement algorithms, and the disk arm.</p>
+<p class="pc-range">Sections 54–60 · Lectures 17–19</p>
+<details class="pc-topics"><summary>All 7 sections</summary><ol><li><a href="memory.html#addresses"><span class="n">54</span>The program’s address is not the chip’s</a></li><li><a href="memory.html#holes"><span class="n">55</span>Holes, three ways to pick one</a></li><li><a href="memory.html#pages"><span class="n">56</span>Segments follow the program; pages do not</a></li><li><a href="memory.html#demand"><span class="n">57</span>Bring a page in when it is touched</a></li><li><a href="memory.html#replace"><span class="n">58</span>FIFO, OPT, and LRU on one string</a></li><li><a href="memory.html#disks"><span class="n">59</span>Seek, spin, then transfer</a></li><li><a href="memory.html#disksched"><span class="n">60</span>The arm should not zig-zag</a></li></ol></details>
+</article><article class="part-card rev">
+<a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
+<p class="pc-desc">Formats, the worked totals, the rover rules, and every memory hook.</p>
+<p class="pc-range">Sections 61–66 · Lectures 1–19 and the coursework brief</p>
+<details class="pc-topics"><summary>All 6 sections</summary><ol><li><a href="revision.html#numcheat"><span class="n">61</span>Numbers on one page</a></li><li><a href="revision.html#mipscheat"><span class="n">62</span>MIPS on one page</a></li><li><a href="revision.html#oscheat"><span class="n">63</span>The operating system on one page</a></li><li><a href="revision.html#worked"><span class="n">64</span>The scheduling totals</a></li><li><a href="revision.html#rover"><span class="n">65</span>The rover: the rules, traced</a></li><li><a href="revision.html#hooks"><span class="n">66</span>Every memory hook</a></li></ol></details>
+</article></div>
+<aside class="cta" aria-label="Revision">
+<div><h2>Revising for the test?</h2><p>Formats, register names, the scheduling numbers and every memory hook, on one page.</p></div>
+<a class="btn" href="revision.html">Open the cheat sheet</a>
+</aside>
+</section>
+<section class="home-sec how-band" id="how">
+<h2>How to use this module</h2>
+<div class="how-grid">
+<div class="how"><p class="eyebrow">Tip 1</p><h3>Convert it by hand</h3><p>Cover the answer, turn the number into the other base, then check. The same habit works for a MIPS instruction word.</p></div>
+<div class="how"><p class="eyebrow">Tip 2</p><h3>Single-step in MARS</h3><p>The assembly on these pages is the lecture’s own. Load it in MARS, step one instruction, and watch the register it names.</p></div>
+<div class="how"><p class="eyebrow">Tip 3</p><h3>Open “More detail”</h3><p>Under each section: the extra cases, the bounds, and which lecture it comes from. The button in the sidebar opens them all.</p></div>
+<div class="how"><p class="eyebrow">Tip 4</p><h3>Learn the “Remember” lines</h3><p>Every section ends with one. They are collected on the <a href="revision.html#hooks">revision page</a>.</p></div>
+</div>
+</section>
+</main>
+</div>
+
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="machine.html">1 · Machine</a></li><li><a href="numbers.html">2 · Numbers</a></li><li><a href="mips.html">3 · MIPS</a></li><li><a href="languages.html">4 · Languages</a></li><li><a href="boot.html">5 · Boot</a></li><li><a href="systems.html">6 · Systems</a></li><li><a href="schedule.html">7 · Schedule</a></li><li><a href="memory.html">8 · Memory</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#numcheat">Numbers on one page</a></li><li><a href="revision.html#mipscheat">MIPS on one page</a></li><li><a href="revision.html#oscheat">The operating system on one page</a></li><li><a href="revision.html#worked">The scheduling totals</a></li><li><a href="revision.html#rover">The rover: the rules, traced</a></li><li><a href="revision.html#hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">AR</span>Computer Architecture</p>
+<p>Built from your COMP0068 lectures (Lectures 1–19) and the MIPS rover coursework brief. “More detail” names the lecture each section comes from. Personal study notes, not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0068 · Computer Architecture &amp; Operating Systems</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
+
