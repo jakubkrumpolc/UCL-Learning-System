@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3 · MIPS · Computer Architecture</title>
+<meta name="description" content="MIPS registers, R-type and I-type encodings, addressing modes, shifts, branches, and how a program is laid out in MARS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-mips">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">AR</span><span class="brand-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">AR</span><span class="mm-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><span class="mm-here">This module</span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Architecture and operating systems</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="machine.html"><span class="pn">1</span>Machine</a><a href="numbers.html"><span class="pn">2</span>Numbers</a><a href="mips.html" aria-current="page"><span class="pn">3</span>MIPS</a><a href="languages.html"><span class="pn">4</span>Languages</a><a href="boot.html"><span class="pn">5</span>Boot</a><a href="systems.html"><span class="pn">6</span>Systems</a><a href="schedule.html"><span class="pn">7</span>Schedule</a><a href="memory.html"><span class="pn">8</span>Memory</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#loadstore"><span class="n">17</span><span class="t">Arithmetic stays in the registers</span></a></li><li><a href="#rtype"><span class="n">18</span><span class="t">R-type: six fields, two registers in, one out</span></a></li><li><a href="#logic"><span class="n">19</span><span class="t">The same adder, two overflow rules, and bitwise logic</span></a></li><li><a href="#itype"><span class="n">20</span><span class="t">I-type: a 16-bit immediate in the instruction</span></a></li><li><a href="#branchconst"><span class="n">21</span><span class="t">A branch counts instructions, and lui builds a constant</span></a></li><li><a href="#modes"><span class="n">22</span><span class="t">Five ways to name an operand</span></a></li><li><a href="#shifts"><span class="n">23</span><span class="t">Shifts, and pulling one field out of an instruction</span></a></li><li><a href="#absdiff"><span class="n">24</span><span class="t">Compare, then take the positive difference</span></a></li><li><a href="#layout"><span class="n">25</span><span class="t">Where the assembler puts a program</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">03</p>
+<p class="eyebrow">Part 3 · MIPS</p>
+<h1>The instruction, as 32 bits and as a line of assembly</h1>
+<p class="lead">MIPS32 is a small load-store machine. Three layouts cover the instructions, five addressing modes say where the operand is, and MARS lets you watch a program do it.</p>
+<p class="range">Sections 17–25 · Lectures 6–8</p>
+<div class="about"><p>Part 3 covers Lectures 6 to 8: why MIPS is a load-store RISC machine, the R-type and I-type layouts with the lecture’s own encodings, add versus addu, the five addressing modes, shifts and field extraction, the absolute-difference program, and the .data/.text memory map.</p></div>
+</header>
+<details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#loadstore"><span class="n">17</span> Arithmetic stays in the registers</a></li><li><a href="#rtype"><span class="n">18</span> R-type: six fields, two registers in, one out</a></li><li><a href="#logic"><span class="n">19</span> The same adder, two overflow rules, and bitwise logic</a></li><li><a href="#itype"><span class="n">20</span> I-type: a 16-bit immediate in the instruction</a></li><li><a href="#branchconst"><span class="n">21</span> A branch counts instructions, and lui builds a constant</a></li><li><a href="#modes"><span class="n">22</span> Five ways to name an operand</a></li><li><a href="#shifts"><span class="n">23</span> Shifts, and pulling one field out of an instruction</a></li><li><a href="#absdiff"><span class="n">24</span> Compare, then take the positive difference</a></li><li><a href="#layout"><span class="n">25</span> Where the assembler puts a program</a></li></ol></details>
+<section class="topic" id="loadstore" aria-labelledby="loadstore-h">
+<div class="topic-meta"><a class="num" href="#loadstore" title="Link to this section">17</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="loadstore-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Arithmetic stays in the registers</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">What MIPS32 is</h3><ul style="font-size:26px;line-height:1.45"><li>Addresses are 32 bits, and every instruction is a 32-bit word. A word occupies four consecutive bytes, so the program counter steps by 4.</li><li>There are 32 registers, $0 to $31. <b>$0 is hardwired to zero.</b></li><li>It is a RISC, load-store design. Only load and store touch memory. Every other instruction reads and writes registers.</li></ul><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Adding two numbers that live in memory therefore takes four instructions: load, load, add, store.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">MIPS32 is the 32-bit architecture this course programs. MIPS64 is the same idea at 64 bits. Chips in this family sit in consoles, routers, printers and the radiation-hardened processor that flew on New Horizons.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The three layouts</h3><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Format</th><th style="background:#F7F0FF">Used for</th><th style="background:#F7F0FF">Fields</th></tr></thead><tbody><tr><td>R</td><td>register arithmetic</td><td>op, rs, rt, rd, shamt, funct</td></tr><tr><td>I</td><td>immediate, load, store, branch</td><td>op, rs, rt, 16-bit immediate</td></tr><tr><td>J</td><td>jump, jump-and-link</td><td>op, 26-bit target</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The format is how the 32 bits are sliced. It is not the same thing as an addressing mode, which is how an operand is found. That distinction gets its own section, because <code>addi</code>, <code>beq</code> and <code>lw</code> are all I-type and find their operands three different ways.</p><p style="font-size:24px;line-height:1.4;color:#666666">In MARS, instructions are placed from 0x00400000. The word at the program counter on the lecture diagram is the one about to run.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> MIPS arithmetic happens in registers. Only load and store touch memory, so adding two memory words takes four instructions. $0 is always 0.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The course picks MIPS for a clean ISA: few instruction shapes, and the concepts (registers, addressing, control) show through. The same concepts exist on more complicated machines, buried under extra formats.</p><p>A useful pair that needs no memory: <code>add $8, $0, $0</code> clears $8, and <code>add $8, $1, $0</code> copies $1 into $8. Both are ordinary adds against the zero register.</p><p><i>Source: Lecture 6, “MIPS32”, “Arithmetic and Registers”, “Instruction formats”.</i></p></div></details>
+</section>
+<section class="topic" id="rtype" aria-labelledby="rtype-h">
+<div class="topic-meta"><a class="num" href="#rtype" title="Link to this section">18</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="rtype-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">R-type: six fields, two registers in, one out</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The fields, and the lecture’s add</p><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Field</th><th style="background:#F7F0FF">Bits</th><th style="background:#F7F0FF">Meaning</th></tr></thead><tbody><tr><td>op</td><td>6</td><td>0 for every R-type here</td></tr><tr><td>rs</td><td>5</td><td>first source register</td></tr><tr><td>rt</td><td>5</td><td>second source register</td></tr><tr><td>rd</td><td>5</td><td>destination register</td></tr><tr><td>shamt</td><td>5</td><td>shift amount, 0 unless it is a shift</td></tr><tr><td>funct</td><td>6</td><td>which operation</td></tr></tbody></table></div><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">add $8, $1, $2
+000000 00001 00010 01000 00000 100000
+op=0  $1    $2    $8    0     funct=0x20</pre></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Subtract, and a whole expression</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">sub $12, $6, $3          # $12 ← $6 − $3
+000000 00110 00011 01100 00000 100010
+funct = 0x22</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Assembly is written destination first: <code>op rd, rs, rt</code>. The machine word is not in that order. rs comes before rt, and rd is the fourth field.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The lecture’s expression <code>x = a − b + c − d</code>, with a, b, c, d already in $4, $5, $6, $7:</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">sub $10, $4, $5    # a - b
+sub $11, $6, $7    # c - d
+add $12, $10, $11  # x</pre><p style="font-size:24px;line-height:1.4;color:#666666">Comments start with #. The three machine words on the slide are those three instructions, funct 0x22, 0x22, then 0x20.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> R-type is op, rs, rt, rd, shamt, funct. op is 0 and funct picks add (0x20) or sub (0x22). The destination is written first in assembly and fourth in the word.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Five bits name a register, because 2<sup>5</sup> = 32. Six bits of funct, together with op = 0, leave room for the rest of the arithmetic and logic set.</p><p>Encode <code>add $8, $1, $2</code> once from scratch: op 000000, rs 00001, rt 00010, rd 01000, shamt 00000, funct 100000. Concatenate, then group in fours if you want it in hex: 00224020<sub>16</sub>.</p><p><i>Source: Lecture 6, “R-Type Instruction Encoding”, the x = a − b + c − d example.</i></p></div></details>
+</section>
+<section class="topic" id="logic" aria-labelledby="logic-h">
+<div class="topic-meta"><a class="num" href="#logic" title="Link to this section">19</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="logic-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The same adder, two overflow rules, and bitwise logic</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">funct codes from the lecture</p><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Instruction</th><th style="background:#F7F0FF">funct</th><th style="background:#F7F0FF">Does</th></tr></thead><tbody><tr><td>add / addu</td><td>0x20 / 0x21</td><td>add, with / without a signed-overflow trap</td></tr><tr><td>sub / subu</td><td>0x22 / 0x23</td><td>subtract, with / without that trap</td></tr><tr><td>and, or, xor, nor</td><td>0x24–0x27</td><td>bitwise, including not-or</td></tr><tr><td>slt / sltu</td><td>0x2A / 0x2B</td><td>set rd to 1 if rs &lt; rt, signed / unsigned</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The bits of an add and an addu sum are identical. Part 2 is why both exist: signed overflow is a different event from a carry out, and only the signed instructions raise it.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">and, or, xor, nor, one bit at a time</h3><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">A</th><th style="background:#F7F0FF">B</th><th style="background:#F7F0FF">and</th><th style="background:#F7F0FF">or</th><th style="background:#F7F0FF">xor</th><th style="background:#F7F0FF">nor</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>and</code> keeps a bit only where both inputs have it. That is a mask. <code>or</code> forces bits on. <code>xor</code> is 1 where the bits differ. <code>nor</code> is the not of or, and with $0 it is a bitwise not.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> add and addu compute the same sum. add traps on signed overflow; addu does not. and, or, xor and nor act on each bit on its own.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The “u” does not mean “zero-extend” and it does not mean “a different circuit”. It means “do not signal signed overflow”. You will see the same split on <code>addi</code> and <code>addiu</code>, where the immediate is sign-extended in both.</p><p><code>slt</code> is how a comparison becomes data. The following instruction is usually a branch on whether that 1 or 0 is equal to $0. There is no single instruction for ≤ or ≥ between two registers.</p><p><i>Source: Lecture 6, the R-type table, “add and addu”, the logic truth tables.</i></p></div></details>
+</section>
+<section class="topic" id="itype" aria-labelledby="itype-h">
+<div class="topic-meta"><a class="num" href="#itype" title="Link to this section">20</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="itype-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">I-type: a 16-bit immediate in the instruction</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The layout</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">op (6)   rs (5)   rt (5)   immediate (16)</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A signed immediate covers −2<sup>15</sup> to 2<sup>15</sup>−1, which is −32768 to 32767. An unsigned one covers 0 to 65535. Before use, a signed immediate is <b>sign-extended</b> to 32 bits and an unsigned one is <b>zero-extended</b>.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Loads and stores use base addressing. The address is rs plus the extended immediate, and rt is the register loaded or stored.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The lecture’s load and store</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">lw $20, 0x1234($5)
+100011 00101 10100 0001001000110100
+op=0x23  $5   $20   offset 0x1234
+
+$20 ← Memory[$5 + 0x00001234]</pre><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">sw $8, 0x8000($15)
+op=0x2B  $15  $8   offset 0x8000
+
+Memory[$15 + 0xFFFF8000] ← $8</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">0x8000 has its top bit set, so the signed 16-bit offset extends to <b>0xFFFF8000</b>, a negative displacement. The store writes $8 at that address. The load’s offset 0x1234 has its top bit clear, so it extends with zeros.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> I-type is op, rs, rt, and 16 bits. lw and sw use rt as the data register and rs plus a sign-extended offset as the address. 0x8000 extends to 0xFFFF8000.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Lecture 8 writes the signed range as “−32,769 to +32,768”. That is one past each end. Sixteen-bit two’s complement, and the range Lecture 6 states, is −32768 to +32767.</p><p>Opcode 0x23 is lw and 0x2B is sw. The assembly form is <code>lw rt, offset(rs)</code>, which is the opposite of the R-type habit of naming the destination first in a way that matches field order: here the immediate is last in both the assembly and the word.</p><p><i>Source: Lecture 6, “I-Type”, “Load Word”, “Store Word”; Lecture 8 on the immediate range.</i></p></div></details>
+</section>
+<section class="topic" id="branchconst" aria-labelledby="branchconst-h">
+<div class="topic-meta"><a class="num" href="#branchconst" title="Link to this section">21</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="branchconst-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">A branch counts instructions, and lui builds a constant</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">addi sign-extends, even the unsigned one</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">addi  $20, $5, 0xABCD
+addiu $20, $5, 0xABCD
+
+both do  $20 ← $5 + 0xFFFFABCD</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">0xABCD is negative as 16 bits, so both instructions sign-extend it. The difference is the trap: <code>addi</code> signals signed overflow, <code>addiu</code> does not. To put the unsigned bits 0x0000ABCD into a register, use <code>ori</code> with $0, which zero-extends.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A conditional branch is also I-type. The 16-bit field counts <b>instructions</b>, starting from the instruction after the branch.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">beq $20, $5, offset
+if ($20 == $5)
+    PC ← PC + 4 + signExtend(offset) × 4</pre></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Any 32-bit constant is two instructions</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">lui $17, 0x1234     # $17 ← 0x12340000
+ori $17, $17, 0x5678 # $17 ← 0x12345678</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>lui</code> writes the immediate into the <b>top</b> half and clears the bottom half. <code>ori</code> then fills the bottom without disturbing the top, because those low bits were zero.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The pseudo-instruction <code>la</code> (load address) and <code>li</code> (load immediate) are the assembler writing this pair for you. They are not single machine instructions. In MARS you can expand them and watch.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A branch offset counts instructions from the next instruction. lui then ori plants any 32-bit constant. addiu sign-extends its immediate; the “u” only switches off the overflow trap.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The assembler turns a label on a <code>beq</code> into that offset: (label address − (PC+4)) / 4. From any instruction you can reach about 32768 instructions back or 32767 forward. Further, and you need a jump.</p><p>There is also <code>bgez</code> and the rest of the “compare with zero” branches. They are still I-type, and the offset is computed the same way. Lecture 8 lists beq, bne, bgez, bgtz, blez and bltz.</p><p><i>Source: Lecture 6, “addi and addiu”, “beq”, “lui and ori”; Lecture 8, “Branching and labels”.</i></p></div></details>
+</section>
+<section class="topic" id="modes" aria-labelledby="modes-h">
+<div class="topic-meta"><a class="num" href="#modes" title="Link to this section">22</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="modes-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Five ways to name an operand</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Mode</th><th style="background:#F7F0FF">The operand is</th><th style="background:#F7F0FF">Seen in</th></tr></thead><tbody><tr><td>Immediate</td><td>a constant in the instruction</td><td>addi $2, $0, 10</td></tr><tr><td>Register</td><td>a register number</td><td>add $8, $1, $2</td></tr><tr><td>Base, or displacement</td><td>Memory[rs + offset]</td><td>lw $20, 0x1234($5)</td></tr><tr><td>PC-relative</td><td>PC+4, plus an instruction offset</td><td>beq</td></tr><tr><td>Pseudo-direct</td><td>the top 4 bits of the PC, then a 26-bit word address, then two zero bits</td><td>j</td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Format and mode are different questions</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><code>addi</code>, <code>beq</code> and <code>lw</code> share the I-type slicing. Immediate addressing, PC-relative addressing and base addressing are three answers to “where is the operand?”.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A J-type instruction holds a 26-bit word address. Instruction addresses are multiples of 4, so the hardware shifts that field left by 2 (multiplies by 4) and keeps the top 4 bits of the PC. One jump instruction can land anywhere in a 256 MB region, and cannot by itself leave that region. <code>jr</code>, which jumps to an address sitting in a register, can.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">j target
+PC[27:0] ← target × 4
+# the top 4 bits of the PC stay as they are</pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> The format is how the bits are packed. The addressing mode is how the operand is found. addi, beq and lw are all I-type and use three different modes.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Lecture 8’s picture of the five modes is the one to be able to redraw: immediate and register need no memory address, base adds an offset to a register, PC-relative adds an offset to the PC, and pseudo-direct stitches the PC’s top bits onto the instruction’s target.</p><p>Because the top 4 bits come from the PC, a J-type jump that looks correct in isolation can land in the wrong 256 MB block if the PC and the target disagree in those bits. A register jump does not have that limit.</p><p><i>Source: Lecture 8, “MIPS Addressing Modes”, and the note that modes and formats differ; Lecture 9 for the J-type field widths.</i></p></div></details>
+</section>
+<section class="topic" id="shifts" aria-labelledby="shifts-h">
+<div class="topic-meta"><a class="num" href="#shifts" title="Link to this section">23</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="shifts-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Shifts, and pulling one field out of an instruction</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Three shifts</h3><ul style="font-size:26px;line-height:1.45"><li><code>sll rd, rt, shamt</code> shifts left, and brings in zeros. Left by k multiplies by 2<sup>k</sup>.</li><li><code>srl rd, rt, shamt</code> shifts right logically, bringing in zeros. 64 shifted right by 2 is 16.</li><li><code>sra rd, rt, shamt</code> shifts right arithmetically: the sign bit is copied. −16 shifted right by 2 is −4. Positive 48 shifted right by 2 is 12.</li></ul><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">sll $5, $4, 3
+# $4 holds 2:  ...0000 0010
+# $5 becomes 16: ...0001 0000</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The amount lives in the <b>shamt</b> field of the R-type word. That field is why it was sitting there, unused, in every add.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Which register does this store mention?</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">sw $8, 0x8000($15)
+101011 01111 01000 1000000000000000
+       └ rs = 01111 = 15, bits 25–21</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The lecture isolates rs with a mask and a shift:</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">lui $5, 0x03E0     # mask over bits 25–21
+and $6, $4, $5     # keep only those bits of the instruction
+srl $6, $6, 21     # slide them down to the units place
+# $6 is now 15</pre><p style="font-size:24px;line-height:1.4;color:#666666">0x03E0 in the top half is the five bits that cover rs and nothing else. and keeps them, srl by 21 moves bit 21 down to bit 0.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A logical left shift by k multiplies by 2ᵏ and brings in zeros. An arithmetic right shift copies the sign. A mask and a shift pull one field out of a machine word.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Check the mask. <code>lui $5, 0x03E0</code> builds 0000 0011 1110 0000 in the top half, which is bits 25 down to 21. and with the store word leaves 01111 sitting at those positions. Shift right 21 and the register holds 15, the register number written in <code>0x8000($15)</code>.</p><p>Shifting is also how the later lectures multiply an array index by 4. A word is 4 bytes, and <code>sll</code> by 2 is the multiply.</p><p><i>Source: Lecture 8, “Shift operations”, “bit manipulation example” (the sw word).</i></p></div></details>
+</section>
+<section class="topic" id="absdiff" aria-labelledby="absdiff-h">
+<div class="topic-meta"><a class="num" href="#absdiff" title="Link to this section">24</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="absdiff-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Compare, then take the positive difference</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Set, then branch on zero</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The branches compare with zero, or compare two registers for equal and not-equal. Anything else is two steps.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">slt  rd, rs, rt     # rd ← 1 if rs &lt; rt (signed), else 0
+sltu rd, rs, rt     # the same test, unsigned
+slti rt, rs, value  # compare with a constant
+# then beq or bne against $0</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">So “rs ≤ rt” is “slt the other way, then branch if that result is zero”: if rs is not greater, it is less or equal.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">|A − B|, in the lecture’s program</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">.data
+vals: .word 180, 100
+      .space 4
+.text
+.globl main
+main:
+      la   $10, vals
+      lw   $4, 0($10)    # A
+      lw   $5, 4($10)    # B
+      sub  $12, $4, $5   # A - B
+      bgez $12, pos      # already ≥ 0
+      sub  $12, $5, $4   # otherwise B - A
+pos:  sw   $12, 8($10)
+      li   $v0, 10
+      syscall</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">With 180 and 100, $12 becomes 80, <code>bgez</code> fires, and 80 is stored at <code>vals+8</code>. Swap the two words and the branch falls through, so the second subtract repairs the sign. This is the Little Man’s absolute value, written with MIPS names.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> slt writes 1 or 0. A branch then tests that against zero. |A−B| is subtract, branch if it is already positive, otherwise subtract the other way.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p><code>li $v0, 10</code> followed by <code>syscall</code> is how a MARS program exits. System calls are the subject of Part 4; this one is worth recognising now because every lecture program ends with it.</p><p>Single-step this in MARS with the data words swapped. The branch is one instruction, so you can see the PC either land on <code>pos</code> or on the second <code>sub</code>. That is PC-relative addressing with a label doing the arithmetic for you.</p><p><i>Source: Lecture 8, “set on less than”, “absolute difference version 1”.</i></p></div></details>
+</section>
+<section class="topic" id="layout" aria-labelledby="layout-h">
+<div class="topic-meta"><a class="num" href="#layout" title="Link to this section">25</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 3 · MIPS</p>
+<h2 id="layout-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Where the assembler puts a program</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Directives and labels</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A directive starts with a dot and talks to the assembler, not to the processor.</p><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Directive</th><th style="background:#F7F0FF">Effect</th></tr></thead><tbody><tr><td>.data / .text</td><td>What follows goes in the data segment or the code segment</td></tr><tr><td>.globl main</td><td>main is visible to the loader, so the program can be started</td></tr><tr><td>.word 4, 5, 8, 0</td><td>Four 32-bit words</td></tr><tr><td>.half, .byte</td><td>16-bit or 8-bit cells</td></tr><tr><td>.float</td><td>IEEE single-precision numbers</td></tr><tr><td>.asciiz "hi"</td><td>Characters, then a zero byte</td></tr><tr><td>.space 100</td><td>100 bytes, uninitialised</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A label ending in a colon is a name for the next address. You rarely know the number. The assembler does, and it patches <code>la</code> and the branches.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The MARS map, and the first calculator</p><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Region</th><th style="background:#F7F0FF">Starts</th></tr></thead><tbody><tr><td>Reserved</td><td>0x00000000</td></tr><tr><td>Text (code)</td><td>0x00400000</td></tr><tr><td>Global data, then dynamic data</td><td>0x10000000, your .data from 0x10010000</td></tr><tr><td>Stack, growing down</td><td>toward lower addresses, from 0x7FFFFFFC</td></tr><tr><td>Kernel reserved</td><td>0x80000000</td></tr></tbody></table></div><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">.data
+vals: .word 4, 5, 8, 0
+.text
+.globl main
+main:
+      la  $4, vals
+      add $8, $0, $0
+      lw  $9, 0($4)
+      add $8, $8, $9
+      lw  $9, 4($4)
+      add $8, $8, $9
+      lw  $9, 8($4)
+      add $8, $8, $9
+      sw  $8, 12($4)   # 4+5+8 = 17, in the fourth word
+      li  $v0, 10
+      syscall</pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> .data and .text choose the segment. A label is a name for an address. In MARS, code starts at 0x00400000 and your words start at 0x10010000.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>MARS is the simulator the lectures use: an editor, a memory view, breakpoints, and single-step. The course page points at the Missouri State MARS site, and Patterson and Hennessy’s Appendix A is the instruction reference (linked from Moodle).</p><p>Loads of sizes other than a word: <code>lb</code>/<code>lbu</code>, <code>lh</code>/<code>lhu</code>, and the matching stores <code>sb</code>, <code>sh</code>. The unsigned forms zero-extend into the 32-bit register. The signed forms sign-extend. That is Part 2’s widening rule, as an instruction.</p><p><i>Source: Lecture 7, directives, labels, memory layout, calculator 0.0; Lecture 6 for the same program’s first appearance.</i></p></div></details>
+</section>
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="numbers.html"><span>Previous</span>Numbers</a><a class="next" href="languages.html"><span>Next</span>Languages</a></nav>
+</main>
+</div>
+
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="machine.html">1 · Machine</a></li><li><a href="numbers.html">2 · Numbers</a></li><li><a href="mips.html">3 · MIPS</a></li><li><a href="languages.html">4 · Languages</a></li><li><a href="boot.html">5 · Boot</a></li><li><a href="systems.html">6 · Systems</a></li><li><a href="schedule.html">7 · Schedule</a></li><li><a href="memory.html">8 · Memory</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#numcheat">Numbers on one page</a></li><li><a href="revision.html#mipscheat">MIPS on one page</a></li><li><a href="revision.html#oscheat">The operating system on one page</a></li><li><a href="revision.html#worked">The scheduling totals</a></li><li><a href="revision.html#rover">The rover: the rules, traced</a></li><li><a href="revision.html#hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">AR</span>Computer Architecture</p>
+<p>Built from your COMP0068 lectures (Lectures 1–19) and the MIPS rover coursework brief. “More detail” names the lecture each section comes from. Personal study notes, not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0068 · Computer Architecture &amp; Operating Systems</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
+

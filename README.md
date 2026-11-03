@@ -27,6 +27,7 @@ The module pages also open straight from the files (for example `modules/databas
 | Database Fundamentals | `modules/databases/` | COMP0178 (below) |
 | Python Programming | `modules/programming/` | COMP0066 Introductory Programming (below) |
 | Algorithmics | `modules/algorithmics/` | COMP0070 Algorithmics (below) |
+| Computer Architecture | `modules/architecture/` | COMP0068 Computer Architecture & Operating Systems (below) |
 | Scribe | `scribe.html` | Live transcription of lectures, saved on this computer |
 | Settings | `settings.html` | Light, dark or system theme; the xAI key, model, price and budget for Scribe; where recordings are saved |
 
@@ -91,6 +92,25 @@ Built from the lecture notes *Algorithms and Data Structures* (sections 2–7) a
 | Revision | `revision.html` | Every algorithm in one table, memory hooks, **Problem sheet 1** with worked answers |
 
 The problem-sheet answers are inside each question's **More detail** panel, so you can try the question first.
+
+### Module: Computer Architecture (COMP0068)
+
+Built from Lectures 1–19 and the MIPS rover coursework brief. Assembly is MIPS, in the form the lectures use with MARS. Worked totals (scheduling, paging, the disk arm, the rover sample) use the lectures' own inputs.
+
+| Part | Page (in `modules/architecture/`) | Covers | Source |
+| --- | --- | --- | --- |
+| Overview | `index.html` | Roadmap of every part and section | — |
+| 1 · Machine | `machine.html` | ISA versus organisation, the six levels, von Neumann, the Little Man Computer | Lectures 1–3 |
+| 2 · Numbers | `numbers.html` | Binary, hex, two's complement, overflow, endianness, sign extension | Lectures 4–5 |
+| 3 · MIPS | `mips.html` | R-type and I-type, addressing modes, shifts, branches, the MARS memory map | Lectures 6–8 |
+| 4 · Languages | `languages.html` | if/while/for, calls, the stack, system calls, ASCII, IEEE 754 | Lectures 9–10 |
+| 5 · Boot | `boot.html` | Firmware, BIOS, UEFI, the hand-off into RAM | Lecture 11 |
+| 6 · Systems | `systems.html` | The kernel, interrupts, storage, dual mode, system calls | Lectures 12–13 |
+| 7 · Schedule | `schedule.html` | Processes, the critical section, FCFS, SJF, priority, round robin | Lectures 14–16 |
+| 8 · Memory | `memory.html` | Addresses, paging, FIFO/OPT/LRU, disks and the arm | Lectures 17–19 |
+| Revision | `revision.html` | Cheat sheets, the worked totals, the rover rules traced on the sample mission | — |
+
+The rover section states the coursework rules and checks the published sample. It is not a program to submit.
 
 ## Settings
 
@@ -187,6 +207,7 @@ settings.html               Settings for the whole portal
 modules/databases/          Database Fundamentals: index.html (overview), store.html, …, revision.html
 modules/programming/        Python Programming: index.html, values.html, …, data.html, revision.html
 modules/algorithmics/       Algorithmics: index.html, analysis.html, …, search.html, revision.html
+modules/architecture/       Computer Architecture: index.html, machine.html, …, memory.html, revision.html
 assets/site.css             shared styles: UCL-style palette, DM Sans, light and dark themes
 assets/portal.js            theme switching, plus the module header and switcher; loaded by every page
 assets/settings.js          the Settings page: theme choice, xAI key and model, saving options
@@ -223,5 +244,5 @@ server/websocket.py         a small WebSocket implementation, so nothing needs i
 
 ## Notes
 
-- These are personal study notes. They are not official UCL material, and the portal is not affiliated with UCL. The modules are based on the lecture slides, notes, notebooks, lab sheets and problem sheets of COMP0178, COMP0066 and COMP0070.
+- These are personal study notes. They are not official UCL material, and the portal is not affiliated with UCL. The modules are based on the lecture slides, notes, notebooks, lab sheets and problem sheets of COMP0178, COMP0066, COMP0070 and COMP0068.
 - Use the original slides as the authority. If something here disagrees with them, the slides win, and please open an issue.

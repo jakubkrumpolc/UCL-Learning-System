@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4 · Languages · Computer Architecture</title>
+<meta name="description" content="MIPS register conventions, compiling if and loops, jal and the stack, system calls, ASCII, fixed point and IEEE 754.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-languages">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">AR</span><span class="brand-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">AR</span><span class="mm-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><span class="mm-here">This module</span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Architecture and operating systems</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="machine.html"><span class="pn">1</span>Machine</a><a href="numbers.html"><span class="pn">2</span>Numbers</a><a href="mips.html"><span class="pn">3</span>MIPS</a><a href="languages.html" aria-current="page"><span class="pn">4</span>Languages</a><a href="boot.html"><span class="pn">5</span>Boot</a><a href="systems.html"><span class="pn">6</span>Systems</a><a href="schedule.html"><span class="pn">7</span>Schedule</a><a href="memory.html"><span class="pn">8</span>Memory</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#names"><span class="n">26</span><span class="t">The registers have jobs</span></a></li><li><a href="#control"><span class="n">27</span><span class="t">if, while and for</span></a></li><li><a href="#jumps"><span class="n">28</span><span class="t">jal saves the way home</span></a></li><li><a href="#calling"><span class="n">29</span><span class="t">Who is allowed to smash which register</span></a></li><li><a href="#stack"><span class="n">30</span><span class="t">The frame the lecture actually builds</span></a></li><li><a href="#syscall"><span class="n">31</span><span class="t">Asking MARS to read and print</span></a></li><li><a href="#chars"><span class="n">32</span><span class="t">Characters, strings, and a fixed binary point</span></a></li><li><a href="#float"><span class="n">33</span><span class="t">IEEE 754, and the floating-point calculator</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">04</p>
+<p class="eyebrow">Part 4 · Languages</p>
+<h1>How a high-level construct becomes instructions</h1>
+<p class="lead">if, while, for, a procedure call, a stack frame, a system call, and the way characters and real numbers occupy the same memory as integers.</p>
+<p class="range">Sections 26–33 · Lectures 9–10</p>
+<div class="about"><p>Part 4 covers Lectures 9 and 10: the register-use convention, translations of if, while and for, jump-and-link, why $ra must be saved, the stack frame from the lecture, MARS system calls, ASCII strings, fixed-point arithmetic, and the IEEE single-precision layout including the lecture’s −12.75 example.</p></div>
+</header>
+<details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#names"><span class="n">26</span> The registers have jobs</a></li><li><a href="#control"><span class="n">27</span> if, while and for</a></li><li><a href="#jumps"><span class="n">28</span> jal saves the way home</a></li><li><a href="#calling"><span class="n">29</span> Who is allowed to smash which register</a></li><li><a href="#stack"><span class="n">30</span> The frame the lecture actually builds</a></li><li><a href="#syscall"><span class="n">31</span> Asking MARS to read and print</a></li><li><a href="#chars"><span class="n">32</span> Characters, strings, and a fixed binary point</a></li><li><a href="#float"><span class="n">33</span> IEEE 754, and the floating-point calculator</a></li></ol></details>
+<section class="topic" id="names" aria-labelledby="names-h">
+<div class="topic-meta"><a class="num" href="#names" title="Link to this section">26</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="names-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The registers have jobs</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Name</th><th style="background:#F7F0FF">Number</th><th style="background:#F7F0FF">Job</th></tr></thead><tbody><tr><td>$zero</td><td>0</td><td>Constant 0</td></tr><tr><td>$at</td><td>1</td><td>Assembler temporary. Leave it alone</td></tr><tr><td>$v0–$v1</td><td>2–3</td><td>Values returned from a procedure</td></tr><tr><td>$a0–$a3</td><td>4–7</td><td>The first four arguments</td></tr><tr><td>$t0–$t7</td><td>8–15</td><td>Temporaries. A call may destroy them</td></tr><tr><td>$s0–$s7</td><td>16–23</td><td>Saved. A call must leave them as it found them</td></tr><tr><td>$t8–$t9</td><td>24–25</td><td>More temporaries</td></tr><tr><td>$k0–$k1</td><td>26–27</td><td>Kernel</td></tr><tr><td>$gp, $sp, $fp, $ra</td><td>28–31</td><td>Global pointer, stack pointer, frame pointer, return address</td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">A few locals, the lecture’s way</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Saved registers hold variables that have to survive. The lecture’s three integers:</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px"># a = 64, b = 0x12345678, c = a + b
+addiu $s0, $0, 0x0040
+lui   $s1, 0x1234
+ori   $s1, $s1, 0x5678   # or: li $s1, 0x12345678
+addu  $s2, $s0, $s1</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">An array is a base address in a saved register, and element i of a word array is at offset 4i. Doubling <code>array[0]</code> and <code>array[1]</code> is load, shift left by 1, store, at offsets 0 and 4.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> $a0–$a3 carry arguments in. $v0–$v1 carry results out. $t registers are scratch. $s registers survive a call.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture also says $gp, $sp, $fp and $ra must be saved and restored if a procedure changes them. $gp is normally left at 0x10008000, pointing into the static data. You will move $sp and save $ra in the stack section.</p><p>Using the numbered names ($8) and the conventional names ($t0) is the same register. The names are there so the contract is visible. $t0 is $8. $s0 is $16. $ra is $31.</p><p><i>Source: Lecture 9, “Register usage convention”, the a/b/c example and the array example.</i></p></div></details>
+</section>
+<section class="topic" id="control" aria-labelledby="control-h">
+<div class="topic-meta"><a class="num" href="#control" title="Link to this section">27</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="control-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">if, while and for</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">if / else, branched the short way</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px"># $s0=f, $s1=g, $s2=h, $s3=i, $s4=j
+# if (i == j) f = g + h; else f = f - i;
+      bne  $s3, $s4, L1
+      addu $s0, $s1, $s2
+      j    done
+L1:   subu $s0, $s0, $s3
+done:</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The branch skips the then-arm. The jump skips the else-arm. One of the two assignments runs.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">A while, and a for that adds 0 through 9</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px"># while pow != 128: pow *= 2; x++
+      addiu $s0, $0, 1      # pow
+      addu  $s1, $0, $0      # x
+      addiu $t0, $0, 128
+while:beq  $s0, $t0, done
+      sll   $s0, $s0, 1
+      addiu $s1, $s1, 1
+      j     while
+done:</pre><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px"># for (i = 0; i != 10; i++) sum += i
+      addiu $s1, $0, 0
+      addu  $s0, $0, $0
+      addiu $t0, $0, 10
+for:  beq   $s0, $t0, done
+      addu  $s1, $s1, $s0
+      addiu $s0, $s0, 1
+      j     for
+done:</pre><p style="font-size:24px;line-height:1.4;color:#666666">The test sits at the top. The jump at the bottom closes the loop. Multiplying by two is a left shift, not a multiply instruction.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> An if is a branch around one arm and a jump around the other. A loop tests at the top, and jumps back from the bottom.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Write the condition the way the branch can ask it. “Leave the loop when pow hits 128” becomes <code>beq</code> against a register holding 128. “Stay in the for while i differs from 10” is the same shape.</p><p>The sum program finishes with $s1 = 0+1+…+9 = 45 and $s0 = 10. Step it for the first two iterations only: after them, sum is 1 and i is 2. If that is right, the shape is right.</p><p><i>Source: Lecture 9, “If … else”, “While loops”, “For loops”.</i></p></div></details>
+</section>
+<section class="topic" id="jumps" aria-labelledby="jumps-h">
+<div class="topic-meta"><a class="num" href="#jumps" title="Link to this section">28</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="jumps-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">jal saves the way home</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Three jump instructions</h3><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Instruction</th><th style="background:#F7F0FF">Effect</th></tr></thead><tbody><tr><td>j target</td><td>PC’s low 28 bits ← target × 4. A goto.</td></tr><tr><td>jal target</td><td>$ra ← PC+4, then jump. A call.</td></tr><tr><td>jr $ra</td><td>PC ← $ra. A return.</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">J-type holds a 26-bit target. Addresses are multiples of four, so those 26 bits become 28 bits of byte address, and the top 4 bits of the PC stay put. <code>jr</code> is the exception: the whole 32-bit address comes from a register.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">0x0041AB38   jal procedure
+0x0041AB3C   ... comes back here, because $ra was set to this address
+
+procedure:
+              ...
+              jr $ra</pre></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">abs as a procedure</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">abs_proc:
+      sub  $v0, $a0, $a1   # result = a - b
+      bgez $v0, return
+      sub  $v0, $a1, $a0   # result = b - a
+return:
+      jr   $ra</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The caller puts the two numbers in <b>$a0</b> and <b>$a1</b>, executes <code>jal abs_proc</code>, and reads the answer from <b>$v0</b>. The procedure does not need to know who called it. That is the point of the convention.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">It is also where a nested call breaks. <code>jal abs_proc</code> overwrites $ra. If the caller still needs its own return address, that address is gone, and <code>jr $ra</code> comes back to the wrong place, often as an infinite loop.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> jal writes the next address into $ra and jumps. jr $ra returns. A nested jal overwrites $ra unless you have saved it.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture’s version 2 calls <code>my_program</code> from <code>main</code>, and <code>my_program</code> calls <code>abs_proc</code>. The inner jal destroys the $ra that <code>my_program</code> needed. The next section is the repair, and it is the stack.</p><p><code>j</code> is not a call. It does not touch $ra. Use it for the “skip the else” and “go back to the top of the loop” jumps in the previous section. Use <code>jal</code> only when something must return.</p><p><i>Source: Lecture 9, “J-format”, “jal and jr”, “abs_proc”, “the $ra problem”.</i></p></div></details>
+</section>
+<section class="topic" id="calling" aria-labelledby="calling-h">
+<div class="topic-meta"><a class="num" href="#calling" title="Link to this section">29</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="calling-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Who is allowed to smash which register</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Caller and callee</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A procedure must be usable from anywhere, including from another procedure, without a private arrangement about registers.</p><ul style="font-size:26px;line-height:1.45"><li><b>Temporary ($t)</b> registers are free for the callee to overwrite. If the caller still wants a value, the caller saves it before the <code>jal</code>.</li><li><b>Saved ($s)</b> registers survive. If the callee wants one, the callee saves it and restores it before returning.</li><li>$ra is saved, because the callee may itself call someone.</li></ul><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Either side can do the saving. The convention says which side, so both do not, and neither forgets.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Four arguments, then the stack</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Arguments beyond the fourth do not get a register. They go on the stack, which is also where saved registers go. The stack is the only place that still works when calls nest: each call pushes its own copy, and a later call cannot overwrite an earlier call’s slot.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Return values use $v0 and, if there are two of them or the value is 64 bits wide, $v1. The caller knows to look there, so the callee does not also store the result to a private memory cell.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> The caller may trust $s registers and must assume $t registers die. A procedure that uses an $s register, or that calls onward, saves and restores what it will overwrite.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture’s table is worth memorising as two columns: “preserved across a call?” Yes for $s0–$s7, and for $gp, $sp, $fp, $ra if they change. No for $t0–$t9.</p><p>$at is reserved for the assembler when it expands a pseudo-instruction such as <code>la</code> into two real instructions. Writing it yourself races the assembler.</p><p><i>Source: Lecture 9, “preserved across a call”, “problems when one procedure calls another”.</i></p></div></details>
+</section>
+<section class="topic" id="stack" aria-labelledby="stack-h">
+<div class="topic-meta"><a class="num" href="#stack" title="Link to this section">30</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="stack-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">The frame the lecture actually builds</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Push, then pop</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The stack grows <b>downward</b>. $sp points at the top, which is the lowest address in use. Making an 8-byte frame subtracts 8.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">addi $sp, $sp, -8    # two words of room
+sw   $ra, 4($sp)     # saved return address
+sw   $fp, 0($sp)     # saved frame pointer
+addi $fp, $sp, 4     # this frame’s fp</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The procedure then does its work, including the inner <code>jal</code>. Coming back, it reverses the stores before it touches $sp, so the loads still see the right addresses.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">lw   $ra, 4($sp)
+lw   $fp, 0($sp)
+addi $sp, $sp, 8
+jr   $ra</pre></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Why both pointers</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">$fp, once set, stays put while the procedure runs, even if a later push moves $sp. Locals can be named as fixed offsets from $fp. $sp moves; $fp anchors the frame.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">In the lecture’s repaired program, <code>my_program</code> saves $ra and $fp, loads A and B from memory into $a0 and $a1, calls <code>abs_proc</code>, stores $v0 back to memory, restores the two registers, and only then returns. The inner call is now safe, because the outer return address spent the call sitting on the stack rather than in $ra.</p><p style="font-size:24px;line-height:1.4;color:#666666">Picture, from the top of the frame downward: saved $ra, saved $fp, then any callee data. The new $fp points at the saved $ra.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> The stack grows down. Subtract from $sp, store $ra and $fp, do the work, load them back, add the same amount to $sp, then jr $ra.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Order matters on the way out. Restoring $fp from <code>0($sp)</code> and then adding 8 to $sp is correct. Adding to $sp first would load from the wrong place. The lecture’s listing restores, then adjusts $sp, then returns.</p><p>Eight bytes is this frame, because two registers are saved. A procedure that also saves $s0 would subtract 12 (or 16, to keep the stack aligned) and store $s0 in the extra slot. The shape does not change.</p><p><i>Source: Lecture 9, “Pushing” and “Popping”, and the repaired absolute-difference program.</i></p></div></details>
+</section>
+<section class="topic" id="syscall" aria-labelledby="syscall-h">
+<div class="topic-meta"><a class="num" href="#syscall" title="Link to this section">31</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="syscall-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Asking MARS to read and print</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The services the lecture lists</p><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">$v0</th><th style="background:#F7F0FF">Service</th><th style="background:#F7F0FF">Argument or result</th></tr></thead><tbody><tr><td>1</td><td>print_int</td><td>$a0 = the integer</td></tr><tr><td>2</td><td>print_float</td><td>$f12 = the float</td></tr><tr><td>4</td><td>print_string</td><td>$a0 = address of the string</td></tr><tr><td>5</td><td>read_int</td><td>result comes back in $v0</td></tr><tr><td>8</td><td>read_string</td><td>$a0 = buffer, $a1 = length</td></tr><tr><td>10</td><td>exit</td><td>no argument</td></tr><tr><td>12</td><td>read_char</td><td>result in $v0</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Put the number in $v0, put any argument in the register the table names, then execute <code>syscall</code>. A result comes back in the register the table names, often $v0, so copy it aside before the next call reuses $v0.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Add two typed integers</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">.data
+str1: .asciiz &quot;Enter first value: &quot;
+str3: .asciiz &quot;Sum is equal to &quot;
+.text
+addi $v0, $0, 4
+la   $a0, str1
+syscall            # print the prompt
+addi $v0, $0, 5
+syscall            # read into $v0
+add  $t1, $0, $v0  # keep it, $v0 is about to be reused</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The lecture’s program prints a second prompt, reads again, adds into $t1, prints “Sum is equal to ”, then <code>print_int</code> with the sum in $a0. Code 4, then 5, then 4, then 1. Exit, when you want it, is code 10.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">This is a different kind of call from <code>jal</code>. <code>syscall</code> crosses into the operating system. The number in $v0 chooses the service. The same idea, with different numbers, is how a real kernel is asked for a file or a process.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Put a service number in $v0, arguments in the documented registers, and execute syscall. 4 prints a string, 5 reads an int, 1 prints an int, 10 exits.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Copy a returned integer out of $v0 immediately. The next <code>addi $v0, $0, 4</code> overwrites it. The lecture uses $t1, which is a reasonable scratch register because this fragment does not call an ordinary procedure in between.</p><p>Strings for these calls are <code>.asciiz</code>, so they already end in a zero byte. <code>print_string</code> walks memory until that zero. Forget it, and the print runs on into whatever bytes follow.</p><p><i>Source: Lecture 9, the MARS syscall table and the interactive calculator (version 3).</i></p></div></details>
+</section>
+<section class="topic" id="chars" aria-labelledby="chars-h">
+<div class="topic-meta"><a class="num" href="#chars" title="Link to this section">32</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="chars-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Characters, strings, and a fixed binary point</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">ASCII, then a C string</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The anchors: <b>'0' is 0x30</b>, <b>'A' is 0x41</b>, <b>'a' is 0x61</b>. Digits are contiguous, so the numeric value of a digit character is the byte minus 0x30. Control bytes the lecture names: tab 0x09, line feed 0x0A, carriage return 0x0D, escape 0x1B, backspace 0x08.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A C string, which is what MIPS <code>.asciiz</code> builds, is those bytes one after another, then a <b>0x00</b>. Python’s <code>str</code> is a more complicated Unicode object. At this level you are looking at the C representation.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">“Hello” in memory is the bytes 48 65 6C 6C 6F, and an asciiz directive writes a 00 after them.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Fixed point keeps the point in your head</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A real number can be a power series that continues to the right of the point. 2<sup>−1</sup> = 0.5, 2<sup>−2</sup> = 0.25, 2<sup>−3</sup> = 0.125. So 11.101<sub>2</sub> = 2 + 1 + 0.5 + 0.125 = 3.625<sub>10</sub>, and 5.75<sub>10</sub> = 101.11<sub>2</sub>.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Fixed point stores that pattern in an integer register and <b>does not record where the point is</b>. With 4 fraction bits, 1.1<sub>2</sub> is stored as the integer 0001 1000. Addition just works. A product has twice as many fraction bits, so you shift the integer product right by 4 to put the point back.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Negating a fixed-point value is still “flip the bits and add 1”, and the +1 goes into the <b>least significant fraction bit</b>, not into the units bit.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A C string is ASCII bytes ending in 0. A fixed-point binary point is a convention, not a stored bit. After a fixed-point multiply, shift right by the number of fraction bits.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Converting a fraction: multiply by 2 and record the integer part, then repeat on what is left. 0.75 × 2 = 1.5, record 1; 0.5 × 2 = 1.0, record 1. So 0.75<sub>10</sub> = 0.11<sub>2</sub>, and with the integer 5 that is 101.11<sub>2</sub>.</p><p>The lecture’s 12-bit example with the point between bits 3 and 4 adds 1.1 and 1.0 to get 2.5 by ordinary integer addition. The multiply produces four extra low zeros of fraction, and a right shift of 4 removes them.</p><p><i>Source: Lecture 10, ASCII, strings, fixed-point representation and the multiply example.</i></p></div></details>
+</section>
+<section class="topic" id="float" aria-labelledby="float-h">
+<div class="topic-meta"><a class="num" href="#float" title="Link to this section">33</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 4 · Languages</p>
+<h2 id="float-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">IEEE 754, and the floating-point calculator</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">One sign, a biased exponent, a hidden 1</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Single precision is 32 bits, the C and Java <code>float</code>. The value is (−1)<sup>S</sup> × 1.F × 2<sup>E − 127</sup>, for a normal number.</p><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Field</th><th style="background:#F7F0FF">Bits</th><th style="background:#F7F0FF">Role</th></tr></thead><tbody><tr><td>S</td><td>1</td><td>0 positive, 1 negative</td></tr><tr><td>E</td><td>8</td><td>exponent plus the bias 127</td></tr><tr><td>F</td><td>23</td><td>the fraction to the right of the leading 1, which is not stored</td></tr></tbody></table></div><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">−12.75 = −1100.11₂ = −1.10011₂ × 2³
+E = 3 + 127 = 130 = 10000010₂
+S = 1,  F = 10011000…0
+
+1 10000010 10011000000000000000000
+= C14C0000₁₆</pre><p style="font-size:24px;line-height:1.4;color:#666666">1.0 is the useful check: S = 0, E = 127, F = 0, so the word is 0x3F800000.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Specials, then the coprocessor</h3><div class="tablewrap"><table style="font-size:20px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Pattern</th><th style="background:#F7F0FF">Meaning</th></tr></thead><tbody><tr><td>E = 0, F = 0</td><td>+0 or −0, from the sign</td></tr><tr><td>E = 0, F ≠ 0</td><td>denormal: 0.F × 2<sup>−126</sup>, the gap between 0 and the smallest normal</td></tr><tr><td>E = 255, F = 0</td><td>+∞ or −∞</td></tr><tr><td>E = 255, F ≠ 0</td><td>NaN, from 0/0 or √(negative). An operation with NaN gives NaN</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The smallest positive normal is 1.0 × 2<sup>−126</sup>. The largest is just under 2<sup>128</sup>. MIPS does this arithmetic on coprocessor 1, in $f0–$f31.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;border-radius:0;padding:20px 24px">.data
+vals: .float 3.14, 10.0, 0.0
+.text
+la    $4, vals
+lwc1  $f0, 0($4)
+lwc1  $f1, 4($4)
+mul.s $f2, $f0, $f1
+swc1  $f2, 8($4)</pre><p style="font-size:24px;line-height:1.4;color:#666666">add.s, sub.s, mul.s, div.s are single. The .d forms are double, which occupies an even-odd pair of $f registers and is only addressed by the even one.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A normal float is (−1)ˢ × 1.F × 2ᴱ⁻¹²⁷. E = 0 and E = 255 are reserved: zero, denormals, infinity, NaN. −12.75 is 0xC14C0000.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The leading 1 is free accuracy: every normal number is shifted until it starts with 1, so that bit need not be stored. Denormals drop the assumption, which is why their formula is 0.F × 2<sup>1−bias</sup> rather than 1.F × 2<sup>E−bias</sup>.</p><p>Double precision is the same idea with more exponent bits and more fraction bits. The lecture works the single format in detail and says the double format is the same shape. <code>lwc1</code> and <code>swc1</code> move one float between memory and the coprocessor; integer <code>lw</code> cannot feed <code>mul.s</code>.</p><p><i>Source: Lecture 10, IEEE single precision, the −12.75 encoding, specials, and the floating-point calculator.</i></p></div></details>
+</section>
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="mips.html"><span>Previous</span>MIPS</a><a class="next" href="boot.html"><span>Next</span>Boot</a></nav>
+</main>
+</div>
+
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="machine.html">1 · Machine</a></li><li><a href="numbers.html">2 · Numbers</a></li><li><a href="mips.html">3 · MIPS</a></li><li><a href="languages.html">4 · Languages</a></li><li><a href="boot.html">5 · Boot</a></li><li><a href="systems.html">6 · Systems</a></li><li><a href="schedule.html">7 · Schedule</a></li><li><a href="memory.html">8 · Memory</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#numcheat">Numbers on one page</a></li><li><a href="revision.html#mipscheat">MIPS on one page</a></li><li><a href="revision.html#oscheat">The operating system on one page</a></li><li><a href="revision.html#worked">The scheduling totals</a></li><li><a href="revision.html#rover">The rover: the rules, traced</a></li><li><a href="revision.html#hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">AR</span>Computer Architecture</p>
+<p>Built from your COMP0068 lectures (Lectures 1–19) and the MIPS rover coursework brief. “More detail” names the lecture each section comes from. Personal study notes, not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0068 · Computer Architecture &amp; Operating Systems</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
+

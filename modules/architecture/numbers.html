@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2 · Numbers · Computer Architecture</title>
+<meta name="description" content="Place value in binary and hex, column arithmetic, two&#x27;s complement, overflow versus carry, endianness, and sign extension.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-numbers">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">AR</span><span class="brand-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="../databases/index.html"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">AR</span><span class="mm-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span><span class="mm-here">This module</span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<p class="mast-tag">Architecture and operating systems</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="machine.html"><span class="pn">1</span>Machine</a><a href="numbers.html" aria-current="page"><span class="pn">2</span>Numbers</a><a href="mips.html"><span class="pn">3</span>MIPS</a><a href="languages.html"><span class="pn">4</span>Languages</a><a href="boot.html"><span class="pn">5</span>Boot</a><a href="systems.html"><span class="pn">6</span>Systems</a><a href="schedule.html"><span class="pn">7</span>Schedule</a><a href="memory.html"><span class="pn">8</span>Memory</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#bases"><span class="n">9</span><span class="t">A digit times a power of the base</span></a></li><li><a href="#hex"><span class="n">10</span><span class="t">Hex is binary, in groups of four</span></a></li><li><a href="#units"><span class="n">11</span><span class="t">Kilo sometimes means 1024</span></a></li><li><a href="#columns"><span class="n">12</span><span class="t">Add a column, in whatever base</span></a></li><li><a href="#twos"><span class="n">13</span><span class="t">Negative numbers, without a minus sign</span></a></li><li><a href="#width"><span class="n">14</span><span class="t">A fixed number of bits</span></a></li><li><a href="#overflow"><span class="n">15</span><span class="t">Carry out is not the same as overflow</span></a></li><li><a href="#endian"><span class="n">16</span><span class="t">Words, byte order, and widening</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">02</p>
+<p class="eyebrow">Part 2 · Numbers</p>
+<h1>Binary, hex, and the meaning of a negative bit</h1>
+<p class="lead">Every value in the machine is a fixed row of bits. The same row can be a character, an unsigned count, or a two’s-complement integer, and the hardware adds them all the same way.</p>
+<p class="range">Sections 9–16 · Lectures 4–5</p>
+<div class="about"><p>Part 2 covers Lectures 4 and 5: converting between decimal, binary and hexadecimal, the column rules for add and subtract, two’s complement, fixed widths, the difference between carry and signed overflow, byte order, and sign extension versus zero extension.</p></div>
+</header>
+<details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#bases"><span class="n">9</span> A digit times a power of the base</a></li><li><a href="#hex"><span class="n">10</span> Hex is binary, in groups of four</a></li><li><a href="#units"><span class="n">11</span> Kilo sometimes means 1024</a></li><li><a href="#columns"><span class="n">12</span> Add a column, in whatever base</a></li><li><a href="#twos"><span class="n">13</span> Negative numbers, without a minus sign</a></li><li><a href="#width"><span class="n">14</span> A fixed number of bits</a></li><li><a href="#overflow"><span class="n">15</span> Carry out is not the same as overflow</a></li><li><a href="#endian"><span class="n">16</span> Words, byte order, and widening</a></li></ol></details>
+<section class="topic" id="bases" aria-labelledby="bases-h">
+<div class="topic-meta"><a class="num" href="#bases" title="Link to this section">9</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="bases-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">A digit times a power of the base</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">One rule, three bases</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A number is a sum of <b>digit × base<sup>place</sup></b>. The rightmost place is base<sup>0</sup>. Multiplying by the base is writing a 0 on the right.</p><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Example</th><th style="background:#F7F0FF">As a sum</th><th style="background:#F7F0FF">Decimal</th></tr></thead><tbody><tr><td>2071<sub>10</sub></td><td>2×10<sup>3</sup> + 0×10<sup>2</sup> + 7×10<sup>1</sup> + 1×10<sup>0</sup></td><td>2071</td></tr><tr><td>1101<sub>2</sub></td><td>1×8 + 1×4 + 0×2 + 1×1</td><td>13</td></tr><tr><td>7D1<sub>16</sub></td><td>7×256 + 13×16 + 1</td><td>2001</td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Decimal to binary by halving</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Divide by 2 and keep the remainders. Read the remainders <b>upwards</b>.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">42 ÷ 2 = 21 rem 0
+21 ÷ 2 = 10 rem 1
+10 ÷ 2 =  5 rem 0
+ 5 ÷ 2 =  2 rem 1
+ 2 ÷ 2 =  1 rem 0
+ 1 ÷ 2 =  0 rem 1
+
+42₁₀ = 101010₂</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Check: 32 + 8 + 2 = 42. Hex works the same with divisor 16. 42 ÷ 16 = 2 remainder 10, and 10 is the digit A, so 42<sub>10</sub> = <b>2A<sub>16</sub></b>.</p><p style="font-size:24px;line-height:1.4;color:#666666">BAD<sub>16</sub> = 11×256 + 10×16 + 13 = 2989<sub>10</sub>. The lecture asks for this one.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A number is digits times powers of the base. Multiply by the base by writing a 0 on the right.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Binary uses digits 0 and 1. Hex uses 0–9 and then A=10, B=11, C=12, D=13, E=14, F=15. The lecture writes a base as a subscript, and often writes hex with a leading 0x, as in 0x5FAB1034.</p><p>1010111<sub>2</sub> is the lecture’s “work this one” pattern: 64 + 16 + 4 + 2 + 1 = 87<sub>10</sub>. The longer place-value example 101100101<sub>2</sub> is 256 + 64 + 32 + 4 + 1 = 357<sub>10</sub>.</p><p><i>Source: Lecture 4, “Base 10”, “Binary System”, “Hexadecimal System”.</i></p></div></details>
+</section>
+<section class="topic" id="hex" aria-labelledby="hex-h">
+<div class="topic-meta"><a class="num" href="#hex" title="Link to this section">10</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="hex-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Hex is binary, in groups of four</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Why anyone writes hex</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A 32-bit word is miserable to copy by hand. Hex compresses it 4-to-1, because 2<sup>4</sup> = 16: each hex digit is exactly one of the 16 possible nibbles.</p><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Binary</th><th style="background:#F7F0FF">Hex</th><th style="background:#F7F0FF">Binary</th><th style="background:#F7F0FF">Hex</th></tr></thead><tbody><tr><td>0000</td><td>0</td><td>1000</td><td>8</td></tr><tr><td>0001</td><td>1</td><td>1001</td><td>9</td></tr><tr><td>0010</td><td>2</td><td>1010</td><td>A</td></tr><tr><td>0011</td><td>3</td><td>1011</td><td>B</td></tr><tr><td>0100</td><td>4</td><td>1100</td><td>C</td></tr><tr><td>0101</td><td>5</td><td>1101</td><td>D</td></tr><tr><td>0110</td><td>6</td><td>1110</td><td>E</td></tr><tr><td>0111</td><td>7</td><td>1111</td><td>F</td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Group from the right</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">0010 1011 1110 1011 1010 1101 0010 0001
+  2    B    E    B    A    D    2    1
+
+= 2BEBAD21₁₆</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Start at the <b>least significant bit</b>, the right-hand end. If the length is not a multiple of 4, pad with zeros on the left before you group. Those leading zeros do not change the value, and they complete the first hex digit.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The same grouping works for a negative two’s-complement word. You do not re-negate when you switch between binary and hex; you only regroup bits.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Four bits are one hex digit. Group from the right, and pad the left with zeros if you must.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture’s 32-bit example is 00101011111010111010110100100001<sub>2</sub> = 2BEBAD21<sub>16</sub>. Computers do not need this shorthand. People do, for instructions, addresses and colours.</p><p>A decimal rendering is the right one when the number means a decimal quantity, such as a salary. It is a poor one for an instruction word, whose fields sit on bit boundaries that hex still shows.</p><p><i>Source: Lecture 4, “Hexadecimal – shorthand for a binary number”, and the questions at the end of the lecture.</i></p></div></details>
+</section>
+<section class="topic" id="units" aria-labelledby="units-h">
+<div class="topic-meta"><a class="num" href="#units" title="Link to this section">11</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="units-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Kilo sometimes means 1024</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Two meanings, and the formal names</h3><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Spoken</th><th style="background:#F7F0FF">Often means</th><th style="background:#F7F0FF">Formal name for the power of two</th></tr></thead><tbody><tr><td>kilobyte, KB</td><td>1024 bytes in memory</td><td>kibibyte, KiB = 2<sup>10</sup></td></tr><tr><td>megabyte, MB</td><td>1024 KB</td><td>mebibyte, MiB = 2<sup>20</sup></td></tr><tr><td>gigabyte, GB</td><td>1024 MB</td><td>gibibyte, GiB = 2<sup>30</sup></td></tr><tr><td>terabyte and on</td><td>the next power</td><td>tebi 2<sup>40</sup>, pebi 2<sup>50</sup>, exbi 2<sup>60</sup></td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Which one a sentence means</h3><ul style="font-size:26px;line-height:1.45"><li>A <b>bit</b> is one 0 or 1. A lower-case b counts bits.</li><li>A <b>byte</b> is 8 bits. An upper-case B counts bytes.</li><li>Memory sizes are almost always the power-of-two version. 1 KB of RAM is 1024 bytes.</li><li>Communications are almost always decimal. 512 Kbps is 512,000 bits per second.</li><li>1 MFLOP in the lecture is 1,000,000 floating-point operations per second.</li></ul></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> In memory, kilo usually means 1024. On a wire, kilo means 1000. The formal name for 1024 bytes is a kibibyte.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The clash is with SI prefixes, where kilo is exactly 1000. Both habits are still everywhere, so the surrounding noun is the clue: RAM versus a network rate.</p><p>Lecture 12 repeats the power-of-two table for storage (KB through PB) and makes the same warning: disk makers often use the decimal million and billion, while networking quotes bits.</p><p><i>Source: Lecture 4, “Talking binary”, “kibibyte”; Lecture 12, “Storage Definitions”.</i></p></div></details>
+</section>
+<section class="topic" id="columns" aria-labelledby="columns-h">
+<div class="topic-meta"><a class="num" href="#columns" title="Link to this section">12</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="columns-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Add a column, in whatever base</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The rule</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Label the digits of the two numbers r<sub>i</sub> and s<sub>i</sub>, and the carry into the column c<sub>i</sub>. Then</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">rᵢ + sᵢ + cᵢ  =  cᵢ₊₁ × base  +  tᵢ</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">t<sub>i</sub> is the digit you write. c<sub>i+1</sub> is the carry you take to the next column. The carry into the units column is 0.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Binary is the small case. 1+1+0 writes 0 and carries 1. 1+1+1 writes 1 and carries 1. Subtraction is the same idea with a borrow: r<sub>i</sub> − s<sub>i</sub> − b<sub>i</sub> = t<sub>i</sub> − b<sub>i+1</sub>×base.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">The lecture’s hex sum</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">   A B C₁₆
++  3 4 7₁₆
+---------
+   E 0 3₁₆</pre><ul style="font-size:26px;line-height:1.45"><li>C+7 = 12+7 = 19 = 1×16 + 3. Write 3, carry 1.</li><li>B+4+1 = 11+4+1 = 16 = 1×16 + 0. Write 0, carry 1.</li><li>A+3+1 = 10+3+1 = 14. Write E.</li></ul><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Do it again in binary and regroup: you get the same hex digits. The lecture’s check is exactly that round trip. The binary column rule on the slide is the same equation with base 2, and 0101<sub>2</sub> + 1111<sub>2</sub> = 10100<sub>2</sub>.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Each column: add the digits and the carry, divide by the base, write the remainder, carry the quotient.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Hex subtraction on the slide: E45<sub>16</sub> − 273<sub>16</sub> = BD2<sub>16</sub>. Units 5−3 = 2. The sixteens column 4−7 borrows, so the digit is 13, which is D, and the sixteens-of-sixteens column pays that borrow: 14−2−1 = 11, which is B.</p><p>A base-X complement, later, is “replace each digit d by (X−1−d), then add 1”. For decimal that is nines then plus one. For hex it is F minus each digit, then plus one. For binary it is flipping bits, then plus one: two’s complement.</p><p><i>Source: Lecture 4, addition and subtraction in decimal, binary and hex.</i></p></div></details>
+</section>
+<section class="topic" id="twos" aria-labelledby="twos-h">
+<div class="topic-meta"><a class="num" href="#twos" title="Link to this section">13</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="twos-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Negative numbers, without a minus sign</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Sign and magnitude wastes a pattern</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A register has only 0s and 1s, so a leading “minus” has to be a bit. Using the top bit as a sign, and the rest as a magnitude, looks familiar and works badly.</p><ul style="font-size:26px;line-height:1.45"><li>The range is about half what n bits could hold, and zero has two spellings: +0 and −0.</li><li>Adding +53 and −53 does not fall out of the ordinary adder as zero.</li></ul><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The Little Man simulator can print a sign. The hardware in this course does not. It uses <b>two’s complement</b>.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Flip the bits, then add 1</h3><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">4-bit +2  = 0010
+flip       = 1101
+add 1      = 1110   which is −2
+
+4-bit 1001
+flip       = 0110
+add 1      = 0111 = 7
+so 1001 is −7</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">To read a negative word: flip, add 1, and put the minus back. The top bit is still a sign bit (1 means negative), but the other bits are not a plain magnitude.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">What you gain: the same adder does subtraction, by adding the negation. Zero is only <b>000…0</b>. In four bits, flipping 0000 gives 1111, plus 1 gives 1 0000, and the extra 1 falls off the end.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> To negate: flip every bit, then add 1. Subtraction is adding that negation. Zero is all zeros, once.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The carry out of an n-bit two’s-complement addition is discarded. That discarded bit is exactly why 0000 plus its own negation comes back to 0000.</p><p>The same “complement then add 1” story works in other bases. Decimal uses 9−d. Hex uses F−d, so the 16’s complement of 5FAB1034<sub>16</sub> is A054EFCC<sub>16</sub>. A negative two’s-complement word converts to hex by grouping bits, not by taking a fresh complement.</p><p>Widening an 8-bit negative value to 32 bits is not “pad with zeros”. That would change the sign. Copy the top bit into the new positions. That is sign extension, in the next sections.</p><p><i>Source: Lecture 4, “Negative numbers”, “two’s complement”, “X’s complement”.</i></p></div></details>
+</section>
+<section class="topic" id="width" aria-labelledby="width-h">
+<div class="topic-meta"><a class="num" href="#width" title="Link to this section">14</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="width-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">A fixed number of bits</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">2ⁿ patterns, and no label on them</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">An n-bit word can represent 2<sup>n</sup> different things. Eight bits can be 256 colours, or a number, or a character. <b>Nothing in the bits says which.</b> The instruction that uses them decides.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The lecture’s 16-bit example 0100001001000101<sub>2</sub> is the integer 16965, and it is also the two ASCII bytes for B and E. Both readings are the bits.</p><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Width</th><th style="background:#F7F0FF">Unsigned</th><th style="background:#F7F0FF">Signed (two’s complement)</th></tr></thead><tbody><tr><td>8</td><td>0 … 255</td><td>−128 … 127</td></tr><tr><td>n</td><td>0 … 2<sup>n</sup>−1</td><td>−2<sup>n−1</sup> … 2<sup>n−1</sup>−1</td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">What 11111111 is</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">As an unsigned byte it is 255. As a signed byte it is −1. Both are right. The lecture’s vote is that question.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Signed bytes run from 00000000 to 01111111 (0 to 127, top bit 0) and from 11111111 down to 10000000 (−1 down to −128, top bit 1).</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">If a machine has 35 instructions, 5 bits are not enough (2<sup>5</sup> = 32) and 6 bits are (2<sup>6</sup> = 64). Encoding an instruction is this same counting problem.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> n bits hold 2ⁿ patterns. Unsigned runs from 0 to 2ⁿ−1. Signed runs from −2ⁿ⁻¹ to 2ⁿ⁻¹−1. The bits do not say which reading you meant.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Languages such as C have separate signed and unsigned types so the compiler picks the comparison and the extension. At the moment of the addition, the ALU only sees bits.</p><p>ASCII, used later for strings, is a 7-bit pattern inside a byte. The classic anchors are 0x30 = '0', 0x41 = 'A', 0x61 = 'a'.</p><p><i>Source: Lecture 5, “What does a binary number represent?”, “Unsigned and signed numbers”.</i></p></div></details>
+</section>
+<section class="topic" id="overflow" aria-labelledby="overflow-h">
+<div class="topic-meta"><a class="num" href="#overflow" title="Link to this section">15</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="overflow-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Carry out is not the same as overflow</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">One sum, two verdicts</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">  11111000
++ 00001111
+  --------
+  00000111   and a carry out of the top bit</pre><ul style="font-size:26px;line-height:1.45"><li>Unsigned: 248 + 15 = 263, which does not fit in a byte. The stored 7 is wrong. The carry out <b>is</b> the unsigned overflow flag.</li><li>Signed: −8 + 15 = 7. The result is right. The carry out is ignored.</li></ul><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The lecture’s point, with the rocket-scientist warning attached: the identical bits are a correct signed answer and a wrong unsigned answer.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Signed overflow is about the sign</h3><ul style="font-size:26px;line-height:1.45"><li>A negative plus a positive cannot overflow. The result sits between them.</li><li>Negative plus negative must stay negative.</li><li>Positive plus positive must stay positive.</li><li>If the sign comes out wrong, that is signed overflow, whether or not there was a carry out.</li></ul><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">11111110 + 11111011 = 11111001
+−2 + −5 = −7
+carry out, signs agree: no signed overflow
+
+01111110 + 01111011 = 11111001
+126 + 123 looks negative
+no carry out, signs disagree: overflow</pre></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A carry out of the top bit means unsigned overflow. Signed overflow is two numbers of the same sign adding to the opposite sign.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>MIPS splits the instructions on purpose. <code>add</code> and <code>sub</code> trap when the signed sum overflows. <code>addu</code> and <code>subu</code> perform the same bit operation and stay quiet. The “u” is about the trap, not about a different adder. Part 3 uses that.</p><p>A comparison has the same split. As unsigned, 11111000 &gt; 00000111 (248 &gt; 7). As signed, it is −8 &gt; 7, which is false. <code>slt</code> and <code>sltu</code> are the two readings.</p><p><i>Source: Lecture 5, “Traps for the unwary”, “carry out”, “signed overflow”.</i></p></div></details>
+</section>
+<section class="topic" id="endian" aria-labelledby="endian-h">
+<div class="topic-meta"><a class="num" href="#endian" title="Link to this section">16</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 2 · Numbers</p>
+<h2 id="endian-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Words, byte order, and widening</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">A word is the processor’s native size</h3><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Machine</th><th style="background:#F7F0FF">Byte</th><th style="background:#F7F0FF">Next sizes</th></tr></thead><tbody><tr><td>MIPS32, which this course uses</td><td>8 bits</td><td>halfword 16, word 32, doubleword 64</td></tr><tr><td>80x86</td><td>8</td><td>word 16, doubleword 32</td></tr></tbody></table></div><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Memory itself is a row of <b>bytes</b>, each with an address. A MIPS register holds 32 bits, so a load of a word has to gather four addresses. Addresses of words step by 4: 0, 4, 8, …</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">1585<sub>10</sub> = 00000110 00110001<sub>2</sub> as 16 bits (0x0631). Put it at address 6.</p><div class="tablewrap"><table style="font-size:22px;line-height:1.4"><thead><tr><th style="background:#F7F0FF">Order</th><th style="background:#F7F0FF">Address 6</th><th style="background:#F7F0FF">Address 7</th></tr></thead><tbody><tr><td>Big-endian: high byte first</td><td>00000110</td><td>00110001</td></tr><tr><td>Little-endian: low byte first</td><td>00110001</td><td>00000110</td></tr></tbody></table></div></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Making a small value fill a register</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Sign extension</b> copies the top bit, for a signed value.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">00001001  →  00000000 00000000 00000000 00001001     9 stays 9
+11111001  →  11111111 11111111 11111111 11111001    −7 stays −7</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>Zero extension</b> fills with zeros, for an unsigned value or a raw bit pattern. The byte 11111001 zero-extended is 249, not −7.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Load instructions come in pairs for this reason. A signed load sign-extends. An unsigned load zero-extends. Storing a byte writes only that byte.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Little-endian stores the low byte at the low address. Widen a signed value by copying the sign bit. Widen an unsigned value with zeros.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>For a 32-bit word, little-endian puts the least significant byte at address n and the most significant byte at address n+3. Big-endian does the reverse. Get the order wrong and integers come out byte-swapped; text often still looks almost right, which makes the bug harder.</p><p>MIPS load/store pairs, used from the next part: <code>lb</code>/<code>lbu</code> and <code>lh</code>/<code>lhu</code> are the signed and unsigned loads of a byte and a halfword. <code>sb</code> and <code>sh</code> store them. <code>lw</code> and <code>sw</code> move a full word, so no extension choice arises.</p><p><i>Source: Lecture 5, “Byte order”, “sign extension”, “zero extension”; MIPS sizes from the same lecture.</i></p></div></details>
+</section>
+
+<nav class="pager" aria-label="Pages"><a class="prev" href="machine.html"><span>Previous</span>Machine</a><a class="next" href="mips.html"><span>Next</span>MIPS</a></nav>
+</main>
+</div>
+
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="machine.html">1 · Machine</a></li><li><a href="numbers.html">2 · Numbers</a></li><li><a href="mips.html">3 · MIPS</a></li><li><a href="languages.html">4 · Languages</a></li><li><a href="boot.html">5 · Boot</a></li><li><a href="systems.html">6 · Systems</a></li><li><a href="schedule.html">7 · Schedule</a></li><li><a href="memory.html">8 · Memory</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#numcheat">Numbers on one page</a></li><li><a href="revision.html#mipscheat">MIPS on one page</a></li><li><a href="revision.html#oscheat">The operating system on one page</a></li><li><a href="revision.html#worked">The scheduling totals</a></li><li><a href="revision.html#rover">The rover: the rules, traced</a></li><li><a href="revision.html#hooks">Memory hooks</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">AR</span>Computer Architecture</p>
+<p>Built from your COMP0068 lectures (Lectures 1–19) and the MIPS rover coursework brief. “More detail” names the lecture each section comes from. Personal study notes, not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0068 · Computer Architecture &amp; Operating Systems</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
+
