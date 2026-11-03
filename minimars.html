@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MiniMARS · UCL CS Learning System</title>
+<meta name="description" content="MiniMARS: type MIPS assembly and run it in the browser. A small MARS-style assembler and runtime in the UCL CS Learning System.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/portal.js"></script>
+</head>
+<body id="top" class="pg-minimars">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="index.html#modules">Modules</a><a href="minimars.html" aria-current="page"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg><span class="lbl">MiniMARS</span></a><a href="scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<header class="masthead">
+<div class="mast-in">
+<a class="brand" href="minimars.html"><span class="brand-mark" aria-hidden="true">MM</span><span class="brand-text"><b>MiniMARS</b><span>MIPS assembler and runtime</span></span></a>
+<p class="mast-tag">Runs in this browser</p>
+</div>
+</header>
+<nav class="topbar" aria-label="Portal sections">
+<div class="topbar-in parts"><a href="index.html">Home</a><a href="modules/databases/index.html"><span class="pn">DB</span>Database Fundamentals</a><a href="modules/programming/index.html"><span class="pn">PY</span>Python Programming</a><a href="modules/algorithmics/index.html"><span class="pn">AL</span>Algorithmics</a><a href="minimars.html" aria-current="page"><span class="pn">MM</span>MiniMARS</a><a href="scribe.html"><span class="pn"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span>Scribe</a></div>
+</nav>
+<div class="layout">
+
+<main id="main">
+<header class="part-hero mm-hero">
+<p class="eyebrow">Tool · MIPS</p>
+<h1>MiniMARS</h1>
+<p class="lead">Type a MIPS program, assemble it, and run it. Step one instruction at a time and watch the PC, the registers and memory change.</p>
+<p class="range">Little-endian memory, like MARS. Execution starts at the first instruction. Nothing leaves this browser.</p>
+</header>
+
+<div class="mm-grid">
+<section aria-label="Editor">
+<div class="mm-toolbar">
+<button type="button" id="mm-assemble" class="ui-btn">Assemble</button>
+<button type="button" id="mm-run" class="ui-btn primary" title="Run (Ctrl+Enter)">Run</button>
+<button type="button" id="mm-step" class="ui-btn">Step</button>
+<button type="button" id="mm-reset" class="ui-btn">Reset</button>
+<button type="button" id="mm-sample" class="ui-btn plain mm-aside">Restore sample</button>
+</div>
+<p id="mm-message" class="mm-message" role="status" aria-live="polite" hidden></p>
+<textarea id="mm-editor" class="mm-editor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="MIPS assembly"></textarea>
+<p class="mm-model">Branches and jumps take effect immediately. MiniMARS does not use MIPS delay slots.</p>
+<details class="mm-help">
+<summary>Instructions and syscalls</summary>
+<p><code>add</code>, <code>sub</code>, <code>and</code>, <code>or</code>, <code>slt</code>, and the immediate forms <code>addi</code>, <code>subi</code>, <code>andi</code>, <code>ori</code>, <code>slti</code>. Also <code>lui</code>, <code>lw</code>, <code>sw</code>, <code>beq</code>, <code>bne</code>, <code>j</code>, <code>jal</code>, <code>jr</code>, <code>syscall</code> and <code>nop</code>.</p>
+<p>Pseudos: <code>li</code>, <code>la</code> and <code>move</code>. Directives: <code>.text</code>, <code>.data</code>, <code>.word</code>, <code>.asciiz</code>, and <code>.globl</code> (accepted and ignored). Labels and <code>#</code> comments work. Write registers as <code>$t0</code> or <code>$8</code>. <code>$zero</code> stays zero, and <code>$sp</code> starts at <code>0x7fffeffc</code>.</p>
+<p>Syscalls, with the number in <code>$v0</code>: <b>1</b> print the integer in <code>$a0</code>, <b>4</b> print the string at <code>$a0</code>, <b>5</b> read an integer into <code>$v0</code> from Console input, <b>10</b> exit. A run stops after 10,000 steps. Ctrl+Enter runs the program.</p>
+<p>Not in this version: multiply and divide, shifts other than <code>lui</code>, byte loads and stores, floating point, overflow traps, and any syscall other than those four.</p>
+</details>
+</section>
+
+<section aria-label="Machine">
+<div class="mm-panel">
+<h2>PC</h2>
+<p class="mm-pc-line"><span id="mm-pc" class="mm-pc">—</span><span id="mm-next" class="mm-next"></span></p>
+</div>
+<div class="mm-panel">
+<h2>Registers</h2>
+<div class="mm-regwrap">
+<table class="mm-regs">
+<thead><tr><th>Name</th><th>Hex</th><th>Signed</th><th>Name</th><th>Hex</th><th>Signed</th></tr></thead>
+<tbody id="mm-regs"></tbody>
+</table>
+</div>
+</div>
+<div class="mm-panel">
+<h2>Text</h2>
+<div class="mm-scroll" id="mm-text-scroll">
+<table class="mm-text">
+<thead><tr><th>Address</th><th>Instruction</th></tr></thead>
+<tbody id="mm-text"></tbody>
+</table>
+</div>
+</div>
+<div class="mm-panel">
+<h2>Memory</h2>
+<div class="mm-scroll">
+<table class="mm-mem">
+<thead><tr><th>Address</th><th>Label</th><th>Word</th><th>Bytes</th></tr></thead>
+<tbody id="mm-mem"></tbody>
+</table>
+</div>
+</div>
+<div class="mm-panel">
+<h2>Console</h2>
+<pre id="mm-console" class="mm-console" data-empty="true" aria-live="polite"></pre>
+<label class="ui-field">
+<span>Console input</span>
+<span class="mm-inputrow"><input id="mm-input" class="ui-input" spellcheck="false" autocomplete="off" aria-label="Console input"><button type="button" id="mm-enter" class="ui-btn">Enter</button></span>
+<span class="ui-hint mm-hint">Syscall 5 reads one integer from here. Several integers can be separated by spaces.</span>
+</label>
+</div>
+</section>
+</div>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Modules</p>
+<ul><li><a href="modules/databases/index.html">Database Fundamentals</a></li><li><a href="modules/programming/index.html">Python Programming</a></li><li><a href="modules/algorithmics/index.html">Algorithmics</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Tools</p>
+<ul><li><a href="minimars.html">MiniMARS · MIPS</a></li><li><a href="scribe.html">Scribe · live transcription</a></li><li><a href="settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">MM</span>MiniMARS</p>
+<p>A small MIPS assembler and runtime for the UCL CS Learning System. Programs run in this browser.</p>
+</div>
+</div>
+<div class="foot-base"><p>UCL CS Learning System · Computer Science study portal</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="assets/minimars.js"></script>
+</body>
+</html>
