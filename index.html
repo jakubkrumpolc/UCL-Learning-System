@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UCL CS Learning System</title>
-<meta name="description" content="A study portal for UCL Computer Science: lecture decks rebuilt as clear study guides, one module at a time, plus Scribe for live lecture transcripts.">
+<meta name="description" content="A study portal for UCL Computer Science: lecture decks rebuilt as clear study guides, one module at a time, plus MiniMARS for MIPS and Scribe for live lecture transcripts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -17,7 +17,7 @@
 <div class="portal-bar">
 <div class="portal-in">
 <a class="portal-home" href="index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
-<nav class="portal-links" aria-label="Portal"><a class="wide" href="index.html#modules">Modules</a><a href="scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="index.html#modules">Modules</a><a href="minimars.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg><span class="lbl">MiniMARS</span></a><a href="scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
 </div>
 </div>
 <header class="masthead">
@@ -27,7 +27,7 @@
 </div>
 </header>
 <nav class="topbar" aria-label="Portal sections">
-<div class="topbar-in parts"><a href="index.html" aria-current="page">Home</a><a href="modules/databases/index.html"><span class="pn">DB</span>Database Fundamentals</a><a href="modules/programming/index.html"><span class="pn">PY</span>Python Programming</a><a href="modules/algorithmics/index.html"><span class="pn">AL</span>Algorithmics</a><a href="modules/architecture/index.html"><span class="pn">AR</span>Computer Architecture</a><a href="scribe.html"><span class="pn"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span>Scribe</a></div>
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Home</a><a href="modules/databases/index.html"><span class="pn">DB</span>Database Fundamentals</a><a href="modules/programming/index.html"><span class="pn">PY</span>Python Programming</a><a href="modules/algorithmics/index.html"><span class="pn">AL</span>Algorithmics</a><a href="minimars.html"><span class="pn">MM</span>MiniMARS</a><a href="modules/architecture/index.html"><span class="pn">AR</span>Computer Architecture</a><a href="scribe.html"><span class="pn"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span>Scribe</a></div>
 </nav>
 <div class="layout">
 
@@ -37,8 +37,8 @@
 <div class="hh-text">
 <p class="eyebrow">UCL Computer Science · Study portal</p>
 <h1>Every module,<br/>one place</h1>
-<p class="lead">Lecture decks rebuilt into clear study guides, one module at a time, with worked examples, diagrams and a memory hook for every idea. Scribe writes down lectures as they happen.</p>
-<div class="hh-actions"><a class="btn primary" href="#modules">Choose a module</a><a class="btn" href="scribe.html">Open Scribe</a></div>
+<p class="lead">Lecture decks rebuilt into clear study guides, one module at a time, with worked examples, diagrams and a memory hook for every idea. Scribe writes down lectures as they happen. MiniMARS runs MIPS assembly in the browser.</p>
+<div class="hh-actions"><a class="btn primary" href="#modules">Choose a module</a><a class="btn" href="minimars.html">Open MiniMARS</a><a class="btn" href="scribe.html">Open Scribe</a></div>
 </div>
 <svg aria-hidden="true" class="hero-art" height="240" viewBox="0 0 240 240" width="240"><rect fill="#9A3BFF" height="112" width="112"></rect><text fill="#FFFFFF" font-family="'DM Sans', Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" x="56" y="70">DB</text><rect fill="#BA82FF" height="112" width="112" x="128"></rect><g fill="none" stroke="#361A54" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" transform="translate(160 32) scale(2)"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></g><rect fill="#BA82FF" height="112" width="112" y="128"></rect><text fill="#361A54" font-family="'DM Sans', Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" x="56" y="198">PY</text><rect fill="#9A3BFF" height="112" width="112" x="128" y="128"></rect><text fill="#FFFFFF" font-family="'DM Sans', Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" x="184" y="198">AL</text></svg>
 </div>
@@ -130,8 +130,13 @@
 
 <section class="home-sec" id="tools">
 <h2>Tools</h2>
-<p class="sub">Both are in the bar at the top of every page, so they’re never more than a click away.</p>
+<p class="sub">MiniMARS, Scribe and Settings are in the bar at the top of every page, so they’re never more than a click away.</p>
 <div class="part-grid">
+<article class="part-card">
+<a class="part-link" href="minimars.html"><span class="pc-num" aria-hidden="true"><svg class="pc-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg></span><span class="pc-name">MiniMARS</span></a>
+<p class="pc-desc">Assemble and run MIPS in the browser. Step through a program and watch the registers and memory.</p>
+<p class="pc-range">No install · runs in this page</p>
+</article>
 <article class="part-card">
 <a class="part-link" href="scribe.html"><span class="pc-num" aria-hidden="true"><svg class="pc-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg></span><span class="pc-name">Scribe</span></a>
 <p class="pc-desc">Transcribe a lecture live, then search, rename and export it.</p>
@@ -164,7 +169,7 @@
 </div>
 <div class="foot-col">
 <p class="foot-h">Tools</p>
-<ul><li><a href="scribe.html">Scribe · live transcription</a></li><li><a href="settings.html">Settings</a></li></ul>
+<ul><li><a href="minimars.html">MiniMARS · MIPS</a></li><li><a href="scribe.html">Scribe · live transcription</a></li><li><a href="settings.html">Settings</a></li></ul>
 </div>
 <div class="foot-col foot-about">
 <p class="foot-brand"><span class="brand-mark" aria-hidden="true">CS</span>UCL CS Learning System</p>

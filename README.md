@@ -27,11 +27,12 @@ The module pages also open straight from the files (for example `modules/databas
 | Database Fundamentals | `modules/databases/` | COMP0178 (below) |
 | Python Programming | `modules/programming/` | COMP0066 Introductory Programming (below) |
 | Algorithmics | `modules/algorithmics/` | COMP0070 Algorithmics (below) |
+| MiniMARS | `minimars.html` | In-browser MIPS assembler and runtime |
 | Computer Architecture | `modules/architecture/` | COMP0068 Computer Architecture & Operating Systems (below) |
 | Scribe | `scribe.html` | Live transcription of lectures, saved on this computer |
 | Settings | `settings.html` | Light, dark or system theme; the xAI key, model, price and budget for Scribe; where recordings are saved |
 
-Every page starts with the same dark portal bar: the way home, Modules, Scribe, **Settings** and a light/dark switch.
+Every page starts with the same dark portal bar: the way home, Modules, MiniMARS, Scribe, **Settings** and a light/dark switch.
 
 On a module page, the module's name and its parts bar stay at the top of the screen. Once you scroll, the name shrinks to a slim strip. Click the name to switch to another module.
 
@@ -93,6 +94,21 @@ Built from the lecture notes *Algorithms and Data Structures* (sections 2–7) a
 
 The problem-sheet answers are inside each question's **More detail** panel, so you can try the question first.
 
+## MiniMARS
+
+MiniMARS assembles and runs a small subset of MIPS in the browser. Open it from the portal bar, from **Tools** on the home page, or at <http://127.0.0.1:8000/minimars.html>. The page is plain JavaScript, so it also works when you open `minimars.html` as a file.
+
+The editor starts with a counted loop that prints 1 2 3 4 5. **Assemble** checks the program, **Run** executes it, and **Step** runs one instruction. The PC, the general registers and a memory view update as it runs. A bad instruction, an unknown syscall, or a run that passes 10,000 steps stops the machine, and the message appears next to the editor.
+
+Branches and jumps take effect immediately. MiniMARS does not use MIPS delay slots. Memory is little-endian, as in MARS. `$zero` stays zero and `$sp` starts at `0x7fffeffc`. Execution starts at the first instruction.
+
+Instructions: `add`, `sub`, `and`, `or`, `slt`, `addi`, `subi`, `andi`, `ori`, `slti`, `lui`, `lw`, `sw`, `beq`, `bne`, `j`, `jal`, `jr`, `syscall` and `nop`. Pseudos: `li`, `la`, `move`. Directives: `.text`, `.data`, `.word`, `.asciiz` (`.globl` is accepted and ignored).
+
+Syscalls, with the number in `$v0`: **1** print the integer in `$a0`, **4** print the string at `$a0`, **5** read an integer into `$v0` from the console input, **10** exit.
+
+Not included: multiply and divide, shifts other than `lui`, byte loads and stores, floating point, overflow traps, and the rest of the MARS syscall list.
+
+The assembler and CPU tests need Node.js, which the portal itself does not: `node --test tests/minimars.test.js`.
 ### Module: Computer Architecture (COMP0068)
 
 Built from Lectures 1–19 and the MIPS rover coursework brief. Assembly is MIPS, in the form the lectures use with MARS. Worked totals (scheduling, paging, the disk arm, the rover sample) use the lectures' own inputs.
@@ -202,6 +218,7 @@ The Settings page writes this file for you. You can also edit it by hand; restar
 ```
 start.py                    the one startup file: serves the portal and runs Scribe
 index.html                  portal home
+minimars.html               MiniMARS, the in-browser MIPS assembler and runtime
 scribe.html                 Scribe, the live-transcription page
 settings.html               Settings for the whole portal
 modules/databases/          Database Fundamentals: index.html (overview), store.html, …, revision.html
@@ -210,6 +227,8 @@ modules/algorithmics/       Algorithmics: index.html, analysis.html, …, search
 modules/architecture/       Computer Architecture: index.html, machine.html, …, memory.html, revision.html
 assets/site.css             shared styles: UCL-style palette, DM Sans, light and dark themes
 assets/portal.js            theme switching, plus the module header and switcher; loaded by every page
+assets/minimars.js          MiniMARS assembler, CPU and page
+tests/minimars.test.js      MiniMARS assembler and CPU tests (Node.js)
 assets/settings.js          the Settings page: theme choice, xAI key and model, saving options
 assets/site.js              slide scaling, sidebar highlighting, "Open all More detail"
 assets/scribe.js            Scribe's page: recording, transcript, spend tracker

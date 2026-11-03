@@ -227,7 +227,7 @@ details.more[open] { border-color: var(--brand); }
 /* code in the module guides: inline code, and samples inside "More detail" */
 .canvas code, .more-body code { font-family: var(--mono); font-size: .9em; color: var(--brand-text); }
 /* show code exactly as typed: no == or <= ligatures from JetBrains Mono */
-code, pre, .canvas [style*="JetBrains Mono"] { font-variant-ligatures: none; }
+code, pre, textarea, .canvas [style*="JetBrains Mono"] { font-variant-ligatures: none; }
 .more-body pre { margin: 0 0 12px; padding: 12px 16px; overflow-x: auto; font-family: var(--mono); font-size: 14px; line-height: 1.5; background: #361A54; color: #F2F2F2; }
 .more-body pre code { color: inherit; font-size: inherit; }
 .more-body ul, .more-body ol { margin: 0 0 12px; padding-left: 1.3em; }
@@ -371,7 +371,7 @@ code, pre, .canvas [style*="JetBrains Mono"] { font-variant-ligatures: none; }
 }
 
 /* shared controls: buttons, fields and dialogs on light surfaces */
-.pg-scribe [hidden], .pg-settings [hidden], .ui-dialog [hidden] { display: none !important; }
+.pg-scribe [hidden], .pg-settings [hidden], .pg-minimars [hidden], .ui-dialog [hidden] { display: none !important; }
 .ui-label { font-size: 14px; font-weight: 600; color: var(--brand-text); }
 .ui-figure { font-size: 30px; font-weight: 700; line-height: 1.15; color: var(--brand-ink); font-variant-numeric: tabular-nums; }
 .ui-muted { font-size: 13px; color: var(--muted); }
@@ -547,6 +547,61 @@ code, pre, .canvas [style*="JetBrains Mono"] { font-variant-ligatures: none; }
 }
 @media (max-width: 520px) {
   .sc-totals { grid-template-columns: 1fr; }
+}
+
+/* MiniMARS: in-browser MIPS assembler and runtime (minimars.html) */
+.pg-minimars .layout:not(.has-toc) main { max-width: 1440px; }
+.part-hero.mm-hero { padding: 40px 48px 32px; margin-bottom: 24px; }
+.mm-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); gap: 24px; align-items: start; }
+.mm-grid > * { min-width: 0; }
+.mm-toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.mm-toolbar .mm-aside { margin-left: auto; }
+.mm-code { display: flex; align-items: stretch; height: 480px; min-height: 220px; resize: vertical; overflow: hidden; border: 1px solid var(--line-brand); border-left: 8px solid var(--brand); background: var(--field); }
+.mm-gutter { flex: 0 0 auto; height: 100%; min-height: 0; margin: 0; padding: 16px 8px 16px 12px; overflow: hidden; text-align: right; color: var(--muted); background: var(--sand); font-family: var(--mono); font-size: 14.5px; line-height: 1.5; white-space: pre; user-select: none; }
+.mm-editor { display: block; flex: 1 1 0; width: 0; height: 100%; min-width: 0; min-height: 0; resize: none; margin: 0; padding: 16px 18px; border: 0; border-left: 1px solid var(--line); background: var(--field); color: var(--ink); font-family: var(--mono); font-size: 14.5px; line-height: 1.5; tab-size: 8; white-space: pre; overflow: auto; }
+.mm-message { margin: 0 0 12px; padding: 12px 16px; background: var(--brand-wash); border-left: 4px solid var(--brand); font-size: 15px; font-weight: 500; }
+.mm-message.error, .mm-message.wait { background: var(--orange-l); border-left-color: var(--orange); }
+.mm-model { margin: 12px 0 0; font-size: 14px; color: var(--muted); }
+.mm-regn { margin-left: 6px; color: var(--muted); }
+.mm-ref { margin-top: 12px; }
+.mm-ref h2 { margin: 28px 0 8px; font-size: 22px; font-weight: 600; color: var(--ink); }
+.mm-ref h2:first-child { margin-top: 4px; }
+.mm-ref p { margin: 0 0 12px; }
+.mm-ref code, .mm-ref td code { font-family: var(--mono); font-size: .92em; }
+.mm-ref-wrap { overflow-x: auto; border: 1px solid var(--line); margin: 0 0 8px; }
+.mm-ref table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.mm-ref th { position: sticky; top: 0; padding: 8px 12px; background: var(--dark); color: #fff; font-weight: 600; text-align: left; }
+.mm-ref td { padding: 7px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+.mm-ref tbody tr:nth-child(even) { background: var(--sand); }
+.mm-ref ul { margin: 0; padding-left: 1.2em; }
+.mm-ref li { margin: 0 0 6px; }
+.mm-panel { background: var(--card); border: 1px solid var(--line-brand); padding: 14px 16px 16px; margin: 0 0 16px; }
+.mm-panel h2 { margin: 0 0 8px; font-size: 18px; font-weight: 600; color: var(--ink); }
+.mm-pc-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; margin: 0; }
+.mm-pc { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--brand-ink); font-variant-numeric: tabular-nums; }
+.mm-next { font-family: var(--mono); font-size: 14px; color: var(--text); }
+.mm-scroll { max-height: 220px; overflow: auto; border: 1px solid var(--line); scrollbar-width: thin; position: relative; }
+.mm-regs, .mm-mem, .mm-text { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.mm-regwrap { overflow-x: auto; max-width: 100%; }
+.mm-regs td, .mm-regs th, .mm-mem td, .mm-text td, .mm-mem th, .mm-text th { padding: 3px 8px; border-top: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.mm-regs th, .mm-mem th, .mm-text th { position: sticky; top: 0; background: var(--dark); color: #fff; border-top: 0; font-weight: 600; }
+.mm-editor:focus { outline: none; box-shadow: 0 0 0 2px var(--bg), 0 0 0 5px var(--brand-text); }
+.mm-regs td.changed, .mm-mem tr.changed td, .mm-text tr.current td { background: var(--brand-wash); }
+.mm-text tr.current td:first-child { box-shadow: inset 4px 0 0 var(--brand); }
+.mm-origin { display: block; color: var(--muted); font-size: 12px; }
+.mm-empty { color: var(--muted); white-space: normal; }
+.mm-console { min-height: 72px; margin: 0; padding: 12px; background: var(--sand); border: 1px solid var(--line); font-family: var(--mono); font-size: 14px; white-space: pre-wrap; word-break: break-word; }
+.mm-console[data-empty=true]::before { content: 'No output yet. Syscalls 1 and 4 print here.'; color: var(--muted); }
+.mm-inputrow { display: flex; gap: 8px; margin-top: 10px; }
+.mm-inputrow .ui-input { flex: 1; font-family: var(--mono); }
+.mm-hint { margin: 8px 0 0; }
+@media (max-width: 980px) {
+  .mm-grid { grid-template-columns: 1fr; }
+  .mm-toolbar .mm-aside { margin-left: 0; }
+}
+@media (max-width: 700px) {
+  .part-hero.mm-hero { padding: 32px 22px 24px; }
+  .mm-code { height: 360px; border-left-width: 6px; }
 }
 
 /* dark mode for the slide content: its colours are written inline, so each one is mapped here.
