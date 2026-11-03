@@ -62,15 +62,26 @@
     window.addEventListener('scroll', update, { passive: true });
     update();
 
-    const menu = head.querySelector('.mod-switch');
-    if (!menu) return;
+    const menus = head.querySelectorAll('.mod-switch, .src-menu');
+    if (!menus.length) return;
     document.addEventListener('click', (e) => {
-      if (menu.open && !menu.contains(e.target)) menu.open = false;
+      menus.forEach((menu) => {
+        if (menu.open && !menu.contains(e.target)) menu.open = false;
+      });
     });
-    menu.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape' || !menu.open) return;
-      menu.open = false;
-      menu.querySelector('summary').focus();
+    menus.forEach((menu) => {
+      menu.addEventListener('toggle', () => {
+        if (!menu.open) return;
+        menus.forEach((other) => {
+          if (other !== menu && other.open) other.open = false;
+        });
+      });
+      menu.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape' || !menu.open) return;
+        menu.open = false;
+        const summary = menu.querySelector('summary');
+        if (summary) summary.focus();
+      });
     });
   }
 

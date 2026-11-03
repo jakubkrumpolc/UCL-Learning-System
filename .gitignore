@@ -1,6 +1,9 @@
 .DS_Store
 __pycache__/
 
+# Junctions to the lecture folders beside this portal. The PDFs stay where they are.
+sources/
+
 # Scribe: your xAI key and your transcripts
 .env
 .scribe/

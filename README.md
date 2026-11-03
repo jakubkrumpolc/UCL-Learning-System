@@ -50,6 +50,14 @@ The module is split into parts. Section numbers match the slide numbers in the o
 | 5 · Seek | `seek.html` | Storage, blocks, buffers, indexes, B+ trees, hashing | Lecture 3a |
 | 6 · Sigma | `sigma.html` | Relational algebra: σ, Π, ∪, −, ×, joins, division, aggregation | Lecture 3b |
 | 7 · Setup | `setup.html` | Group project kit: Git for teams, MySQL scripts, connecting PHP safely | **Lab 3** (project tutorial 3) |
+| 8 · Plan | `plan.html` | Parsing SQL and rewriting the algebra tree | Lecture 4 |
+| 9 · Cost | `cost.html` | Statistics, join algorithms, left-deep plans | Lecture 5 |
+| 10 · Atomic | `acid.html` | Transactions, ACID, locking, recovery | Lecture 6 |
+| 11 · Spread | `spread.html` | Fragmentation, shipping data, two-phase commit | Lectures 7–8 |
+| 12 · Markup | `markup.html` | Semi-structured data, XML, XQuery, JSON | Lecture 9a |
+| 13 · Objects | `oodb.html` | Object databases, ODL and OQL | Lecture 9b |
+| 14 · Base | `nosql.html` | CAP, BASE, consistent hashing, MapReduce, graphs | Lecture 10 |
+| 15 · Guard | `guard.html` | Password hashes, sessions, mail and cron | **Tutorials 4–7** |
 | Revision | `revision.html` | SQL cheat sheet, every memory hook, week 3 on one page | — |
 
 Every section has the same shape:
@@ -102,11 +110,11 @@ The editor starts with a counted loop that prints 1 2 3 4 5. **Assemble** checks
 
 Branches and jumps take effect immediately. MiniMARS does not use MIPS delay slots. Memory is little-endian, as in MARS. `$zero` stays zero and `$sp` starts at `0x7fffeffc`. Execution starts at the first instruction.
 
-Instructions: `add`, `sub`, `and`, `or`, `slt`, `addi`, `subi`, `andi`, `ori`, `slti`, `lui`, `lw`, `sw`, `beq`, `bne`, `j`, `jal`, `jr`, `syscall` and `nop`. Pseudos: `li`, `la`, `move`. Directives: `.text`, `.data`, `.word`, `.asciiz` (`.globl` is accepted and ignored).
+Instructions include the integer arithmetic, logic, shift, multiply, divide, load and store, and branch operations used in the lectures, plus the single- and double-precision floating-point set (`lwc1`, `mul.s`, `bc1t` and the rest listed on the page). Pseudos: `li`, `la`, `move`, `subi`, `not`, `beqz`, `bnez`, `blt`, `ble`, `bgt`, `bge` and the unsigned compares. Directives: `.text`, `.data`, `.word`, `.half`, `.byte`, `.ascii`, `.asciiz`, `.float`, `.double`, `.space` and `.align` (`.globl` is accepted and ignored).
 
-Syscalls, with the number in `$v0`: **1** print the integer in `$a0`, **4** print the string at `$a0`, **5** read an integer into `$v0` from the console input, **10** exit.
+Syscalls, with the number in `$v0`: **1** print integer, **2** print float, **3** print double, **4** print string, **5** read integer, **6** read float, **7** read double, **8** read string, **9** allocate heap, **10** exit, **11** print character, **12** read character, **13–16** open, read, write and close an in-memory file, **17** exit with a code. Any other number stops the program.
 
-Not included: multiply and divide, shifts other than `lui`, byte loads and stores, floating point, overflow traps, and the rest of the MARS syscall list.
+There is still no delay slot and no overflow trap. Floating-point arithmetic follows IEEE 754 and does not trap. File contents last only for that run.
 
 The assembler and CPU tests need Node.js, which the portal itself does not: `node --test tests/minimars.test.js`.
 ### Module: Computer Architecture (COMP0068)
@@ -263,5 +271,5 @@ server/websocket.py         a small WebSocket implementation, so nothing needs i
 
 ## Notes
 
-- These are personal study notes. They are not official UCL material, and the portal is not affiliated with UCL. The modules are based on the lecture slides, notes, notebooks, lab sheets and problem sheets of COMP0178, COMP0066, COMP0070 and COMP0068.
+- These are personal study notes. They are not official UCL material, and the portal is not affiliated with UCL. The modules are based on the lecture slides, notes, notebooks, lab sheets and problem sheets of COMP0178 (weeks 1–10), COMP0066, COMP0070 and COMP0068.
 - Use the original slides as the authority. If something here disagrees with them, the slides win, and please open an issue.

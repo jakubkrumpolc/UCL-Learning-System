@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15 · Guard · Databases &amp; SQL</title>
+<meta name="description" content="Password hashing, cookies versus sessions, and scheduled mail, from the later project tutorials.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-guard">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><span class="nav-split" role="separator" aria-hidden="true"></span><a href="../../minimars.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg><span class="lbl">MiniMARS</span></a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span><span class="mm-here">This module</span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li><li><a href="../architecture/index.html"><span class="brand-mark" aria-hidden="true">AR</span><span class="mm-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<details class="src-menu"><summary>Original PDFs<svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary><div class="src-panel"><p class="mod-menu-h">Lectures</p><ul><li><a href="../../sources/databases/Lectures/COMP0178%201a%20Introduction.pdf" target="_blank" rel="noopener">1a · Introduction</a></li><li><a href="../../sources/databases/Lectures/COMP0178%201b%20SQL.pdf" target="_blank" rel="noopener">1b · SQL</a></li><li><a href="../../sources/databases/Lectures/COMP0178%202%20Database%20Design.pdf" target="_blank" rel="noopener">2 · Database design</a></li><li><a href="../../sources/databases/Lectures/COMP0178%203a%20Database%20Storage.pdf" target="_blank" rel="noopener">3a · Database storage</a></li><li><a href="../../sources/databases/Lectures/COMP0178%203b%20Relational%20Algebra.pdf" target="_blank" rel="noopener">3b · Relational algebra</a></li><li><a href="../../sources/databases/Lectures/COMP0178%204%20Query%20Processing.pdf" target="_blank" rel="noopener">4 · Query processing</a></li><li><a href="../../sources/databases/Lectures/COMP0178%205%20Query%20Processing%202.pdf" target="_blank" rel="noopener">5 · Query processing 2</a></li><li><a href="../../sources/databases/Lectures/COMP0178%206%20Transaction%20Management.pdf" target="_blank" rel="noopener">6 · Transaction management</a></li><li><a href="../../sources/databases/Lectures/COMP0178%2078%20Distributed%20Databases.pdf" target="_blank" rel="noopener">7–8 · Distributed databases</a></li><li><a href="../../sources/databases/Lectures/COMP0178%209a%20XML.pdf" target="_blank" rel="noopener">9a · XML</a></li><li><a href="../../sources/databases/Lectures/COMP0178%209b%20OODBs.pdf" target="_blank" rel="noopener">9b · Object databases</a></li><li><a href="../../sources/databases/Lectures/COMP0178%2010%20NoSQL.pdf" target="_blank" rel="noopener">10 · NoSQL</a></li></ul><p class="mod-menu-h">Labs</p><ul><li><a href="../../sources/databases/Labs/Lab1_2024.pdf" target="_blank" rel="noopener">Lab 1</a></li><li><a href="../../sources/databases/Labs/Lab2.pdf" target="_blank" rel="noopener">Lab 2</a></li><li><a href="../../sources/databases/Labs/Lab3.pdf" target="_blank" rel="noopener">Lab 3</a></li><li><a href="../../sources/databases/Labs/Lab4.pdf" target="_blank" rel="noopener">Lab 4</a></li><li><a href="../../sources/databases/Labs/Lab5.pdf" target="_blank" rel="noopener">Lab 5</a></li><li><a href="../../sources/databases/Labs/Lab6.pdf" target="_blank" rel="noopener">Lab 6</a></li><li><a href="../../sources/databases/Labs/Lab7_2024.pdf" target="_blank" rel="noopener">Lab 7</a></li><li><a href="../../sources/databases/Labs/exercises-SQL.pdf" target="_blank" rel="noopener">SQL exercises</a></li><li><a href="../../sources/databases/Labs/exercises-SQL2.pdf" target="_blank" rel="noopener">SQL exercises 2</a></li><li><a href="../../sources/databases/Labs/exercises-SQL-answers.pdf" target="_blank" rel="noopener">SQL answers</a></li><li><a href="../../sources/databases/Labs/exercises-w2-design_2025.pdf" target="_blank" rel="noopener">Design exercises</a></li><li><a href="../../sources/databases/Labs/exercises-w2-design_2025-answers.pdf" target="_blank" rel="noopener">Design answers</a></li><li><a href="../../sources/databases/Labs/exercises-w4-queryprocessing_2024.pdf" target="_blank" rel="noopener">Week 4 exercises</a></li></ul></div></details>
+</div>
+</header>
+
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="setup.html"><span class="pn">7</span>Setup</a><a href="plan.html"><span class="pn">8</span>Plan</a><a href="cost.html"><span class="pn">9</span>Cost</a><a href="acid.html"><span class="pn">10</span>Atomic</a><a href="spread.html"><span class="pn">11</span>Spread</a><a href="markup.html"><span class="pn">12</span>Markup</a><a href="oodb.html"><span class="pn">13</span>Objects</a><a href="nosql.html"><span class="pn">14</span>Base</a><a href="guard.html" aria-current="page"><span class="pn">15</span>Guard</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#mysqli"><span class="n">98</span><span class="t">Connect, query, fetch, close</span></a></li><li><a href="#passwords"><span class="n">99</span><span class="t">Store a hash, not the password</span></a></li><li><a href="#session"><span class="n">100</span><span class="t">HTTP forgets you between requests</span></a></li><li><a href="#later"><span class="n">101</span><span class="t">Mail, and a job that runs without a click</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">15</p>
+<p class="eyebrow">Part 15 · Guard</p>
+<h1>Passwords, sessions, and work that runs later</h1>
+<p class="lead">Project tutorials 4 to 7 take the PHP connection from Part 7 and add the pieces a login needs: a hash instead of a password, a session instead of a forged cookie, and a job that runs when nobody is clicking.</p>
+<p class="range">Sections 98–101 · Project tutorials 4–7</p>
+<div class="about"><p>Part 15 collects the ideas in project tutorials 4 to 7 that are not already in Setup and Ship: how a query is run with mysqli, how a password should be stored, how a login survives the next HTTP request, and how mail and a schedule fit a project.</p></div>
+</header>
+<details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#mysqli"><span class="n">98</span> Connect, query, fetch, close</a></li><li><a href="#passwords"><span class="n">99</span> Store a hash, not the password</a></li><li><a href="#session"><span class="n">100</span> HTTP forgets you between requests</a></li><li><a href="#later"><span class="n">101</span> Mail, and a job that runs without a click</a></li></ol></details>
+<section class="topic" id="mysqli" aria-labelledby="mysqli-h">
+<div class="topic-meta"><a class="num" href="#mysqli" title="Link to this section">98</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 15 · Guard</p>
+<h2 id="mysqli-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Connect, query, fetch, close</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The shape of a PHP query</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Tutorial 4’s strategy is four steps. Connect. Build a SQL string. Run it. Read the rows.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">$c = mysqli_connect(&#x27;localhost&#x27;, &#x27;user&#x27;, &#x27;secret&#x27;, &#x27;db&#x27;);
+$r = mysqli_query($c, &#x27;SELECT first_name FROM Users&#x27;);
+$row = mysqli_fetch_array($r);
+mysqli_close($c);</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Check the connection. Root should not be the account the website uses. Close the connection when the page is done.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Input is still not SQL</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><a href="ship.html#injection">Part 4</a> already says not to glue a typed string into a query. Tutorial 4 shows <code>mysqli_real_escape_string</code> as a minimum, and tutorial 5 shows the classic attack: a password field containing <code>' OR TRUE</code> makes the WHERE succeed.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Escaping is a patch. A prepared statement, with the value kept out of the SQL text, is the fix Part 4 already uses.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> mysqli_connect, mysqli_query, mysqli_fetch_array, mysqli_close. Do not give the web page the root account.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A failed connect should be detected before you build a query on it. The tutorial checks the connection and stops with a message rather than continuing into mysqli_query on a false value.</p><p><i>Source: Project tutorial 4, PHP and MySQL, and tutorial 5’s injection reminder.</i></p></div></details>
+</section><section class="topic" id="passwords" aria-labelledby="passwords-h">
+<div class="topic-meta"><a class="num" href="#passwords" title="Link to this section">99</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 15 · Guard</p>
+<h2 id="passwords-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Store a hash, not the password</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">The rule</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Do not store the password. On registration, hash it and store the hash. On login, hash what was typed and compare hashes. A stolen table then does not contain passwords.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>salt</b> is extra per-user data mixed in before hashing, so two users with the same password do not produce the same hash, and a precomputed table of common passwords fails.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Where it can be hashed</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">MySQL can hash in the INSERT, with SHA1 producing a 40-character hex string. PHP can hash before the query is sent, which is the better place: the database never sees the password.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The form field is <code>type="password"</code> so the browser hides the characters. That is display, not storage. Validate first: <code>isset</code> checks the field arrived, <code>is_numeric</code> checks a value that should be a number.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Store a salted hash. Compare hashes at login. The password field only hides the typing.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>SHA1 is what the tutorial demonstrates. It is no longer a good choice for new passwords; PHP’s password_hash is the current function. The lecture’s principle still holds: store the hash, salt it, and never store the password itself.</p><p><i>Source: Project tutorial 5, storing passwords.</i></p></div></details>
+</section><section class="topic" id="session" aria-labelledby="session-h">
+<div class="topic-meta"><a class="num" href="#session" title="Link to this section">100</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 15 · Guard</p>
+<h2 id="session-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">HTTP forgets you between requests</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Cookies</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">HTTP is a sequence of unconnected requests. A <b>cookie</b> is a name, a value and an expiry, stored by the browser and sent back with later requests.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#F7F0FF;color:#1A1A1A;border-left:6px solid #7B2FCC;padding:16px 22px">setcookie(&#x27;userID&#x27;, &#x27;10&#x27;);
+// logout: expire it
+setcookie(&#x27;userID&#x27;, &#x27;&#x27;, time() - 3600);</pre><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A cookie can be viewed and forged on the client. Do not put a password or a privilege in it. Privacy law also requires consent before you store one.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Sessions</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>session</b> keeps the data on the server. <code>session_start()</code> sends only a session id, usually in a cookie. <code>$_SESSION['userID']</code> is then the login.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Prefer the session for anything that decides what the user is allowed to see. The cookie, if you use one directly, should be an id you can check, not the authority itself. Logout destroys the session, or expires the cookie.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A cookie lives in the browser and can be forged. A session lives on the server; the browser only holds the id.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Tutorial 6’s login-with-a-cookie example still builds the WHERE from the typed username. That is the injection pattern again. The new idea in the tutorial is the state, not a new way to write the query.</p><p><i>Source: Project tutorial 6, cookies and sessions.</i></p></div></details>
+</section><section class="topic" id="later" aria-labelledby="later-h">
+<div class="topic-meta"><a class="num" href="#later" title="Link to this section">101</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 15 · Guard</p>
+<h2 id="later-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Mail, and a job that runs without a click</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Sending mail</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">PHP’s <code>mail()</code> hands a message to a local mail queue. It needs an SMTP server: one you install, or Gmail’s, which wants an app password and a configured sendmail. The function returning true means the queue accepted the message, not that the recipient has read it.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">If mail cannot be made to work, the tutorial’s own fallback is a notification inside the site.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Cron</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>cron</b> job runs a command on a timetable, with nobody clicking. An auction that must close at a deadline is that kind of job.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Do not trust the schedule alone. The tutorial also says to check, in PHP and in SQL, that the work still needs doing, so a late or repeated run does not close the same auction twice.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> mail() queues a message. Cron runs a command on a clock. Check in the database that the job has not already been done.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The tutorial spends many slides on XAMPP paths and Gmail settings. Those steps depend on the machine. The durable ideas are the queue, the schedule, and the idempotent check.</p><p><i>Source: Project tutorial 7, mail and scheduled events.</i></p></div></details>
+</section>
+<nav class="pager" aria-label="Pages"><a class="prev" href="nosql.html"><span>Previous</span>Base</a><a class="next" href="revision.html"><span>Next</span>Revision</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li><li><a href="setup.html">7 · Setup</a></li><li><a href="plan.html">8 · Plan</a></li><li><a href="cost.html">9 · Cost</a></li><li><a href="acid.html">10 · Atomic</a></li><li><a href="spread.html">11 · Spread</a></li><li><a href="markup.html">12 · Markup</a></li><li><a href="oodb.html">13 · Objects</a></li><li><a href="nosql.html">14 · Base</a></li><li><a href="guard.html">15 · Guard</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../minimars.html">MiniMARS · MIPS</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from the COMP0178 lecture decks. Weeks 4–10 continue from the week 1–3 guide: query processing, transactions, distribution, XML, object databases and NoSQL. Personal study notes, not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–10</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>

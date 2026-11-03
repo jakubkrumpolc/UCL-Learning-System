@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Databases & SQL · Weeks 1–3</title>
-<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–3: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
+<title>Databases & SQL · Weeks 1–10</title>
+<meta name="description" content="Databases &amp; SQL study site for COMP0178 Weeks 1–10: SQL syntax, ER diagrams, normalisation, a small web app, storage and indexing, and relational algebra.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -17,7 +17,7 @@
 <div class="portal-bar">
 <div class="portal-in">
 <a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
-<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><a href="../../minimars.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg><span class="lbl">MiniMARS</span></a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><span class="nav-split" role="separator" aria-hidden="true"></span><a href="../../minimars.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg><span class="lbl">MiniMARS</span></a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
 </div>
 </div>
 <div class="site-head">
@@ -31,11 +31,11 @@
 <a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
 </div>
 </details>
-<p class="mast-tag">Weeks 1–3 study guide</p>
+<details class="src-menu"><summary>Original PDFs<svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary><div class="src-panel"><p class="mod-menu-h">Lectures</p><ul><li><a href="../../sources/databases/Lectures/COMP0178%201a%20Introduction.pdf" target="_blank" rel="noopener">1a · Introduction</a></li><li><a href="../../sources/databases/Lectures/COMP0178%201b%20SQL.pdf" target="_blank" rel="noopener">1b · SQL</a></li><li><a href="../../sources/databases/Lectures/COMP0178%202%20Database%20Design.pdf" target="_blank" rel="noopener">2 · Database design</a></li><li><a href="../../sources/databases/Lectures/COMP0178%203a%20Database%20Storage.pdf" target="_blank" rel="noopener">3a · Database storage</a></li><li><a href="../../sources/databases/Lectures/COMP0178%203b%20Relational%20Algebra.pdf" target="_blank" rel="noopener">3b · Relational algebra</a></li><li><a href="../../sources/databases/Lectures/COMP0178%204%20Query%20Processing.pdf" target="_blank" rel="noopener">4 · Query processing</a></li><li><a href="../../sources/databases/Lectures/COMP0178%205%20Query%20Processing%202.pdf" target="_blank" rel="noopener">5 · Query processing 2</a></li><li><a href="../../sources/databases/Lectures/COMP0178%206%20Transaction%20Management.pdf" target="_blank" rel="noopener">6 · Transaction management</a></li><li><a href="../../sources/databases/Lectures/COMP0178%2078%20Distributed%20Databases.pdf" target="_blank" rel="noopener">7–8 · Distributed databases</a></li><li><a href="../../sources/databases/Lectures/COMP0178%209a%20XML.pdf" target="_blank" rel="noopener">9a · XML</a></li><li><a href="../../sources/databases/Lectures/COMP0178%209b%20OODBs.pdf" target="_blank" rel="noopener">9b · Object databases</a></li><li><a href="../../sources/databases/Lectures/COMP0178%2010%20NoSQL.pdf" target="_blank" rel="noopener">10 · NoSQL</a></li></ul><p class="mod-menu-h">Labs</p><ul><li><a href="../../sources/databases/Labs/Lab1_2024.pdf" target="_blank" rel="noopener">Lab 1</a></li><li><a href="../../sources/databases/Labs/Lab2.pdf" target="_blank" rel="noopener">Lab 2</a></li><li><a href="../../sources/databases/Labs/Lab3.pdf" target="_blank" rel="noopener">Lab 3</a></li><li><a href="../../sources/databases/Labs/Lab4.pdf" target="_blank" rel="noopener">Lab 4</a></li><li><a href="../../sources/databases/Labs/Lab5.pdf" target="_blank" rel="noopener">Lab 5</a></li><li><a href="../../sources/databases/Labs/Lab6.pdf" target="_blank" rel="noopener">Lab 6</a></li><li><a href="../../sources/databases/Labs/Lab7_2024.pdf" target="_blank" rel="noopener">Lab 7</a></li><li><a href="../../sources/databases/Labs/exercises-SQL.pdf" target="_blank" rel="noopener">SQL exercises</a></li><li><a href="../../sources/databases/Labs/exercises-SQL2.pdf" target="_blank" rel="noopener">SQL exercises 2</a></li><li><a href="../../sources/databases/Labs/exercises-SQL-answers.pdf" target="_blank" rel="noopener">SQL answers</a></li><li><a href="../../sources/databases/Labs/exercises-w2-design_2025.pdf" target="_blank" rel="noopener">Design exercises</a></li><li><a href="../../sources/databases/Labs/exercises-w2-design_2025-answers.pdf" target="_blank" rel="noopener">Design answers</a></li><li><a href="../../sources/databases/Labs/exercises-w4-queryprocessing_2024.pdf" target="_blank" rel="noopener">Week 4 exercises</a></li></ul></div></details>
 </div>
 </header>
 <nav class="topbar" aria-label="Parts">
-<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="setup.html"><span class="pn">7</span>Setup</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+<div class="topbar-in parts"><a href="index.html" aria-current="page">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="setup.html"><span class="pn">7</span>Setup</a><a href="plan.html"><span class="pn">8</span>Plan</a><a href="cost.html"><span class="pn">9</span>Cost</a><a href="acid.html"><span class="pn">10</span>Atomic</a><a href="spread.html"><span class="pn">11</span>Spread</a><a href="markup.html"><span class="pn">12</span>Markup</a><a href="oodb.html"><span class="pn">13</span>Objects</a><a href="nosql.html"><span class="pn">14</span>Base</a><a href="guard.html"><span class="pn">15</span>Guard</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
 </nav>
 </div>
 <div class="layout">
@@ -44,17 +44,17 @@
 <header class="home-hero">
 <div class="home-hero-in">
 <div class="hh-text">
-<p class="eyebrow">COMP0178 · Database Fundamentals · Weeks 1–3</p>
+<p class="eyebrow">COMP0178 · Database Fundamentals · Weeks 1–10</p>
 <h1>Databases &amp; SQL,<br/>from zero</h1>
-<p class="lead">The lecture decks rebuilt into one clear path: what a database is, how to speak SQL, how to design tables, how a web app uses them, how data sits on disk, and the algebra underneath SQL. Plus a project kit for Git and the backend.</p>
+<p class="lead">The lecture decks rebuilt into one path: SQL and design, then how the DBMS plans a query, keeps transactions safe, spreads data across sites, and when a table is the wrong model.</p>
 <div class="hh-actions"><a class="btn primary" href="store.html">Start with Part 1</a><a class="btn" href="speak.html#sql-basics">Jump to SQL</a><a class="btn" href="revision.html">Cheat sheet</a></div>
 </div>
 <svg aria-label="A database cylinder icon" height="460" class="hero-art" viewbox="0 0 420 460" width="420"><rect fill="#9A3BFF" height="340" width="400" x="10" y="60"></rect><ellipse cx="210" cy="400" fill="#9A3BFF" rx="200" ry="44"></ellipse><path d="M10 175 A200 44 0 0 0 410 175" fill="none" stroke="#361A54" stroke-width="8"></path><path d="M10 290 A200 44 0 0 0 410 290" fill="none" stroke="#361A54" stroke-width="8"></path><ellipse cx="210" cy="60" fill="#BA82FF" rx="200" ry="44"></ellipse></svg>
 </div>
 </header>
 <section class="home-sec" id="roadmap">
-<h2>Six questions, in order, plus your project kit</h2>
-<p class="sub">Store → Speak → Shape → Ship → Seek → Sigma, then Setup for the group project. Lab answers sit inside the parts that teach what they need, marked <span class="badge lab">Lab</span>.</p>
+<h2>From tables to transactions, distribution and NoSQL</h2>
+<p class="sub">Weeks 1–3 are Store through Setup. Weeks 4–10 continue with query plans, transactions, distributed data, XML, objects and NoSQL, then the rest of the project tutorials.</p>
 <div class="part-grid"><article class="part-card">
 <a class="part-link" href="store.html"><span class="pc-num">1</span><span class="pc-name">Store</span></a>
 <p class="pc-desc">What is a database, and why keep data in tables?</p>
@@ -95,8 +95,8 @@
 </article><article class="part-card rev">
 <a class="part-link" href="revision.html"><span class="pc-num">R</span><span class="pc-name">Revision</span></a>
 <p class="pc-desc">A one-page SQL cheat sheet and every memory hook.</p>
-<p class="pc-range">Sections 64–66</p>
-<details class="pc-topics"><summary>All 3 sections</summary><ol><li><a href="revision.html#cheat-sheet"><span class="n">64</span>SQL on one page</a></li><li><a href="revision.html#memory-hooks"><span class="n">65</span>The whole deck in 14 lines</a></li><li><a href="revision.html#week3-sheet"><span class="n">66</span>Week 3 on one page</a></li></ol></details>
+<p class="pc-range">Sections 64–67</p>
+<details class="pc-topics"><summary>All 4 sections</summary><ol><li><a href="revision.html#cheat-sheet"><span class="n">64</span>SQL on one page</a></li><li><a href="revision.html#memory-hooks"><span class="n">65</span>The whole deck in 14 lines</a></li><li><a href="revision.html#week3-sheet"><span class="n">66</span>Week 3 on one page</a></li><li><a href="revision.html#later-sheet"><span class="n">67</span>Weeks 4–10 on one page</a></li></ol></details>
 </article></div>
 <aside class="cta" aria-label="Revision">
 <div><h2>Revising for the exam?</h2><p>Every SQL pattern on one page, plus the memory hook from each section.</p></div>
@@ -118,7 +118,7 @@
 <div class="foot-in">
 <div class="foot-col">
 <p class="foot-h">Parts</p>
-<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li><li><a href="setup.html">7 · Setup</a></li></ul>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li><li><a href="setup.html">7 · Setup</a></li><li><a href="plan.html">8 · Plan</a></li><li><a href="cost.html">9 · Cost</a></li><li><a href="acid.html">10 · Atomic</a></li><li><a href="spread.html">11 · Spread</a></li><li><a href="markup.html">12 · Markup</a></li><li><a href="oodb.html">13 · Objects</a></li><li><a href="nosql.html">14 · Base</a></li><li><a href="guard.html">15 · Guard</a></li></ul>
 </div>
 <div class="foot-col">
 <p class="foot-h">Revision</p>
@@ -133,7 +133,7 @@
 <p>Built from your COMP0178 lecture slides (weeks 1–3). Section numbers match the slide numbers in each deck.</p>
 </div>
 </div>
-<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–3</p><a href="#top">Back to top</a></div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–10</p><a href="#top">Back to top</a></div>
 </footer>
 <script src="../../assets/site.js"></script>
 </body>

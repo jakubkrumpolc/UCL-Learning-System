@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14 · Base · Databases &amp; SQL</title>
+<meta name="description" content="Why NoSQL exists, CAP and BASE, consistent hashing, documents, MapReduce, and graph queries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/site.css">
+<script src="../../assets/portal.js"></script>
+</head>
+<body id="top" class="pg-nosql">
+<a class="skip" href="#main">Skip to content</a>
+<div class="portal-bar">
+<div class="portal-in">
+<a class="portal-home" href="../../index.html"><span class="portal-mark" aria-hidden="true">CS</span>UCL CS Learning System</a>
+<nav class="portal-links" aria-label="Portal"><a class="wide" href="../../index.html#modules">Modules</a><span class="nav-split" role="separator" aria-hidden="true"></span><a href="../../minimars.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"></path></svg><span class="lbl">MiniMARS</span></a><a href="../../scribe.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><path d="M12 19v3"></path></svg><span class="lbl">Scribe</span></a><a href="../../settings.html"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg><span class="lbl">Settings</span></a><button type="button" class="theme-toggle" aria-label="Dark mode" aria-pressed="false"><svg class="i-moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg><svg class="i-sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></button></nav>
+</div>
+</div>
+<div class="site-head">
+<header class="masthead">
+<div class="mast-in">
+<details class="mod-switch">
+<summary class="brand"><span class="brand-mark" aria-hidden="true">DB</span><span class="brand-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span><svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg><span class="vh">Switch module</span></summary>
+<div class="mod-menu">
+<p class="mod-menu-h">Switch module</p>
+<ul><li><a href="index.html" aria-current="true"><span class="brand-mark" aria-hidden="true">DB</span><span class="mm-text"><b>Databases &amp; SQL</b><span>COMP0178 · Database Fundamentals</span></span><span class="mm-here">This module</span></a></li><li><a href="../programming/index.html"><span class="brand-mark" aria-hidden="true">PY</span><span class="mm-text"><b>Python Programming</b><span>COMP0066 · Introductory Programming</span></span></a></li><li><a href="../algorithmics/index.html"><span class="brand-mark" aria-hidden="true">AL</span><span class="mm-text"><b>Algorithms &amp; Data Structures</b><span>COMP0070 · Algorithmics</span></span></a></li><li><a href="../architecture/index.html"><span class="brand-mark" aria-hidden="true">AR</span><span class="mm-text"><b>Computer Architecture</b><span>COMP0068 · Architecture &amp; Operating Systems</span></span></a></li></ul>
+<a class="mod-all" href="../../index.html#modules">All modules on the portal home</a>
+</div>
+</details>
+<details class="src-menu"><summary>Original PDFs<svg class="mod-caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary><div class="src-panel"><p class="mod-menu-h">Lectures</p><ul><li><a href="../../sources/databases/Lectures/COMP0178%201a%20Introduction.pdf" target="_blank" rel="noopener">1a · Introduction</a></li><li><a href="../../sources/databases/Lectures/COMP0178%201b%20SQL.pdf" target="_blank" rel="noopener">1b · SQL</a></li><li><a href="../../sources/databases/Lectures/COMP0178%202%20Database%20Design.pdf" target="_blank" rel="noopener">2 · Database design</a></li><li><a href="../../sources/databases/Lectures/COMP0178%203a%20Database%20Storage.pdf" target="_blank" rel="noopener">3a · Database storage</a></li><li><a href="../../sources/databases/Lectures/COMP0178%203b%20Relational%20Algebra.pdf" target="_blank" rel="noopener">3b · Relational algebra</a></li><li><a href="../../sources/databases/Lectures/COMP0178%204%20Query%20Processing.pdf" target="_blank" rel="noopener">4 · Query processing</a></li><li><a href="../../sources/databases/Lectures/COMP0178%205%20Query%20Processing%202.pdf" target="_blank" rel="noopener">5 · Query processing 2</a></li><li><a href="../../sources/databases/Lectures/COMP0178%206%20Transaction%20Management.pdf" target="_blank" rel="noopener">6 · Transaction management</a></li><li><a href="../../sources/databases/Lectures/COMP0178%2078%20Distributed%20Databases.pdf" target="_blank" rel="noopener">7–8 · Distributed databases</a></li><li><a href="../../sources/databases/Lectures/COMP0178%209a%20XML.pdf" target="_blank" rel="noopener">9a · XML</a></li><li><a href="../../sources/databases/Lectures/COMP0178%209b%20OODBs.pdf" target="_blank" rel="noopener">9b · Object databases</a></li><li><a href="../../sources/databases/Lectures/COMP0178%2010%20NoSQL.pdf" target="_blank" rel="noopener">10 · NoSQL</a></li></ul><p class="mod-menu-h">Labs</p><ul><li><a href="../../sources/databases/Labs/Lab1_2024.pdf" target="_blank" rel="noopener">Lab 1</a></li><li><a href="../../sources/databases/Labs/Lab2.pdf" target="_blank" rel="noopener">Lab 2</a></li><li><a href="../../sources/databases/Labs/Lab3.pdf" target="_blank" rel="noopener">Lab 3</a></li><li><a href="../../sources/databases/Labs/Lab4.pdf" target="_blank" rel="noopener">Lab 4</a></li><li><a href="../../sources/databases/Labs/Lab5.pdf" target="_blank" rel="noopener">Lab 5</a></li><li><a href="../../sources/databases/Labs/Lab6.pdf" target="_blank" rel="noopener">Lab 6</a></li><li><a href="../../sources/databases/Labs/Lab7_2024.pdf" target="_blank" rel="noopener">Lab 7</a></li><li><a href="../../sources/databases/Labs/exercises-SQL.pdf" target="_blank" rel="noopener">SQL exercises</a></li><li><a href="../../sources/databases/Labs/exercises-SQL2.pdf" target="_blank" rel="noopener">SQL exercises 2</a></li><li><a href="../../sources/databases/Labs/exercises-SQL-answers.pdf" target="_blank" rel="noopener">SQL answers</a></li><li><a href="../../sources/databases/Labs/exercises-w2-design_2025.pdf" target="_blank" rel="noopener">Design exercises</a></li><li><a href="../../sources/databases/Labs/exercises-w2-design_2025-answers.pdf" target="_blank" rel="noopener">Design answers</a></li><li><a href="../../sources/databases/Labs/exercises-w4-queryprocessing_2024.pdf" target="_blank" rel="noopener">Week 4 exercises</a></li></ul></div></details>
+</div>
+</header>
+
+<nav class="topbar" aria-label="Parts">
+<div class="topbar-in parts"><a href="index.html">Overview</a><a href="store.html"><span class="pn">1</span>Store</a><a href="speak.html"><span class="pn">2</span>Speak</a><a href="shape.html"><span class="pn">3</span>Shape</a><a href="ship.html"><span class="pn">4</span>Ship</a><a href="seek.html"><span class="pn">5</span>Seek</a><a href="sigma.html"><span class="pn">6</span>Sigma</a><a href="setup.html"><span class="pn">7</span>Setup</a><a href="plan.html"><span class="pn">8</span>Plan</a><a href="cost.html"><span class="pn">9</span>Cost</a><a href="acid.html"><span class="pn">10</span>Atomic</a><a href="spread.html"><span class="pn">11</span>Spread</a><a href="markup.html"><span class="pn">12</span>Markup</a><a href="oodb.html"><span class="pn">13</span>Objects</a><a href="nosql.html" aria-current="page"><span class="pn">14</span>Base</a><a href="guard.html"><span class="pn">15</span>Guard</a><a href="revision.html"><span class="pn">R</span>Revision</a></div>
+</nav>
+</div>
+<div class="layout has-toc">
+<aside class="toc" aria-label="On this page">
+<p class="toc-title">On this page</p>
+<ol><li><a href="#base"><span class="n">94</span><span class="t">Not only SQL</span></a></li><li><a href="#hashring"><span class="n">95</span><span class="t">Keys on a ring</span></a></li><li><a href="#mapreduce"><span class="n">96</span><span class="t">Documents, then map and reduce</span></a></li><li><a href="#cypher"><span class="n">97</span><span class="t">When the relationship is the data</span></a></li></ol>
+<button type="button" class="toggle-all" aria-pressed="false">Open all “More detail”</button>
+</aside>
+<main id="main">
+<header class="part-hero">
+<p class="hero-num" aria-hidden="true">14</p>
+<p class="eyebrow">Part 14 · Base</p>
+<h1>Availability instead of an immediate single answer</h1>
+<p class="lead">Relational systems promise ACID and a stable schema. NoSQL relaxes both, so a store can grow by adding machines and stay up when those machines disagree for a while.</p>
+<p class="range">Sections 94–97 · Lecture 10 · Week 10</p>
+<div class="about"><p>Part 14 is Lecture 10: the NoSQL trade-off, key-value stores and consistent hashing, document stores and MapReduce, and Cypher for graphs.</p></div>
+</header>
+<details class="toc-mobile"><summary>Contents of this page</summary><ol><li><a href="#base"><span class="n">94</span> Not only SQL</a></li><li><a href="#hashring"><span class="n">95</span> Keys on a ring</a></li><li><a href="#mapreduce"><span class="n">96</span> Documents, then map and reduce</a></li><li><a href="#cypher"><span class="n">97</span> When the relationship is the data</a></li></ol></details>
+<section class="topic" id="base" aria-labelledby="base-h">
+<div class="topic-meta"><a class="num" href="#base" title="Link to this section">94</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 14 · Base</p>
+<h2 id="base-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Not only SQL</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">What is being given up</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A relational DBMS spends its effort on ACID and on a schema that refuses duplicates and broken references. Across many sites that coordination is exactly what limits growth. <b>NoSQL</b> means not only SQL: some of these systems still accept SQL-like queries. The goal is near-linear horizontal scaling, and <b>eventual</b> consistency instead of an immediate common value.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">CAP and BASE</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The <b>CAP</b> theorem: a distributed system does not simultaneously guarantee consistency (every read sees the latest write), availability (every request gets a response), and partition tolerance (the system keeps going when the network splits). A partition forces a choice between the other two.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A"><b>BASE</b> is the NoSQL answer. Basically available: the store answers. Soft state: the value can be stale. Eventual consistency: if updates stop, the copies agree.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> CAP says a partition forces a choice between consistency and availability. BASE chooses availability, and consistency later.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture’s comparison table is the overview. Relational systems store tables and promise ACID. NoSQL systems store key-value pairs, documents, graphs, columns or XML, and promise scale and availability. The schema is the thing that moved.</p><p><i>Source: Lecture 10, shortcomings of relational systems, CAP and BASE.</i></p></div></details>
+</section><section class="topic" id="hashring" aria-labelledby="hashring-h">
+<div class="topic-meta"><a class="num" href="#hashring" title="Link to this section">95</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 14 · Base</p>
+<h2 id="hashring-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Keys on a ring</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Key-value stores</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A row is a key and a value. The key decides which server stores it, by a hash. The simplest split is <code>hash(key) mod n</code> across n servers.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Adding or removing a server changes n, so almost every key moves. That is the failure of modulus sharding.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Consistent hashing</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Place servers and keys on a ring of values from 0 up to, but not including, 1. A key is stored at the nearest server <b>clockwise</b>.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Add or remove one server and only the keys that walked to or from that server move: about 1/n of them, not all of them.</p><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>coordinator</b> accepts a request and collects the answer. Membership gossip does not promise that every node currently knows every other node. It catches up. That lag is eventual consistency again.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Modulus sharding moves almost every key when a server is added. Consistent hashing moves about 1/n of them, around the ring.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>A key-value store can be the whole database or a cache in front of one. By itself it offers put and get, not joins and not rich constraints. The lecture is frank about that limit.</p><p><i>Source: Lecture 10, key-value stores and consistent hashing.</i></p></div></details>
+</section><section class="topic" id="mapreduce" aria-labelledby="mapreduce-h">
+<div class="topic-meta"><a class="num" href="#mapreduce" title="Link to this section">96</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 14 · Base</p>
+<h2 id="mapreduce-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">Documents, then map and reduce</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Richer values</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">A <b>tuple store</b> keeps a key and a vector of fields, without forcing every vector to have the same length. A <b>document store</b> keeps a key and a semi-structured document, usually JSON. Filters are possible and can be awkward, because two documents need not share a field.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">MapReduce</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">MapReduce, from Google and later Hadoop, scales an aggregation across machines.</p><ul style="font-size:26px;line-height:1.45"><li><b>Map</b> turns each input into a new key and value. For pages per genre, each book becomes (genre, pages).</li><li>The system groups the pairs by that key.</li><li><b>Reduce</b> folds each group into one answer. Summing the pages of a genre is the fold.</li></ul><p style="font-size:26px;line-height:1.4;color:#1A1A1A">The lecture’s sketch ends with totals such as education 340 and thriller 100. The pattern matters more than those two totals: map emits, reduce folds one key.</p></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> Map emits (key, value) pairs. Reduce receives one key and all its values, and emits one result.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>Column stores are the other family the lecture names: tables stored by column rather than by row, which suits an aggregate over one column of many rows. XML and object databases appear again here as further non-relational options, already covered in Parts 12 and 13.</p><p><i>Source: Lecture 10, document stores and the MapReduce example.</i></p></div></details>
+</section><section class="topic" id="cypher" aria-labelledby="cypher-h">
+<div class="topic-meta"><a class="num" href="#cypher" title="Link to this section">97</a></div>
+<div class="fit"><div class="canvas" style="color:#1A1A1A;font-family:'DM Sans', Arial, sans-serif;font-size:28px;gap:40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#7B2FCC">Part 14 · Base</p>
+<h2 id="cypher-h" style="font-family:'DM Sans', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1A1A1A">When the relationship is the data</h2>
+</div>
+<div class="row" style="display:flex;gap:48px;flex-direction:row"><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">A graph store</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Nodes are the things. Edges are the relationships. The earlier NoSQL models mostly throw relationships away and reconstruct them at query time. A graph store keeps them, which suits social networks, recommendations, maps and knowledge graphs.</p></div><div class="grow" style="flex:1;background:#FFFFFF;border:1px solid #EAD6FF;border-radius:0;padding:32px;display:flex;flex-direction:column;gap:18px"><h3 style="font-family:'DM Sans', Arial, sans-serif;font-size:34px;font-weight:600;line-height:1.2;color:#1A1A1A">Cypher</h3><p style="font-size:26px;line-height:1.4;color:#1A1A1A">Neo4j’s language draws the pattern you want.</p><pre class="nw" style="margin:0;font-family:'JetBrains Mono', 'Courier New', monospace;font-size:22px;line-height:1.45;white-space:pre;overflow-x:auto;font-variant-ligatures:none;background:#361A54;color:#F2F2F2;padding:20px 24px">MATCH (b:Book)-[:WRITTEN_BY]-&gt;(a:Author)
+WHERE a.name = &#x27;Le Guin&#x27;
+RETURN b.title</pre><ul style="font-size:26px;line-height:1.45"><li>Parentheses are nodes. <code>(b:Book)</code> is a node of label Book, bound to b.</li><li>An undirected edge is <code>--</code>. A directed one is <code>-[:WRITTEN_BY]-&gt;</code>.</li><li><b>NewSQL</b> is the later swing back: NoSQL systems adding durability, and relational systems adding scale and flexible schemas.</li></ul></div></div>
+<div class="row" style="display:flex;align-items:center;gap:20px;background:#FFF2EB;border-radius:0;padding:20px 28px;flex-direction:row">
+<svg aria-hidden="true" class="ic free" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:40px;height:40px;color:#B34E06;flex-shrink:0" viewbox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path><path d="M9 18h6"></path><path d="M10 22h4"></path></svg>
+<p class="grow" style="font-size:28px;line-height:1.35;color:#1A1A1A"><b>Remember:</b> A graph store keeps the edges. Cypher draws the path in the query: nodes in parentheses, relationships in arrows.</p>
+</div>
+</div></div>
+<details class="more"><summary><span>More detail</span></summary><div class="more-body"><p>The lecture’s closing line is the scope. NoSQL fits flexible schemas, heavy distribution, and a preference for availability. It is not a replacement for a payroll database that needs ACID tonight.</p><p><i>Source: Lecture 10, graph databases, Cypher, and NewSQL.</i></p></div></details>
+</section>
+<nav class="pager" aria-label="Pages"><a class="prev" href="oodb.html"><span>Previous</span>Objects</a><a class="next" href="guard.html"><span>Next</span>Guard</a></nav>
+</main>
+</div>
+<footer class="sitefoot">
+<div class="foot-in">
+<div class="foot-col">
+<p class="foot-h">Parts</p>
+<ul><li><a href="store.html">1 · Store</a></li><li><a href="speak.html">2 · Speak</a></li><li><a href="shape.html">3 · Shape</a></li><li><a href="ship.html">4 · Ship</a></li><li><a href="seek.html">5 · Seek</a></li><li><a href="sigma.html">6 · Sigma</a></li><li><a href="setup.html">7 · Setup</a></li><li><a href="plan.html">8 · Plan</a></li><li><a href="cost.html">9 · Cost</a></li><li><a href="acid.html">10 · Atomic</a></li><li><a href="spread.html">11 · Spread</a></li><li><a href="markup.html">12 · Markup</a></li><li><a href="oodb.html">13 · Objects</a></li><li><a href="nosql.html">14 · Base</a></li><li><a href="guard.html">15 · Guard</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Revision</p>
+<ul><li><a href="revision.html#cheat-sheet">SQL on one page</a></li><li><a href="revision.html#memory-hooks">Memory hooks</a></li><li><a href="revision.html#week3-sheet">Week 3 on one page</a></li></ul>
+</div>
+<div class="foot-col">
+<p class="foot-h">Portal</p>
+<ul><li><a href="../../index.html">Portal home</a></li><li><a href="../../index.html#modules">All modules</a></li><li><a href="../../minimars.html">MiniMARS · MIPS</a></li><li><a href="../../scribe.html">Scribe · live transcription</a></li><li><a href="../../settings.html">Settings</a></li></ul>
+</div>
+<div class="foot-col foot-about">
+<p class="foot-brand"><span class="brand-mark" aria-hidden="true">DB</span>Databases &amp; SQL</p>
+<p>Built from the COMP0178 lecture decks. Weeks 4–10 continue from the week 1–3 guide: query processing, transactions, distribution, XML, object databases and NoSQL. Personal study notes, not official UCL material.</p>
+</div>
+</div>
+<div class="foot-base"><p>COMP0178 · Database Fundamentals · Weeks 1–10</p><a href="#top">Back to top</a></div>
+</footer>
+<script src="../../assets/site.js"></script>
+</body>
+</html>
